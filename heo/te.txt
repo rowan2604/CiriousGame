@@ -1,8 +1,0 @@
-<<<<<<< HEAD
-
-
-Salut PT
-=======
-salut Antoine
-
->>>>>>> 912130bc456d3a72858c6fb3a4358b2e698c13e
