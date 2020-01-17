@@ -26,7 +26,7 @@
     };
 
     var game = new Phaser.Game(config);
-
+    var antoine = "VERMUUUSE";
     function preload ()
     {
         this.load.image('sky', 'assets/sky.png');
@@ -38,7 +38,7 @@
             { frameWidth: 32, frameHeight: 48 }
     );
     }
-
+    console.log("console.log");
     function create ()
     {
         this.add.image(400, 300, 'sky')
