@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(500, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
     game.load.tilemap('map', 'assets/test.json', null, Phaser.Tilemap.TILED_JSON);
