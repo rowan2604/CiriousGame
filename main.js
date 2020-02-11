@@ -2,7 +2,6 @@ var game = new Phaser.Game(500, 600, Phaser.AUTO, '', { preload: preload, create
 
 function preload() {
     game.load.tilemap('map', 'assets/test.json', null, Phaser.Tilemap.TILED_JSON);
-
     game.load.image('tiles', 'assets/pokemon_like_fundations.png');
 }
 
