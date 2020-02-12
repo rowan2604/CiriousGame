@@ -1,28 +1,27 @@
-var game = new Phaser.Game(500, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
-    game.load.tilemap('map', 'assets/test.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.image('tiles', 'assets/pokemon_like_fundations.png');
+    game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('tiles', 'map/tileset_Interior.png');
 }
 
 var map;
 var layer;
 
 function create() {
-    game.stage.backgroundColor = '#787878';
-
-    //  The 'mario' key here is the Loader key given in game.load.tilemap
+    game.stage.backgroundColor = '#000000';
     map = game.add.tilemap('map');
+    map.addTilesetImage('tileset_Interior', 'tiles');
 
-    //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
-    //  The second parameter maps this name to the Phaser.Cache key 'tiles'
-    map.addTilesetImage('Fundations', 'tiles');
-    
-    //  Creates a layer from the World1 layer in the map data.
-    //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
-    layer = map.createLayer('Floor');
-
-    //  This resizes the game world to match the layer dimensions
+    layer = map.createLayer('floor');
+    layer = map.createLayer('stairs');
+    layer = map.createLayer('behind');
+    layer = map.createLayer('wall');
+    layer = map.createLayer('carpet');
+    layer = map.createLayer('windows');
+    layer = map.createLayer('object');
+    layer = map.createLayer('object2');
+    layer = map.createLayer('object3');
     layer.resizeWorld();
 }
 
