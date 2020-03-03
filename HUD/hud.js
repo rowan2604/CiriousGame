@@ -6,7 +6,7 @@ class EnergyBar {
         this.value = config.initialValue;
 
         this.statusBar = statusBar;
-        this.energy = energy;
+        this.energy = energy;/////////
 
         this.statusBarImage = this.game.cache.getImage(statusBar);
         this.energyImage = this.game.cache.getImage(energy);
