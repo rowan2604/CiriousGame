@@ -1,15 +1,27 @@
 class Player{
-    constructor(game){
+    constructor(game, map, layers){
         this.game = game;
+        this.map = map;
+        this.layers = layers;
+
         // Controls
         this.directions_keys = this.game.input.keyboard.createCursorKeys();                // Conttrols keys
         this.sprint_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);           // Sprint key
+        this.use_key = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
 
         // Sprite / Physics
-        this.sprite = this.game.add.sprite(30, 30, "zelda");
+        this.sprite = this.game.add.sprite(390, 420, "zelda");
         this.sprite.scale.setTo(0.4, 0.4);
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
+        // Adjust hitbox
         this.sprite.body.collideWorldBounds = true;
+        this.sprite.body.setSize(105, 30, (120 / 2) - (105 / 2), 130 - 30);
+
+        this.position = {
+            x: this.sprite.x + this.sprite.width / 2,
+            y: this.sprite.y + this.sprite.height - 5
+        };
+
 
         // Utilities
         this.maxStamina = 100;
@@ -41,6 +53,7 @@ class Player{
             this.sprite.animations.play(this.currentDir, 10);
         }
     }
+
     checkForActions(){  
         // Sprint system
         if(this.sprint_key.isDown && !this.isTired){                             // If sprinting key down ...
@@ -58,6 +71,10 @@ class Player{
         // Avoid sprint spam
         if(this.curStamina <= 0){
             this.isTired = true;
+        }
+        
+        if(this.use_key.isDown){
+            console.log("I used something !");
         }
 
         // Moving system
@@ -110,24 +127,31 @@ class Player{
             this.sprite.animations.stop();                      // Stop animation.
         }
     }
-    update(){
-        this.checkForActions();
+
+    getStamina(){
+        return this.curStamina;
     }
+
+    getPosition(){
+        return this.position;
+    }
+
+    getCurrentTile(){
+        let x = this.layers.floor.getTileX(this.position.x);
+        let y = this.layers.floor.getTileY(this.position.y);
+        let tile = this.map.getTile(x, y, this.layers.wall);
+        return this.map.getTile(x, y, this.layers.floor);
+    }
+
+    update(){
+        this.game.physics.arcade.collide(this.sprite, this.layers.wall);
+        this.checkForActions();
+        // Player position tracked on his feets.
+        this.position.x = this.sprite.x + this.sprite.width / 2;
+        this.position.y = this.sprite.y + this.sprite.height - 5;
+    }
+
+    /*render(){
+        this.game.debug.body(this.sprite);
+    }*/
 };
-
-/*let game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-
-let player;
-
-function preload(){
-    game.load.spritesheet("zelda", "assets/zelda.png", 120, 130, 80)
-}
-
-function create(){
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    player = new Player(game);
-}
-
-function update(){
-    player.update();
-}*/

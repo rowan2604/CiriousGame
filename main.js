@@ -1,4 +1,4 @@
-var game = new Phaser.Game(640, 495, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(640, 495, Phaser.AUTO, '', { preload: preload, create: create, update: update/*, render: render*/});
 // 640x495
 function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
@@ -9,7 +9,7 @@ function preload() {
 }
 
 let map;
-let layer;
+let layers;
 let player;
 let waterBar;
 let timer;
@@ -25,18 +25,21 @@ function create() {
 
     map = game.add.tilemap('map'); //Load map with different layer, don't touch / Nicolas
     map.addTilesetImage('tileset_Interior', 'tiles');
-    layer = map.createLayer('floor');
-    layer = map.createLayer('stairs');
-    layer = map.createLayer('behind');
-    layer = map.createLayer('wall');
-    layer = map.createLayer('carpet');
-    layer = map.createLayer('windows');
-    layer = map.createLayer('object');
-    layer = map.createLayer('object2');
-    layer = map.createLayer('object3');
-    layer.resizeWorld();
+    
+    layers = {                                  // Map all layers for player positionning
+        floor: map.createLayer('floor'),
+        stairs: map.createLayer('stairs'),
+        behind: map.createLayer('behind'),
+        wall: map.createLayer('wall'),
+        carpet: map.createLayer('carpet'),
+        windows: map.createLayer('windows'),     
+        object: map.createLayer('object'),
+        object2: map.createLayer('object2'),
+        object3: map.createLayer('object3')
+    }
+    map.setCollisionByExclusion([], true, layers.wall);         // Activata collicion with walls / Antoine
+    //layer.resizeWorld();
 
-<<<<<<< HEAD
     let waterConfig = {
         x: 100, y: 20, 
         scaleBarX: 0.7, scaleBarY: 1,
@@ -48,7 +51,7 @@ function create() {
 
     let timerConfig = {
         x: 500, y: 10,
-        scale: 60,
+        scale: 40,
         duration:  105  //en secondes
     }
 
@@ -56,10 +59,9 @@ function create() {
     timer = new Timer(game, timerConfig);
     timer.start();
 
-=======
-    button = game.add.button(game.world.centerX, game.world.centerY, 'button', gofull, this, 1, 0, 2);
->>>>>>> 0b84be3cf0e9aa448c192ce7cde69bab25cf1727
-    player = new Player(game);                          // Spawn player after the map / Antoine
+    player = new Player(game, map, layers);                          // Spawn player after the map / Antoine
+    
+    
 }
 
 function gofull() { //Function fullscreen just for test / Nicolas
@@ -74,3 +76,7 @@ function update() {
     timer.update();
     waterBar.update(1);
 }
+
+/*function render(){              // To debug player hitbox / Antoine
+    player.render();
+}*/
