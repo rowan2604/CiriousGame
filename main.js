@@ -36,6 +36,7 @@ function create() {
     layer = map.createLayer('object3');
     layer.resizeWorld();
 
+<<<<<<< HEAD
     let waterConfig = {
         x: 100, y: 20, 
         scaleBarX: 0.7, scaleBarY: 1,
@@ -55,6 +56,9 @@ function create() {
     timer = new Timer(game, timerConfig);
     timer.start();
 
+=======
+    button = game.add.button(game.world.centerX, game.world.centerY, 'button', gofull, this, 1, 0, 2);
+>>>>>>> 0b84be3cf0e9aa448c192ce7cde69bab25cf1727
     player = new Player(game);                          // Spawn player after the map / Antoine
 }
 
