@@ -4,11 +4,15 @@ function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
     game.load.image('tiles', 'map/tileset_Interior.png');//Load tileset.png / Nicolas
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80)    // Load character spritesheet / Antoine
+    game.load.image('statusBar', 'HUD/assets/StatusBar.png');  //Load statusBar image / P-T
+    game.load.image('dropOfWater', 'HUD/assets/water.png'); //Load water drop image / P-T
 }
 
-var map;
-var layer;
+let map;
+let layer;
 let player;
+let waterBar;
+let timer;
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);     // Init game physics for player movement / Antoine
@@ -32,6 +36,25 @@ function create() {
     layer = map.createLayer('object3');
     layer.resizeWorld();
 
+    let waterConfig = {
+        x: 100, y: 20, 
+        scaleBarX: 0.7, scaleBarY: 1,
+        scaleIconX: 0.5, scaleIconY: 0.5, 
+        initialValue: 0, //pourcentage de remplissage de la barre a l'initialisation
+        color: 0x2cb2f5,
+        isVertical: false
+    };
+
+    let timerConfig = {
+        x: 500, y: 10,
+        scale: 60,
+        duration:  105  //en secondes
+    }
+
+    waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
+    timer = new Timer(game, timerConfig);
+    timer.start();
+
     player = new Player(game);                          // Spawn player after the map / Antoine
 }
 
@@ -44,4 +67,6 @@ function gofull() { //Function fullscreen just for test / Nicolas
 
 function update() {
     player.update();
+    timer.update();
+    waterBar.update(1);
 }
