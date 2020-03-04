@@ -32,6 +32,7 @@ function create() {
     layer = map.createLayer('object3');
     layer.resizeWorld();
 
+    button = game.add.button(game.world.centerX, game.world.centerY, 'button', gofull, this, 1, 0, 2);
     player = new Player(game);                          // Spawn player after the map / Antoine
 }
 
