@@ -3,7 +3,7 @@ var game = new Phaser.Game(640, 495, Phaser.AUTO, '', { preload: preload, create
 function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
     game.load.image('tiles', 'map/tileset_Interior.png');//Load tileset.png / Nicolas
-    game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80)    // Load character spritesheet / Antoine
+    game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.image('statusBar', 'HUD/assets/StatusBar.png');  //Load statusBar image / P-T
     game.load.image('dropOfWater', 'HUD/assets/water.png'); //Load water drop image / P-T
 }
@@ -15,13 +15,13 @@ let waterBar;
 let timer;
 
 function create() {
-    game.physics.startSystem(Phaser.Physics.ARCADE);     // Init game physics for player movement / Antoine
+    game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
 
-    game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;//Fullscreen mod just for test / Nicolas
+    game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL; //Fullscreen mod just for test / Nicolas
     game.stage.backgroundColor = '#000000';
 
     game.input.mouse.capture = true; //Capture mouse just for test can be remove / Nicolas
-    game.input.onDown.add(gofull, this);//Just for test can be remove / Nicolas
+    game.input.onDown.add(gofull, this); //Just for test can be remove / Nicolas
 
     map = game.add.tilemap('map'); //Load map with different layer, don't touch / Nicolas
     map.addTilesetImage('tileset_Interior', 'tiles');
@@ -47,7 +47,7 @@ function create() {
         initialValue: 0, //pourcentage de remplissage de la barre a l'initialisation
         color: 0x2cb2f5,
         isVertical: false
-    };
+};
 
     let timerConfig = {
         x: 500, y: 10,
