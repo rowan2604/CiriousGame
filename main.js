@@ -1,5 +1,5 @@
 var game = new Phaser.Game(640, 495, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-
+// 640x495
 function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
     game.load.image('tiles', 'map/tileset_Interior.png');//Load tileset.png / Nicolas

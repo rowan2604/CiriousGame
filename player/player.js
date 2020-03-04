@@ -6,7 +6,7 @@ class Player{
         this.sprint_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);           // Sprint key
 
         // Sprite / Physics
-        this.sprite = this.game.add.sprite(0, 0, "zelda");
+        this.sprite = this.game.add.sprite(30, 30, "zelda");
         this.sprite.scale.setTo(0.4, 0.4);
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.collideWorldBounds = true;
@@ -41,22 +41,53 @@ class Player{
             this.sprite.animations.play(this.currentDir, 10);
         }
     }
-    checkForActions(){
+    checkForActions(){  
+        // Sprint system
+        if(this.sprint_key.isDown && !this.isTired){                             // If sprinting key down ...
+            this.isSprinting = true;                                             // We update isSprinting
+        }
+        else{
+            this.isSprinting = false;
+            if(this.curStamina < this.maxStamina){
+                this.curStamina += 0.25;
+                if(this.curStamina >= 30 && this.isTired){
+                    this.isTired = false;
+                }
+            }
+        }
+        // Avoid sprint spam
+        if(this.curStamina <= 0){
+            this.isTired = true;
+        }
+
+        // Moving system
         if(this.directions_keys.up.isDown){         // Direction UP
             this.move(0, -1);
             this.currentDir = "up"
+            if(this.isSprinting){
+                this.curStamina -= 0.5;
+            }
         }
         else if(this.directions_keys.left.isDown){  // Direction LEFT
             this.move(-1, 0);
             this.currentDir = "left"
+            if(this.isSprinting){
+                this.curStamina -= 0.5;
+            }
         }
         else if(this.directions_keys.right.isDown){ // Direction RIGHT
             this.move(1, 0);
             this.currentDir = "right"
+            if(this.isSprinting){
+                this.curStamina -= 0.5;
+            }
         }
         else if(this.directions_keys.down.isDown){  // Direction DOWN
             this.move(0, 1, this.speed);
             this.currentDir = "down"
+            if(this.isSprinting){
+                this.curStamina -= 0.5;
+            }
         }
         else{                                       // Else, player isn't moving
             this.sprite.body.velocity.setTo(0, 0);
@@ -77,23 +108,6 @@ class Player{
                     this.sprite.loadTexture("zelda", 0);
             }
             this.sprite.animations.stop();                      // Stop animation.
-        }
-        // Sprint system
-        if(this.sprint_key.isDown && !this.isTired){                             // If sprinting key down ...
-            this.isSprinting = true;                            // We update isSprinting
-            this.curStamina -= 0.5;
-        }
-        else{
-            this.isSprinting = false;
-            if(this.curStamina < this.maxStamina){
-                this.curStamina += 0.25;
-                if(this.curStamina >= 30 && this.isTired){
-                    this.isTired = false;
-                }
-            }
-        }
-        if(this.curStamina <= 0){
-            this.isTired = true;
         }
     }
     update(){
