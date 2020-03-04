@@ -7,7 +7,7 @@ class Player{
 
         // Sprite / Physics
         this.sprite = this.game.add.sprite(0, 0, "zelda");
-        this.sprite.scale.setTo(0.5, 0.5);
+        this.sprite.scale.setTo(0.4, 0.4);
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.collideWorldBounds = true;
 
@@ -82,7 +82,6 @@ class Player{
         if(this.sprint_key.isDown && !this.isTired){                             // If sprinting key down ...
             this.isSprinting = true;                            // We update isSprinting
             this.curStamina -= 0.5;
-            console.log(this.curStamina);
         }
         else{
             this.isSprinting = false;
@@ -102,10 +101,9 @@ class Player{
     }
 };
 
-let game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+/*let game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 let player;
-let directions;
 
 function preload(){
     game.load.spritesheet("zelda", "assets/zelda.png", 120, 130, 80)
@@ -118,4 +116,4 @@ function create(){
 
 function update(){
     player.update();
-}
+}*/
