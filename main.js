@@ -23,6 +23,8 @@ function create() {
     map = game.add.tilemap('map'); //Load map with different layer, don't touch / Nicolas
     map.addTilesetImage('tileset_Interior', 'tiles');
     
+    depth = game.add.group();       // Will allow us to choose what we need to display first / Antoine
+
     layers = { //Map all layers for player positionning
         floor: map.createLayer('floor'),
         stairs: map.createLayer('stairs'),
@@ -61,6 +63,19 @@ function create() {
     player = new Player(game, map, layers); //Spawn player after the map / Antoine
     
     
+    {       // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
+        depth.add(layers.floor);
+        depth.add(layers.stairs);
+        depth.add(layers.wall);
+        depth.add(layers.windows);
+        depth.add(layers.carpet);
+        depth.add(layers.collision);
+        depth.add(layers.object);
+        depth.add(layers.collision2);
+        depth.add(layers.object2);
+        depth.add(player.sprite);
+        depth.add(layers.top);
+    }    
 }
 
 function update() {

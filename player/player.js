@@ -15,7 +15,7 @@ class Player{
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         // Adjust hitbox
         this.sprite.body.collideWorldBounds = true;
-        this.sprite.body.setSize(105, 30, (120 / 2) - (105 / 2), 130 - 30);
+        this.sprite.body.setSize(105, 15, (120 / 2) - (105 / 2), 130 - 15);
 
         this.position = {
             x: this.sprite.x + this.sprite.width / 2,
@@ -72,7 +72,7 @@ class Player{
         if(this.curStamina <= 0){
             this.isTired = true;
         }
-        
+
         if(this.use_key.isDown){
             console.log("I used something !");
         }
@@ -145,6 +145,8 @@ class Player{
 
     update(){
         this.game.physics.arcade.collide(this.sprite, this.layers.wall);
+        this.game.physics.arcade.collide(this.sprite, this.layers.collision);
+        this.game.physics.arcade.collide(this.sprite, this.layers.collision2);
         this.checkForActions();
         // Player position tracked on his feets.
         this.position.x = this.sprite.x + this.sprite.width / 2;
