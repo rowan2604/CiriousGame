@@ -4,8 +4,8 @@ function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
     game.load.image('tiles', 'map/tileset_Interior.png'); //Load tileset.png / Nicolas
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
-    game.load.image('statusBar', 'HUD/assets/StatusBar.png'); //Load statusBar image / P-T
-    game.load.image('dropOfWater', 'HUD/assets/water.png'); //Load water drop image / P-T
+    game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
+    game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
 }
 
 let map;
