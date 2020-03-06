@@ -1,4 +1,5 @@
-var game = new Phaser.Game(640, 495, Phaser.AUTO, '', { preload: preload, create: create, update: update/*, render: render*/});
+var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update/*, render: render*/});
+//Please do not change screen size values / Nicolas
 
 function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
@@ -26,6 +27,7 @@ function create() {
     depth = game.add.group();       // Will allow us to choose what we need to display first / Antoine
 
     layers = { //Map all layers for player positionning
+        garden: map.createLayer('garden'),
         floor: map.createLayer('floor'),
         stairs: map.createLayer('stairs'),
         wall: map.createLayer('wall'),
@@ -64,6 +66,7 @@ function create() {
     
     
     {       // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
+        depth.add(layers.garden);
         depth.add(layers.floor);
         depth.add(layers.stairs);
         depth.add(layers.wall);
