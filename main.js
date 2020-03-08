@@ -1,11 +1,12 @@
-var game = new Phaser.Game(640, 495, Phaser.AUTO, '', { preload: preload, create: create, update: update/*, render: render*/});
+var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update/*, render: render*/});
+//Please do not change screen size values / Nicolas
 
 function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
     game.load.image('tiles', 'map/tileset_Interior.png'); //Load tileset.png / Nicolas
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
-    game.load.image('statusBar', 'HUD/assets/StatusBar.png'); //Load statusBar image / P-T
-    game.load.image('dropOfWater', 'HUD/assets/water.png'); //Load water drop image / P-T
+    game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
+    game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
 }
 
 let map;
@@ -13,6 +14,7 @@ let layers;
 let player;
 let waterBar;
 let timer;
+let staminaBar;
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
@@ -26,6 +28,7 @@ function create() {
     depth = game.add.group();       // Will allow us to choose what we need to display first / Antoine
 
     layers = { //Map all layers for player positionning
+        garden: map.createLayer('garden'),
         floor: map.createLayer('floor'),
         stairs: map.createLayer('stairs'),
         wall: map.createLayer('wall'),
@@ -45,7 +48,7 @@ function create() {
         x: 100, y: 20, 
         scaleBarX: 0.7, scaleBarY: 1,
         scaleIconX: 0.5, scaleIconY: 0.5, 
-        initialValue: 0, //pourcentage de remplissage de la barre a l'initialisation
+        initialValue: 0, // percentage of initial filling of the bar / P-T
         color: 0x2cb2f5,
         isVertical: false
 };
@@ -62,8 +65,8 @@ function create() {
 
     player = new Player(game, map, layers); //Spawn player after the map / Antoine
     
-    
     {       // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
+        depth.add(layers.garden);
         depth.add(layers.floor);
         depth.add(layers.stairs);
         depth.add(layers.wall);
@@ -76,6 +79,7 @@ function create() {
         depth.add(player.sprite);
         depth.add(layers.top);
     }    
+
 }
 
 function update() {
