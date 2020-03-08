@@ -14,7 +14,7 @@ let layers;
 let player;
 let waterBar;
 let timer;
-let staminaBar;
+let interactText; // Temporary in main.js / Antoine
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
@@ -38,11 +38,13 @@ function create() {
         object: map.createLayer('object'),
         collision2: map.createLayer('collision2'),
         object2: map.createLayer('object2'),
-        top: map.createLayer('top') //The sprite should be behind this layers. 
+        top: map.createLayer('top'), //The sprite should be behind this layers.
+        collisions: map.createLayer('collisions'),
+        usables: map.createLayer('usables')
     }
-    map.setCollisionByExclusion([], true, layers.wall); //Activate collision / Antoine
-    map.setCollisionByExclusion([], true, layers.collision);
-    map.setCollisionByExclusion([], true, layers.collision2);
+    layers.collisions.visible = false;
+    layers.usables.visible = false;
+    map.setCollisionByExclusion([], true, layers.collisions)        //Activate collision / Antoine
 
     let waterConfig = {
         x: 100, y: 20, 
@@ -64,6 +66,8 @@ function create() {
     timer.start();
 
     player = new Player(game, map, layers); //Spawn player after the map / Antoine
+
+    interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1})  
     
     {       // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
         depth.add(layers.garden);
@@ -86,6 +90,13 @@ function update() {
     player.update();
     timer.update();
     waterBar.update(1);
+    
+    if(player.checkForObject() != null){
+        interactText.text = "Press 'E' to interact!";
+    }
+    else{
+        interactText.text = "";
+    }
 }
 
 /*function render(){              // To debug player hitbox / Antoine

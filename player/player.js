@@ -5,12 +5,12 @@ class Player{
         this.layers = layers;
 
         // Controls
-        this.directions_keys = this.game.input.keyboard.createCursorKeys();                // Conttrols keys
+        this.directions_keys = this.game.input.keyboard.createCursorKeys();                 // Conttrols keys
         this.sprint_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);           // Sprint key
-        this.use_key = this.game.input.keyboard.addKey(Phaser.Keyboard.E);
+        this.use_key = this.game.input.keyboard.addKey(Phaser.Keyboard.E);                  // Use key
 
         // Sprite / Physics
-        this.sprite = this.game.add.sprite(390, 420, "zelda");
+        this.sprite = this.game.add.sprite(715, 610, "zelda");
         this.sprite.scale.setTo(0.4, 0.4);
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         // Adjust hitbox
@@ -34,7 +34,7 @@ class Player{
         this.staminaBar = new StaminaBar(game, 1280/2, 700, 500, 15, 10, 0x0a63f2);
 
         // Animations
-        this.currentDir = "";
+        this.currentDir = "down";
         this.initAnimations();
     }
 
@@ -73,10 +73,6 @@ class Player{
         // Avoid sprint spam
         if(this.curStamina <= 0){
             this.isTired = true;
-        }
-
-        if(this.use_key.isDown){
-            console.log("I used something !");
         }
 
         // Moving system
@@ -130,6 +126,13 @@ class Player{
         }
     }
 
+    interacted(){       // If the player interacts with an object, returns true
+        if(this.use_key.isDown && this.checkForObject() != null){
+            return true;
+        }
+        return false;
+    }
+
     getStamina(){
         return this.curStamina;
     }
@@ -145,14 +148,32 @@ class Player{
         return this.map.getTile(x, y, this.layers.floor);
     }
 
+    checkForObject(){
+        let x = this.layers.object2.getTileX(this.position.x);
+        let y = this.layers.object2.getTileY(this.position.y);
+
+        switch(this.currentDir){
+            case "up":
+                return this.map.getTile(x, y - 1, this.layers.usables);
+            case "down":
+                return this.map.getTile(x, y + 1, this.layers.usables);
+            case "left":
+                return this.map.getTile(x - 1, y, this.layers.usables);
+            case "right":
+                return this.map.getTile(x + 1, y, this.layers.usables);
+            default:                                                    // Error
+                console.log("unidentified direction (checkForObject)");
+        }
+    }
+
     update(){
-        this.game.physics.arcade.collide(this.sprite, this.layers.wall);
-        this.game.physics.arcade.collide(this.sprite, this.layers.collision);
-        this.game.physics.arcade.collide(this.sprite, this.layers.collision2);
+        this.game.physics.arcade.collide(this.sprite, this.layers.collisions);
         this.checkForActions();
+        this.checkForObject();
         // Player position tracked on his feets.
         this.position.x = this.sprite.x + this.sprite.width / 2;
-        this.position.y = this.sprite.y + this.sprite.height - 5;
+        this.position.y = this.sprite.y + this.sprite.height - 15;
+        
         this.staminaBar.update(this.getStamina());
     }
 
