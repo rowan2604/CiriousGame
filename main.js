@@ -38,8 +38,8 @@ function create() {
         top: map.createLayer('top') //The sprite should be behind this layers. 
     }
     map.setCollisionByExclusion([], true, layers.wall); //Activate collision / Antoine
-    map.setCollisionByExclusion([], true, layers.collision); //Doesn't work
-    map.setCollisionByExclusion([], true, layers.collision2); //Doesn't work
+    map.setCollisionByExclusion([], true, layers.collision);
+    map.setCollisionByExclusion([], true, layers.collision2);
 
     let waterConfig = {
         x: 100, y: 20, 
