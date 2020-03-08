@@ -30,6 +30,8 @@ class Player{
         this.sprintSpeedScale = 2;
         this.isSprinting = false;
         this.isTired = false;           // If we just used the full stamina, we can't sprint right after
+        
+        this.staminaBar = new StaminaBar(game, 1280/2, 700, 500, 15, 10, 0x0a63f2);
 
         // Animations
         this.currentDir = "";
@@ -151,6 +153,7 @@ class Player{
         // Player position tracked on his feets.
         this.position.x = this.sprite.x + this.sprite.width / 2;
         this.position.y = this.sprite.y + this.sprite.height - 5;
+        this.staminaBar.update(this.getStamina());
     }
 
     /*render(){

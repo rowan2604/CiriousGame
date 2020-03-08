@@ -14,6 +14,7 @@ let layers;
 let player;
 let waterBar;
 let timer;
+let staminaBar;
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
@@ -47,7 +48,7 @@ function create() {
         x: 100, y: 20, 
         scaleBarX: 0.7, scaleBarY: 1,
         scaleIconX: 0.5, scaleIconY: 0.5, 
-        initialValue: 0, //pourcentage de remplissage de la barre a l'initialisation
+        initialValue: 0, // percentage of initial filling of the bar / P-T
         color: 0x2cb2f5,
         isVertical: false
 };
@@ -64,7 +65,6 @@ function create() {
 
     player = new Player(game, map, layers); //Spawn player after the map / Antoine
     
-    
     {       // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
         depth.add(layers.garden);
         depth.add(layers.floor);
@@ -79,6 +79,7 @@ function create() {
         depth.add(player.sprite);
         depth.add(layers.top);
     }    
+
 }
 
 function update() {

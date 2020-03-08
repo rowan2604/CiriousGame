@@ -153,6 +153,32 @@ class Timer {
         }
     }
 }
+
+class StaminaBar {
+
+    constructor(game, x, y, width, height, radius, color) {
+        this.game = game;
+        this.x = x - width / 2;
+        this.y = y - height / 2;
+        this.width = width;
+        this.height = height;
+        this.radius = radius;
+        this.color = color;
+        console.log(this.x);
+        this.graphics = this.game.add.graphics(0,0);
+
+        this.graphics.beginFill(this.color);
+        this.graphics.drawRoundedRect(this.x, this.y, this.width, this.height, this.radius);
+    }
+
+    update(staminaLevel) {
+        this.graphics.clear()
+        this.graphics.beginFill(this.color);
+        let width = this.width * staminaLevel / 100;
+        let x = this.x + this.width / 2 - width / 2;
+        this.graphics.drawRoundedRect(x, this.y, width, this.height, this.radius);
+    }
+}
 /*
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 ffff
