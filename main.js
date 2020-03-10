@@ -4,6 +4,7 @@ var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, creat
 function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
     game.load.image('tiles', 'map/tileset_Interior.png'); //Load tileset.png / Nicolas
+    game.load.image('tilesG', 'map/tileset_Garden.png'); //Load tileset.png / Nicolas
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
@@ -24,6 +25,7 @@ function create() {
 
     map = game.add.tilemap('map'); //Load map with different layer, don't touch / Nicolas
     map.addTilesetImage('tileset_Interior', 'tiles');
+    map.addTilesetImage('tileset_Garden', 'tilesG');
     
     depth = game.add.group();       // Will allow us to choose what we need to display first / Antoine
 
@@ -38,6 +40,7 @@ function create() {
         object: map.createLayer('object'),
         collision2: map.createLayer('collision2'),
         object2: map.createLayer('object2'),
+        garden2: map.createLayer('garden2'),
         top: map.createLayer('top'), //The sprite should be behind this layers.
         collisions: map.createLayer('collisions'),
         usables: map.createLayer('usables')
