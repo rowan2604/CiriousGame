@@ -1,4 +1,4 @@
-var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update/*, render: render*/});
+var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update});
 //Please do not change screen size values / Nicolas
 
 function preload() {
@@ -19,15 +19,14 @@ let interactText; // Temporary in main.js / Antoine
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
-
-    game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL; //Fullscreen mod just for test / Nicolas
     game.stage.backgroundColor = '#000000';
+    game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT; //Full screen ratio / Nicolas
 
     map = game.add.tilemap('map'); //Load map with different layer, don't touch / Nicolas
     map.addTilesetImage('tileset_Interior', 'tiles');
     map.addTilesetImage('tileset_Garden', 'tilesG');
     
-    depth = game.add.group();       // Will allow us to choose what we need to display first / Antoine
+    depth = game.add.group(); // Will allow us to choose what we need to display first / Antoine
 
     layers = { //Map all layers for player positionning
         garden: map.createLayer('garden'),
@@ -47,7 +46,7 @@ function create() {
     }
     layers.collisions.visible = false;
     layers.usables.visible = false;
-    map.setCollisionByExclusion([], true, layers.collisions)        //Activate collision / Antoine
+    map.setCollisionByExclusion([], true, layers.collisions) //Activate collision / Antoine
 
     let waterConfig = {
         x: 100, y: 20, 
@@ -61,7 +60,7 @@ function create() {
     let timerConfig = {
         x: 500, y: 10,
         scale: 40,
-        duration:  105 //en secondes
+        duration:  105 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
@@ -72,7 +71,7 @@ function create() {
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1})  
     
-    {       // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
+    { // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
         depth.add(layers.garden);
         depth.add(layers.floor);
         depth.add(layers.stairs);
@@ -86,20 +85,32 @@ function create() {
         depth.add(player.sprite);
         depth.add(layers.top);
     }    
-
+    game.input.onDown.add(fullScreen, this);
 }
 
 function update() {
     player.update();
     timer.update();
     waterBar.update(1);
-    
     if(player.checkForObject() != null){
         interactText.text = "Press 'E' to interact!";
     }
     else{
         interactText.text = "";
     }
+}
+
+function fullScreen() {
+
+    if (game.scale.isFullScreen)
+    {
+        game.scale.stopFullScreen();
+    }
+    else
+    {
+        game.scale.startFullScreen(false);
+    }
+
 }
 
 /*function render(){              // To debug player hitbox / Antoine
