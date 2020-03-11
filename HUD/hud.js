@@ -35,6 +35,9 @@ class EnergyBar {
 
         this.timer;
         this.timerEvent;
+        this.elapsedTime = 0;
+        this.isTimerRunning = false;
+        this.duration = 5;
 
         this.initPosition(this.isVertical);
     }
@@ -74,7 +77,28 @@ class EnergyBar {
        
     }
 
-    /*update(gain) {
+    update() {
+        if (this.value == 100 && !this.isTimerRunning) {
+            this.isTimerRunning = true;
+            this.newTimer(this.duration);
+            this.timer.start();
+        }
+        if (this.value == 100 && this.isTimerRunning) {
+            this.elapsedTime = this.duration - this.getCurrentTime();
+            
+            this.graphics.clear();
+            if (this.elapsedTime % 0.6 > 0 && this.elapsedTime % 0.6 < 0.3) { //We flicker the color to red to warn the player
+                this.graphics.beginFill(0xfc0303);
+            } else {
+                this.graphics.beginFill(this.color);
+            }
+            if (this.isVertical) {
+                this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100, this.widthBar, this.value * this.heightBar / 100);
+            } else {
+                this.graphics.drawRect(this.statusBarX, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
+            }
+        }
+        /*
         if (this.value + gain > 100) {
             this.value = 100;
 
@@ -87,12 +111,12 @@ class EnergyBar {
         this.graphics.clear();
         this.graphics.beginFill(this.color);
         (this.isVertical) ? this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100, this.widthBar, this.value * this.heightBar / 100) : this.graphics.drawRect(this.statusBarX, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
-    }*/
+        */
+    }
 
     setValue(value) {
         if (value > 100) {
             this.value = 100;
-            this.newTimer(5);
         } else if (value < 0) {
             this.value = 0;
         }
@@ -101,16 +125,26 @@ class EnergyBar {
         }
         this.graphics.clear();
         this.graphics.beginFill(this.color);
-        (this.isVertical) ? this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100, this.widthBar, this.value * this.heightBar / 100) : this.graphics.drawRect(this.statusBarX, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
+        if (this.isVertical) {
+            this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100, this.widthBar, this.value * this.heightBar / 100);
+        } else {
+            this.graphics.drawRect(this.statusBarX, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
+        }
     }
 
     newTimer(duration) {
         this.timer = this.game.time.create();
-        this.timerEvent = this.timer.add(Phaser.Timer.SECOND * duration, this.stop, this);
+        this.timerEvent = this.timer.add(Phaser.Timer.SECOND * duration, this.stopTimer, this);
+    }
+
+    stopTimer() {
+        this.timer.stop();
+        this.isTimerRunning = false;
+        console.log("Game Over");
     }
 
     getCurrentTime() {
-        let time = Math.floor((this.timerEvent.delay - this.timer.ms) / 1000);
+        let time = (this.timerEvent.delay - this.timer.ms) / 1000;
         return time;
     }
 }

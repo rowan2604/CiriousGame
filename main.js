@@ -64,6 +64,7 @@ function create() {
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
+    waterBar.setValue(10);
     timer = new Timer(game, timerConfig);
     timer.start();
 
@@ -91,7 +92,7 @@ function create() {
 function update() {
     player.update();
     timer.update();
-    waterBar.setValue(57);
+    waterBar.update();
     if(player.checkForObject() != null){
         interactText.text = "Press 'E' to interact!";
     }
