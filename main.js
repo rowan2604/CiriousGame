@@ -91,7 +91,7 @@ function create() {
 function update() {
     player.update();
     timer.update();
-    waterBar.update(1);
+    waterBar.setValue(57);
     if(player.checkForObject() != null){
         interactText.text = "Press 'E' to interact!";
     }

@@ -74,7 +74,7 @@ class EnergyBar {
        
     }
 
-    update(gain) {
+    /*update(gain) {
         if (this.value + gain > 100) {
             this.value = 100;
 
@@ -87,11 +87,31 @@ class EnergyBar {
         this.graphics.clear();
         this.graphics.beginFill(this.color);
         (this.isVertical) ? this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100, this.widthBar, this.value * this.heightBar / 100) : this.graphics.drawRect(this.statusBarX, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
+    }*/
+
+    setValue(value) {
+        if (value > 100) {
+            this.value = 100;
+            this.newTimer(5);
+        } else if (value < 0) {
+            this.value = 0;
+        }
+        else {
+            this.value = value;
+        }
+        this.graphics.clear();
+        this.graphics.beginFill(this.color);
+        (this.isVertical) ? this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100, this.widthBar, this.value * this.heightBar / 100) : this.graphics.drawRect(this.statusBarX, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
     }
 
     newTimer(duration) {
         this.timer = this.game.time.create();
         this.timerEvent = this.timer.add(Phaser.Timer.SECOND * duration, this.stop, this);
+    }
+
+    getCurrentTime() {
+        let time = Math.floor((this.timerEvent.delay - this.timer.ms) / 1000);
+        return time;
     }
 }
 
