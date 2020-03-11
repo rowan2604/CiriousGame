@@ -4,8 +4,10 @@ class Music{
         this.map = map;
         
     }
+
     
 }
+
 
     this.load.audio('musicaudio', 'assets/music.mp3');
 
