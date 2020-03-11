@@ -26,13 +26,15 @@ class EnergyBar {
         this.iconX = 0;
         this.iconY = 0;
 
-        //this.filling = new Phaser.Rectangle(this.statusBarX + 50, this.statusBarY + 4, this.widthBar - 2, this.heightBar - 2);
         this.color = config.color;
 
         this.group = new Phaser.Group(this.game);
         this.graphics = game.add.graphics(0, 0);
           
         this.isVertical = config.isVertical;
+
+        this.timer;
+        this.timerEvent;
 
         this.initPosition(this.isVertical);
     }
@@ -75,6 +77,7 @@ class EnergyBar {
     update(gain) {
         if (this.value + gain > 100) {
             this.value = 100;
+
         } else if (this.value + gain < 0) {
             this.value = 0
         }
@@ -84,6 +87,11 @@ class EnergyBar {
         this.graphics.clear();
         this.graphics.beginFill(this.color);
         (this.isVertical) ? this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100, this.widthBar, this.value * this.heightBar / 100) : this.graphics.drawRect(this.statusBarX, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
+    }
+
+    newTimer(duration) {
+        this.timer = this.game.time.create();
+        this.timerEvent = this.timer.add(Phaser.Timer.SECOND * duration, this.stop, this);
     }
 }
 
@@ -102,12 +110,11 @@ class Timer {
         this.time = this.formatTime(0);
         this.timerDisplay = this.game.add.text(this.x, this.y, this.time);
         this.timerDisplay.fontSize = this.scale;
-        //this.timerDisplay.font = "assets/FFFFORWA";
     }
 
-    newTimer(beginTime, duration) {
+    newTimer(duration) {
         this.timer = this.game.time.create();
-        this.timerEvent = this.timer.add(Phaser.Timer.SECOND * this.duration, this.stop, this);
+        this.timerEvent = this.timer.add(Phaser.Timer.SECOND * duration, this.stop, this);
     }
 
     start() {
@@ -164,58 +171,29 @@ class StaminaBar {
         this.height = height;
         this.radius = radius;
         this.color = color;
-        console.log(this.x);
         this.graphics = this.game.add.graphics(0,0);
+
+
+        this.graphics.beginFill(0x000000);
+        this.graphics.drawRoundedRect(this.x - 1, this.y - 1, this.width + 2, this.height + 2, this.radius);
+        this.graphics.endFill();    
 
         this.graphics.beginFill(this.color);
         this.graphics.drawRoundedRect(this.x, this.y, this.width, this.height, this.radius);
+        this.graphics.endFill();
     }
 
     update(staminaLevel) {
         this.graphics.clear()
-        this.graphics.beginFill(this.color);
+
         let width = this.width * staminaLevel / 100;
         let x = this.x + this.width / 2 - width / 2;
+
+        this.graphics.beginFill(0x000000);
+        this.graphics.drawRoundedRect(x - 1, this.y - 1, width + 2, this.height + 2, this.radius);
+        this.graphics.endFill();    
+        this.graphics.beginFill(this.color);
         this.graphics.drawRoundedRect(x, this.y, width, this.height, this.radius);
+        this.graphics.endFill();
     }
 }
-/*
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-ffff
-var waterBar;
-var timer;
-
-function preload() {
-    game.stage.backgroundColor = 'rgb(255, 255, 255)'
-
-    //game.load.bitmapFont('font', 'assets/font.png', 'assets/font.fnt');
-    game.load.image('statusBar', 'assets/StatusBar.png');
-    game.load.image('dropOfWater', 'assets/water.png');
-}
-
-
-function create() {
-    let waterConfig = {
-        x: 200, y: 100, 
-        scaleBarX: 1, scaleBarY: 1,
-        scaleIconX: 1, scaleIconY: 1, 
-        initialValue: 0, //pourcentage de remplissage de la barre a l'initialisation
-        color: 0x2cb2f5,
-        isVertical: true
-    };
-
-    let timerConfig = {
-        x: 250, y:250,
-        scale: 60,
-        duration:  105  //en secondes
-    }
-
-    waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
-    timer = new Timer(game, timerConfig);
-    timer.start();
-}
-
-function update() {
-    waterBar.update(1);
-    timer.update();
-}*/

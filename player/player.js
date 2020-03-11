@@ -31,7 +31,7 @@ class Player{
         this.isSprinting = false;
         this.isTired = false;           // If we just used the full stamina, we can't sprint right after
         
-        this.staminaBar = new StaminaBar(game, 1280/2, 700, 500, 15, 10, 0x0a63f2);
+        this.staminaBar = new StaminaBar(game, 1280/2, 710, 500, 3, 2, 0x0a63f2);
 
         // Animations
         this.currentDir = "down";
