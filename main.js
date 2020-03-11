@@ -8,6 +8,8 @@ function preload() {
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
+    game.load.spritesheet('fullImage', 'extras/images/screen.png', 30, 30);//Button image / Nicolas
+    game.load.spritesheet('exitImage', 'extras/images/screenExit.png', 30, 30);//Button image / Nicolas
 }
 
 let map;
@@ -20,6 +22,7 @@ let interactText; // Temporary in main.js / Antoine
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
     game.stage.backgroundColor = '#000000';
+
     game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT; //Full screen ratio / Nicolas
 
     map = game.add.tilemap('map'); //Load map with different layer, don't touch / Nicolas
@@ -86,7 +89,8 @@ function create() {
         depth.add(player.sprite);
         depth.add(layers.top);
     }    
-    game.input.onDown.add(fullScreen, this);
+
+    button = game.add.button(game.world.width - 50, 8, 'fullImage', fullScreen);
 }
 
 function update() {
@@ -102,16 +106,13 @@ function update() {
 }
 
 function fullScreen() {
-
-    if (game.scale.isFullScreen)
-    {
+    if (game.scale.isFullScreen){
         game.scale.stopFullScreen();
     }
-    else
-    {
+    else {
         game.scale.startFullScreen(false);
+        button.setFrame('exitImage');
     }
-
 }
 
 /*function render(){              // To debug player hitbox / Antoine
