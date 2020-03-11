@@ -126,8 +126,8 @@ class Player{
         }
     }
 
-    interacted(){       // If the player interacts with an object, returns true
-        if(this.use_key.isDown && this.checkForObject() != null){
+    interacted(){       // If the player interacts, returns true. Else returns false.
+        if(this.use_key.isDown){
             return true;
         }
         return false;
@@ -146,6 +146,10 @@ class Player{
         let y = this.layers.floor.getTileY(this.position.y);
         let tile = this.map.getTile(x, y, this.layers.wall);
         return this.map.getTile(x, y, this.layers.floor);
+    }
+
+    getObjectTile(){     // Returns the object tile (If no object in front of player, returns null).
+        return this.checkForObject();
     }
 
     checkForObject(){
