@@ -12,6 +12,9 @@ function preload() {
     game.load.spritesheet('fullImage', 'extras/images/screen.png', 30, 30);//Button image / Nicolas
     game.load.spritesheet('exitImage', 'extras/images/screenExit.png', 30, 30);//Button image / Nicolas
     game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
+
+    game.scale.pageAlignHorizontally = true;
+    game.scale.pageAlignVertically = true;
 }
 
 let map;
