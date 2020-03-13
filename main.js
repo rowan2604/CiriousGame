@@ -9,6 +9,9 @@ function preload() {
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
+
+    game.scale.pageAlignHorizontally = true;
+    game.scale.pageAlignVertically = true;
 }
 
 let map;
