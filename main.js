@@ -11,6 +11,7 @@ function preload() {
     game.load.image('electricity', 'hud/assets/electricity.png'); //Load electricity drop image / P-T
     game.load.spritesheet('fullImage', 'extras/images/screen.png', 30, 30);//Button image / Nicolas
     game.load.spritesheet('exitImage', 'extras/images/screenExit.png', 30, 30);//Button image / Nicolas
+    game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
 }
 
 let map;
@@ -124,10 +125,11 @@ function update() {
 function fullScreen() {
     if (game.scale.isFullScreen){
         game.scale.stopFullScreen();
+        button.frameName = "enter";
     }
     else {
         game.scale.startFullScreen(false);
-        button.setFrame('exitImage');
+        button.frameName = "exit";
     }
 }
 
