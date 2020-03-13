@@ -8,8 +8,7 @@ function preload() {
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
-    game.load.spritesheet('fullImage', 'extras/images/screen.png', 30, 30);//Button image / Nicolas
-    game.load.spritesheet('exitImage', 'extras/images/screenExit.png', 30, 30);//Button image / Nicolas
+    game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
 }
 
 let map;
@@ -108,10 +107,11 @@ function update() {
 function fullScreen() {
     if (game.scale.isFullScreen){
         game.scale.stopFullScreen();
+        button.frameName = "enter";
     }
     else {
         game.scale.startFullScreen(false);
-        button.setFrame('exitImage');
+        button.frameName = "exit";
     }
 }
 

@@ -1,0 +1,18 @@
+{"frames": [
+    {
+        "filename": "enter",
+        "frame": {"x":0,"y":0,"w":30,"h":30},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":30,"h":30},
+        "sourceSize": {"w":30,"h":30}
+    },
+    {
+        "filename": "exit",
+        "frame": {"x":0,"y":30,"w":30,"h":30},
+        "rotated": false,
+        "trimmed": false,
+        "spriteSourceSize": {"x":0,"y":0,"w":30,"h":30},
+        "sourceSize": {"w":30,"h":30}
+    }]
+}
