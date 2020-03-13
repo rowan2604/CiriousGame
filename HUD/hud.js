@@ -45,7 +45,7 @@ class EnergyBar {
     initPosition(isVertical) {
         let spriteBar
         let spriteIcon;
-        this.graphics.beginFill(this.color);
+        //this.graphics.beginFill(this.color);
 
         if (isVertical) {
             this.iconX = this.statusBarX + this.widthBar / 2 - this.widthIcon / 2;  //50 ecart entre bar et icone
@@ -55,7 +55,7 @@ class EnergyBar {
             spriteBar = this.group.create(this.statusBarX, this.statusBarY, this.statusBar);
             spriteIcon = this.group.create(this.iconX, this.iconY, this.energy);
 
-            this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - 1, this.widthBar, 1);
+            //this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - 1 + 4, this.widthBar - 8, 1);
 
             spriteBar.scale.setTo(this.scaleBarX, this.scaleBarY);
             spriteIcon.scale.setTo(this.scaleIconX, this.scaleIconY);
@@ -68,8 +68,8 @@ class EnergyBar {
             spriteBar = this.group.create(this.statusBarX, this.statusBarY + this.widthBar, this.statusBar);
             spriteIcon = this.group.create(this.iconX, this.iconY, this.energy);
             spriteBar.angle -= 90;
-
-            this.graphics.drawRect(this.statusBarX, this.statusBarY, 1, this.widthBar);
+            
+            //this.graphics.drawRect(this.statusBarX + 4, this.statusBarY, 1, this.widthBar - 8);
 
             spriteBar.scale.setTo(this.scaleBarX, this.scaleBarY);
             spriteIcon.scale.setTo(this.scaleIconX, this.scaleIconY);
@@ -93,9 +93,9 @@ class EnergyBar {
                 this.graphics.beginFill(this.color);
             }
             if (this.isVertical) {
-                this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100, this.widthBar, this.value * this.heightBar / 100);
+                this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100 + 4, this.widthBar, this.value * this.heightBar / 100 - 8);
             } else {
-                this.graphics.drawRect(this.statusBarX, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
+                this.graphics.drawRect(this.statusBarX + 4, this.statusBarY, this.value / 100 * this.heightBar - 8, this.widthBar);
             }
         }
         /*
@@ -126,9 +126,9 @@ class EnergyBar {
         this.graphics.clear();
         this.graphics.beginFill(this.color);
         if (this.isVertical) {
-            this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100, this.widthBar, this.value * this.heightBar / 100);
+            this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100 + 4, this.widthBar, this.value * this.heightBar / 100);
         } else {
-            this.graphics.drawRect(this.statusBarX, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
+            this.graphics.drawRect(this.statusBarX + 4, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar - 900);
         }
     }
 

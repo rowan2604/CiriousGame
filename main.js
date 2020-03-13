@@ -8,6 +8,7 @@ function preload() {
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
+    game.load.image('electricity', 'hud/assets/electricity.png'); //Load electricity drop image / P-T
     game.load.spritesheet('fullImage', 'extras/images/screen.png', 30, 30);//Button image / Nicolas
     game.load.spritesheet('exitImage', 'extras/images/screenExit.png', 30, 30);//Button image / Nicolas
 }
@@ -16,6 +17,7 @@ let map;
 let layers;
 let player;
 let waterBar;
+let electricityBar;
 let timer;
 let interactText; // Temporary in main.js / Antoine
 
@@ -58,17 +60,30 @@ function create() {
         initialValue: 0, // percentage of initial filling of the bar / P-T
         color: 0x2cb2f5,
         isVertical: false
-};
+    };
+
+    let electricityConfig = {
+        x: 1280 - 150 - this.game.cache.getImage('electricity').height, y: 20, 
+        scaleBarX: 0.7, scaleBarY: 1,
+        scaleIconX: 0.5, scaleIconY: 0.5, 
+        initialValue: 0, // percentage of initial filling of the bar / P-T
+        color: 0xdac815,
+        isVertical: false
+    };
 
     let timerConfig = {
-        x: 500, y: 10,
+        x: 1280 / 2 - 35, y: 10,
         scale: 40,
         duration:  105 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
-    waterBar.setValue(10);
+    electricityBar = new EnergyBar(game, 'statusBar', 'electricity', electricityConfig);
+
     timer = new Timer(game, timerConfig);
+
+    waterBar.setValue(100);
+    electricityBar.setValue(100);
     timer.start();
 
     player = new Player(game, map, layers); //Spawn player after the map / Antoine
@@ -97,6 +112,7 @@ function update() {
     player.update();
     timer.update();
     waterBar.update();
+    electricityBar.update();
     if(player.checkForObject() != null){
         interactText.text = "Press 'E' to interact!";
     }
