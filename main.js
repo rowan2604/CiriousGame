@@ -89,8 +89,8 @@ function create() {
 
     timer = new Timer(game, timerConfig);
 
-    waterBar.setValue(1);
-    electricityBar.setValue(1);
+    waterBar.setValue(0);
+    electricityBar.setValue(0);
     timer.start();
 
     player = new Player(game, map, layers); //Spawn player after the map / Antoine
@@ -112,7 +112,6 @@ function create() {
         depth.add(layers.top);
         depth.add(layers.top_object);
     }    
-    game.input.onDown.add(fullScreen, this);
     
     {       // Generate all custom collisions / Antoine
         custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], player));
