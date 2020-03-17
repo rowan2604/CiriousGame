@@ -1,4 +1,4 @@
-var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update});
+var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update, /*render: render*/});
 //Please do not change screen size values / Nicolas
 
 function preload() {
@@ -8,6 +8,7 @@ function preload() {
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
+    game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
 }
 
 let map;
@@ -16,6 +17,7 @@ let player;
 let waterBar;
 let timer;
 let interactText; // Temporary in main.js / Antoine
+let custom_collisions = [];
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
@@ -40,7 +42,8 @@ function create() {
         collision2: map.createLayer('collision2'),
         object2: map.createLayer('object2'),
         garden2: map.createLayer('garden2'),
-        top: map.createLayer('top'), //The sprite should be behind this layers.
+        top: map.createLayer('top'),            //The sprite should be behind this layers.
+        top_object: map.createLayer('top_object'),
         collisions: map.createLayer('collisions'),
         usables: map.createLayer('usables')
     }
@@ -84,13 +87,33 @@ function create() {
         depth.add(layers.object2);
         depth.add(player.sprite);
         depth.add(layers.top);
+        depth.add(layers.top_object);
     }    
     game.input.onDown.add(fullScreen, this);
+    
+    {       // Generate all custom collisions / Antoine
+        custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(26, 17, layers.wall), [0, 1, 0, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(28, 17, layers.wall), [1, 0, 0, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(24, 17, layers.wall), [1, 1, 0, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(19, 13, layers.wall), [1, 0, 1, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(19, 14, layers.wall), [1, 0, 1, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(19, 10, layers.collision), [1, 0, 1, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(19, 9, layers.collision), [1, 0, 1, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(20, 9, layers.collision), [1, 1, 0, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(21, 9, layers.collision), [1, 1, 0, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(23, 10, layers.top), [0, 0, 1, 1], player));
+        custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], player));
+    }
+    
 }
 
 function update() {
     player.update();
     timer.update();
+    for(let i in custom_collisions){
+        custom_collisions[i].update();
+    }
     waterBar.setValue(57);
     if(player.checkForObject() != null){
         interactText.text = "Press 'E' to interact!";
@@ -114,5 +137,5 @@ function fullScreen() {
 }
 
 /*function render(){              // To debug player hitbox / Antoine
-    player.render();
+    //player.render();
 }*/
