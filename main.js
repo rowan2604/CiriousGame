@@ -9,12 +9,20 @@ function preload() {
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
+    game.load.image('electricity', 'hud/assets/electricity.png'); //Load electricity drop image / P-T
+    game.load.spritesheet('fullImage', 'extras/images/screen.png', 30, 30);//Button image / Nicolas
+    game.load.spritesheet('exitImage', 'extras/images/screenExit.png', 30, 30);//Button image / Nicolas
+    game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
+
+    game.scale.pageAlignHorizontally = true;
+    game.scale.pageAlignVertically = true;
 }
 
 let map;
 let layers;
 let player;
 let waterBar;
+let electricityBar;
 let timer;
 let interactText; // Temporary in main.js / Antoine
 let custom_collisions = [];
@@ -22,6 +30,7 @@ let custom_collisions = [];
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
     game.stage.backgroundColor = '#000000';
+
     game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT; //Full screen ratio / Nicolas
 
     map = game.add.tilemap('map'); //Load map with different layer, don't touch / Nicolas
@@ -58,16 +67,30 @@ function create() {
         initialValue: 0, // percentage of initial filling of the bar / P-T
         color: 0x2cb2f5,
         isVertical: false
-};
+    };
+
+    let electricityConfig = {
+        x: 1280 - 150 - this.game.cache.getImage('electricity').height, y: 20, 
+        scaleBarX: 0.7, scaleBarY: 1,
+        scaleIconX: 0.5, scaleIconY: 0.5, 
+        initialValue: 0, // percentage of initial filling of the bar / P-T
+        color: 0xdac815,
+        isVertical: false
+    };
 
     let timerConfig = {
-        x: 500, y: 10,
+        x: 1280 / 2 - 35, y: 10,
         scale: 40,
         duration:  105 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
+    electricityBar = new EnergyBar(game, 'statusBar', 'electricity', electricityConfig);
+
     timer = new Timer(game, timerConfig);
+
+    waterBar.setValue(1);
+    electricityBar.setValue(1);
     timer.start();
 
     player = new Player(game, map, layers); //Spawn player after the map / Antoine
@@ -106,6 +129,8 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], player));
     }
     
+
+    button = game.add.button(game.world.width - 50, 8, 'fullImage', fullScreen);
 }
 
 function update() {
@@ -114,7 +139,8 @@ function update() {
     for(let i in custom_collisions){
         custom_collisions[i].update();
     }
-    waterBar.setValue(57);
+    waterBar.update();
+    electricityBar.update();
     if(player.checkForObject() != null){
         interactText.text = "Press 'E' to interact!";
     }
@@ -124,16 +150,14 @@ function update() {
 }
 
 function fullScreen() {
-
-    if (game.scale.isFullScreen)
-    {
+    if (game.scale.isFullScreen){
         game.scale.stopFullScreen();
+        button.frameName = "enter";
     }
-    else
-    {
+    else {
         game.scale.startFullScreen(false);
+        button.frameName = "exit";
     }
-
 }
 
 /*function render(){              // To debug player hitbox / Antoine
