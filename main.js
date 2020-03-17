@@ -86,8 +86,8 @@ function create() {
 
     timer = new Timer(game, timerConfig);
 
-    waterBar.setValue(100);
-    electricityBar.setValue(100);
+    waterBar.setValue(20);
+    electricityBar.setValue(75);
     timer.start();
 
     player = new Player(game, map, layers); //Spawn player after the map / Antoine
