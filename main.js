@@ -10,8 +10,6 @@ function preload() {
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
     game.load.image('electricity', 'hud/assets/electricity.png'); //Load electricity drop image / P-T
-    game.load.spritesheet('fullImage', 'extras/images/screen.png', 30, 30);//Button image / Nicolas
-    game.load.spritesheet('exitImage', 'extras/images/screenExit.png', 30, 30);//Button image / Nicolas
     game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
 
     game.scale.pageAlignHorizontally = true;
@@ -131,7 +129,7 @@ function create() {
     }
     
 
-    button = game.add.button(game.world.width - 50, 8, 'fullImage', fullScreen);
+    button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);
 }
 
 function update() {
