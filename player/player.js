@@ -141,17 +141,22 @@ class Player{
         let x = this.layers.object2.getTileX(this.position.x);
         let y = this.layers.object2.getTileY(this.position.y);
 
-        switch(this.currentDir){
-            case "up":
-                return this.map.getTile(x, y - 1, this.layers.usables);
-            case "down":
-                return this.map.getTile(x, y + 1, this.layers.usables);
-            case "left":
-                return this.map.getTile(x - 1, y, this.layers.usables);
-            case "right":
-                return this.map.getTile(x + 1, y, this.layers.usables);
-            default:                                                    // Error
-                console.log("unidentified direction (checkForObject)");
+        if(this.map.getTile(x, y, this.layers.usables) == null){
+            switch(this.currentDir){
+                case "up":
+                    return this.map.getTile(x, y - 1, this.layers.usables);
+                case "down":
+                    return this.map.getTile(x, y + 1, this.layers.usables);
+                case "left":
+                    return this.map.getTile(x - 1, y, this.layers.usables);
+                case "right":
+                    return this.map.getTile(x + 1, y, this.layers.usables);
+                default:                                                    // Error
+                    console.log("unidentified direction (checkForObject)");
+            }
+        }
+        else{
+            return this.map.getTile(x, y, this.layers.usables);
         }
     }
 

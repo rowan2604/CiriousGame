@@ -127,6 +127,8 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(21, 9, layers.collision), [1, 1, 0, 0], player));
         custom_collisions.push(new Collision(game, map.getTile(23, 10, layers.top), [0, 0, 1, 1], player));
         custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], player));
+        custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], player));
+        custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], player));
     }
     
 
