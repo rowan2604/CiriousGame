@@ -5,7 +5,11 @@ class Player{
         this.layers = layers;
 
         // Controls
-        this.directions_keys = this.game.input.keyboard.createCursorKeys();                 // Conttrols keys
+        this.up_key = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+        this.down_key = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+        this.left_key = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+        this.right_key = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+
         this.sprint_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);           // Sprint key
         this.use_key = this.game.input.keyboard.addKey(Phaser.Keyboard.E);                  // Use key
 
@@ -75,7 +79,7 @@ class Player{
         }
 
         // Moving system
-        if(this.directions_keys.up.isDown){         // Direction UP
+        if(this.up_key.isDown){         // Direction UP
             this.move(0, -1);
             this.currentDir = "up"
             if(this.isSprinting){
@@ -85,7 +89,7 @@ class Player{
                 }
             }
         }
-        else if(this.directions_keys.left.isDown){  // Direction LEFT
+        else if(this.left_key.isDown){  // Direction LEFT
             this.move(-1, 0);
             this.currentDir = "left"
             if(this.isSprinting){
@@ -95,7 +99,7 @@ class Player{
                 }
             }
         }
-        else if(this.directions_keys.right.isDown){ // Direction RIGHT
+        else if(this.right_key.isDown){ // Direction RIGHT
             this.move(1, 0);
             this.currentDir = "right"
             if(this.isSprinting){
@@ -105,7 +109,7 @@ class Player{
                 }
             }
         }
-        else if(this.directions_keys.down.isDown){  // Direction DOWN
+        else if(this.down_key.isDown){  // Direction DOWN
             this.move(0, 1, this.speed);
             this.currentDir = "down"
             if(this.isSprinting){
