@@ -128,7 +128,7 @@ class EnergyBar {
         if (this.isVertical) {
             this.graphics.drawRect(this.statusBarX, this.statusBarY + this.heightBar - this.value * this.heightBar / 100 + 4, this.widthBar, this.value * this.heightBar / 100);
         } else {
-            this.graphics.drawRect(this.statusBarX + 4, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar - 900);
+            this.graphics.drawRect(this.statusBarX + 4, this.statusBarY, this.value / 100 * this.heightBar, this.widthBar);
         }
     }
 
