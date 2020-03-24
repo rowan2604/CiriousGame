@@ -15,11 +15,11 @@ class Player{
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         // Adjust hitbox
         this.sprite.body.collideWorldBounds = true;
-        this.sprite.body.setSize(105, 15, (120 / 2) - (105 / 2), 130 - 15);
+        this.sprite.body.setSize(105, 23, (120 / 2) - (105 / 2), 130 - 23);
 
         this.position = {
             x: this.sprite.x + this.sprite.width / 2,
-            y: this.sprite.y + this.sprite.height - 5
+            y: this.sprite.y + this.sprite.height - 15
         };
 
 
@@ -69,9 +69,8 @@ class Player{
                     this.isTired = false;
                 }
             }
-        }
-        // Avoid sprint spam
-        if(this.curStamina <= 0){
+        }                           
+        if(this.curStamina <= 0){      // Avoid sprint spam
             this.isTired = true;
         }
 
@@ -81,6 +80,9 @@ class Player{
             this.currentDir = "up"
             if(this.isSprinting){
                 this.curStamina -= 0.5;
+                if(this.curStamina < 0){
+                    this.curStamina = 0;
+                }
             }
         }
         else if(this.directions_keys.left.isDown){  // Direction LEFT
@@ -88,6 +90,9 @@ class Player{
             this.currentDir = "left"
             if(this.isSprinting){
                 this.curStamina -= 0.5;
+                if(this.curStamina < 0){
+                    this.curStamina = 0;
+                }
             }
         }
         else if(this.directions_keys.right.isDown){ // Direction RIGHT
@@ -95,6 +100,9 @@ class Player{
             this.currentDir = "right"
             if(this.isSprinting){
                 this.curStamina -= 0.5;
+                if(this.curStamina < 0){
+                    this.curStamina = 0;
+                }
             }
         }
         else if(this.directions_keys.down.isDown){  // Direction DOWN
@@ -102,6 +110,9 @@ class Player{
             this.currentDir = "down"
             if(this.isSprinting){
                 this.curStamina -= 0.5;
+                if(this.curStamina < 0){
+                    this.curStamina = 0;
+                }
             }
         }
         else{                                       // Else, player isn't moving
@@ -126,8 +137,31 @@ class Player{
         }
     }
 
+    checkForObject(){
+        let x = this.layers.object2.getTileX(this.position.x);
+        let y = this.layers.object2.getTileY(this.position.y);
+
+        if(this.map.getTile(x, y, this.layers.usables) == null){
+            switch(this.currentDir){
+                case "up":
+                    return this.map.getTile(x, y - 1, this.layers.usables);
+                case "down":
+                    return this.map.getTile(x, y + 1, this.layers.usables);
+                case "left":
+                    return this.map.getTile(x - 1, y, this.layers.usables);
+                case "right":
+                    return this.map.getTile(x + 1, y, this.layers.usables);
+                default:                                                    // Error
+                    console.log("unidentified direction (checkForObject)");
+            }
+        }
+        else{
+            return this.map.getTile(x, y, this.layers.usables);
+        }
+    }
+
     interacted(){       // If the player interacts, returns true. Else returns false.
-        if(this.use_key.isDown){
+        if(this.use_key.isDown && this.getObjectTile() != null){
             return true;
         }
         return false;
@@ -150,24 +184,6 @@ class Player{
 
     getObjectTile(){     // Returns the object tile (If no object in front of player, returns null).
         return this.checkForObject();
-    }
-
-    checkForObject(){
-        let x = this.layers.object2.getTileX(this.position.x);
-        let y = this.layers.object2.getTileY(this.position.y);
-
-        switch(this.currentDir){
-            case "up":
-                return this.map.getTile(x, y - 1, this.layers.usables);
-            case "down":
-                return this.map.getTile(x, y + 1, this.layers.usables);
-            case "left":
-                return this.map.getTile(x - 1, y, this.layers.usables);
-            case "right":
-                return this.map.getTile(x + 1, y, this.layers.usables);
-            default:                                                    // Error
-                console.log("unidentified direction (checkForObject)");
-        }
     }
 
     update(){
