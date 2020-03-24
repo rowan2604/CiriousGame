@@ -197,10 +197,8 @@ class Player{
         // Player position tracked on his feets.
         this.position.x = this.sprite.x + this.sprite.width / 2;
         this.position.y = this.sprite.y + this.sprite.height - 15;
-         
+        
         this.staminaBar.update(this.getStamina());
-
-        console.log(this.checkForObject());
     }
 
     /*render(){
