@@ -94,7 +94,7 @@ function create() {
     timer.start();
 
     player = new Player(game, map, layers); //Spawn player after the map / Antoine
-    child = new Child(game, layers);                // Spawn the Child / Antoine
+    child = new Child(game, map, layers);                // Spawn the Child / Antoine
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
     
