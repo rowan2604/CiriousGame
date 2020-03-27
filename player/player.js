@@ -49,7 +49,7 @@ class Player{
         this.sprite.animations.add("right", [70, 71, 72, 73, 74, 75, 76, 77, 78, 79]);
     }
 
-    move(x, y){                                 // x horizontal move / y vertical move
+    move(x, y){                                 // x horizontal move / y vertical move (between 1 and -1)
         if(this.isSprinting){
             this.sprite.body.velocity.setTo(x * this.speed * this.sprintSpeedScale, y * this.speed * this.sprintSpeedScale);
             this.sprite.animations.play(this.currentDir, 17);
