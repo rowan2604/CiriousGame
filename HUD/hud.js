@@ -147,6 +147,10 @@ class EnergyBar {
         let time = (this.timerEvent.delay - this.timer.ms) / 1000;
         return time;
     }
+
+    getValue(){
+        return this.value;
+    }
 }
 
 class Timer {
