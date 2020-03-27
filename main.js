@@ -5,8 +5,10 @@ function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
     game.load.image('tiles', 'map/tileset_Interior.png'); //Load tileset.png / Nicolas
     game.load.image('tilesG', 'map/tileset_Garden.png'); //Load tileset.png / Nicolas
+    game.load.image('money', 'hud/assets/money.jpeg');   // Load money image / Antoine
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.spritesheet("children", "bot/assets/children.png", 120, 130, 80);
+    game.load.image('shop', 'shop/assets/shop.png');
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
@@ -22,10 +24,13 @@ let layers;
 let player;
 let waterBar;
 let electricityBar;
+let playerMoney;
 let timer;
 let interactText; // Temporary in main.js / Antoine
+let instructionText;
 let custom_collisions = [];
 let child;
+let shop;
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
@@ -93,10 +98,12 @@ function create() {
     electricityBar.setValue(40);
     timer.start();
 
-    player = new Player(game, map, layers); //Spawn player after the map / Antoine
+    player = new Player(game, map, layers);         //Spawn player after the map / Antoine
+    playerMoney = new Money(game, waterBar, electricityBar);                  // Init player money in game / Antoine
     child = new Child(game, layers);                // Spawn the Child / Antoine
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
+    instructionText = game.add.text(playerMoney.icon.x, playerMoney.icon.y - 10, "'A' to open the shop", {font: "22px Arial", fill: "black", alpha: 0.1});
     
     { // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
         depth.add(layers.garden);
@@ -132,10 +139,13 @@ function create() {
     }
 
     button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);
+
+    shop = new Shop(game);
 }
 
 function update() {
     player.update();
+    playerMoney.update();
     child.update();
     timer.update();
     for(let i in custom_collisions){
@@ -144,6 +154,8 @@ function update() {
     waterBar.update();
     electricityBar.update();
     game.physics.arcade.collide(player.sprite, child.sprite);
+    shop.update();
+
 
     // Display text to notice the possibility to interact / Antoine
     if(player.checkForObject() != null){
