@@ -8,7 +8,8 @@ function preload() {
     game.load.image('money', 'hud/assets/money.jpeg');   // Load money image / Antoine
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.spritesheet("children", "bot/assets/children.png", 120, 130, 80);
-    game.load.image('shop', 'shop/assets/shop.png');
+    game.load.image('shop', 'shop/assets/shop.png');            // Shop interface loading / Antoine
+    game.load.image('arrow', 'shop/assets/arrow.png');          // Scroll arrow loading / Antoine
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
