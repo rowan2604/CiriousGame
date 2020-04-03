@@ -60,11 +60,14 @@ function create() {
         top: map.createLayer('top'),            //The sprite should be behind this layers.
         top_object: map.createLayer('top_object'),
         collisions: map.createLayer('collisions'),
+        bot_collisions: map.createLayer('bot_collisions'),
         usables: map.createLayer('usables')
     }
     layers.collisions.visible = false;
+    layers.bot_collisions.visible = false;
     layers.usables.visible = false;
     map.setCollisionByExclusion([], true, layers.collisions) //Activate collision / Antoine
+    map.setCollisionByExclusion([], true, layers.bot_collisions);
 
     let waterConfig = {
         x: 100, y: 20, 
