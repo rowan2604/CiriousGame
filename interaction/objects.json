@@ -1,0 +1,8 @@
+{"objects": {
+    "Light": {
+        "type": "Electric",
+        "consumption": 10,
+        "aTileset": 40894,
+        "dTileset": 42848
+    }
+}}    

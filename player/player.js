@@ -1,8 +1,9 @@
 class Player{
-    constructor(game, map, layers){
+    constructor(game, map, layers, interaction){
         this.game = game;
         this.map = map;
         this.layers = layers;
+        this.interaction = interaction;
 
         // Controls
         this.up_key = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -166,7 +167,7 @@ class Player{
 
     interacted(){       // If the player interacts, returns true. Else returns false.
         if(this.use_key.isDown && this.getObjectTile() != null){
-            return true;
+            this.interaction.interact(this.getObjectTile());
         }
         return false;
     }

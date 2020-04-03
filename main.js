@@ -99,7 +99,8 @@ function create() {
     electricityBar.setValue(40);
     timer.start();
 
-    player = new Player(game, map, layers);         //Spawn player after the map / Antoine
+    interaction = new Interaction();
+    player = new Player(game, map, layers, interaction);         //Spawn player after the map / Antoine
     playerMoney = new Money(game, waterBar, electricityBar);                  // Init player money in game / Antoine
     child = new Child(game, layers);                // Spawn the Child / Antoine
 
@@ -161,6 +162,7 @@ function update() {
     // Display text to notice the possibility to interact / Antoine
     if(player.checkForObject() != null){
         interactText.text = "Press 'E' to interact!";
+        player.interacted();
     }
     else{
         interactText.text = "";
