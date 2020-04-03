@@ -1,9 +1,8 @@
 class Player{
-    constructor(game, map, layers, interaction){
+    constructor(game, map, layers){
         this.game = game;
         this.map = map;
         this.layers = layers;
-        this.interaction = interaction;
 
         // Controls
         this.up_key = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -13,6 +12,7 @@ class Player{
 
         this.sprint_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);           // Sprint key
         this.use_key = this.game.input.keyboard.addKey(Phaser.Keyboard.E);                  // Use key
+        this.use_key.onDown.add(this.interacted, this);
 
         // Sprite / Physics
         this.sprite = this.game.add.sprite(715, 610, "zelda");
@@ -165,9 +165,9 @@ class Player{
         }
     }
 
-    interacted(){       // If the player interacts, returns true. Else returns false.
-        if(this.use_key.isDown && this.getObjectTile() != null){
-            this.interaction.interact(this.getObjectTile());
+    interacted(){                               // If the player interacts, returns true. Else returns false.
+        if(this.getObjectTile() != null){
+            return true;
         }
         return false;
     }
@@ -183,11 +183,10 @@ class Player{
     getCurrentTile(){
         let x = this.layers.floor.getTileX(this.position.x);
         let y = this.layers.floor.getTileY(this.position.y);
-        let tile = this.map.getTile(x, y, this.layers.wall);
         return this.map.getTile(x, y, this.layers.floor);
     }
 
-    getObjectTile(){     // Returns the object tile (If no object in front of player, returns null).
+    getObjectTile(){                            // Returns the object tile (If no object in front of player, returns null).
         return this.checkForObject();
     }
 

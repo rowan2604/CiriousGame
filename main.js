@@ -60,11 +60,16 @@ function create() {
         top: map.createLayer('top'),            //The sprite should be behind this layers.
         top_object: map.createLayer('top_object'),
         collisions: map.createLayer('collisions'),
+        bot_collisions: map.createLayer('bot_collisions'),
+        bot_positions: map.createLayer('bot_positions'),
         usables: map.createLayer('usables')
     }
     layers.collisions.visible = false;
+    layers.bot_collisions.visible = false;
     layers.usables.visible = false;
+    layers.bot_positions.visible = false;
     map.setCollisionByExclusion([], true, layers.collisions) //Activate collision / Antoine
+    map.setCollisionByExclusion([], true, layers.bot_collisions);
 
     let waterConfig = {
         x: 100, y: 20, 
@@ -102,7 +107,7 @@ function create() {
     interaction = new Interaction();
     player = new Player(game, map, layers, interaction);         //Spawn player after the map / Antoine
     playerMoney = new Money(game, waterBar, electricityBar);                  // Init player money in game / Antoine
-    child = new Child(game, layers);                // Spawn the Child / Antoine
+    child = new Child(game, map, layers);                // Spawn the Child / Antoine
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
     instructionText = game.add.text(playerMoney.icon.x, playerMoney.icon.y - 10, "'A' to open the shop", {font: "22px Arial", fill: "black", alpha: 0.1});
@@ -118,12 +123,13 @@ function create() {
         depth.add(layers.object);
         depth.add(layers.collision2);
         depth.add(layers.object2);
+        depth.add(child.sprite);
         depth.add(player.sprite);
         depth.add(layers.top);
         depth.add(layers.top_object);
     }    
     
-    {       // Generate all custom collisions / Antoine
+    {       // Generate all custom collisions for Player / Antoine
         custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], player));
         custom_collisions.push(new Collision(game, map.getTile(26, 17, layers.wall), [0, 1, 0, 0], player));
         custom_collisions.push(new Collision(game, map.getTile(28, 17, layers.wall), [1, 0, 0, 0], player));
@@ -138,6 +144,23 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], player));
         custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], player));
         custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], player));
+    }
+
+    {       // Generate all custom collisions for BOT / Antoine
+        custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(26, 17, layers.wall), [0, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(28, 17, layers.wall), [1, 0, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(24, 17, layers.wall), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(19, 13, layers.wall), [1, 0, 1, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(19, 14, layers.wall), [1, 0, 1, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(19, 10, layers.collision), [1, 0, 1, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(19, 9, layers.collision), [1, 0, 1, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(20, 9, layers.collision), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(21, 9, layers.collision), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(23, 10, layers.top), [0, 0, 1, 1], child));
+        custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], child));
+        custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], child));
     }
 
     button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);
