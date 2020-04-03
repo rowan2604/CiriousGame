@@ -61,11 +61,13 @@ function create() {
         top_object: map.createLayer('top_object'),
         collisions: map.createLayer('collisions'),
         bot_collisions: map.createLayer('bot_collisions'),
+        bot_positions: map.createLayer('bot_positions'),
         usables: map.createLayer('usables')
     }
     layers.collisions.visible = false;
     layers.bot_collisions.visible = false;
     layers.usables.visible = false;
+    layers.bot_positions.visible = false;
     map.setCollisionByExclusion([], true, layers.collisions) //Activate collision / Antoine
     map.setCollisionByExclusion([], true, layers.bot_collisions);
 
@@ -120,12 +122,13 @@ function create() {
         depth.add(layers.object);
         depth.add(layers.collision2);
         depth.add(layers.object2);
+        depth.add(child.sprite);
         depth.add(player.sprite);
         depth.add(layers.top);
         depth.add(layers.top_object);
     }    
     
-    {       // Generate all custom collisions / Antoine
+    {       // Generate all custom collisions for Player / Antoine
         custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], player));
         custom_collisions.push(new Collision(game, map.getTile(26, 17, layers.wall), [0, 1, 0, 0], player));
         custom_collisions.push(new Collision(game, map.getTile(28, 17, layers.wall), [1, 0, 0, 0], player));
@@ -140,6 +143,23 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], player));
         custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], player));
         custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], player));
+    }
+
+    {       // Generate all custom collisions for BOT / Antoine
+        custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(26, 17, layers.wall), [0, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(28, 17, layers.wall), [1, 0, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(24, 17, layers.wall), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(19, 13, layers.wall), [1, 0, 1, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(19, 14, layers.wall), [1, 0, 1, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(19, 10, layers.collision), [1, 0, 1, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(19, 9, layers.collision), [1, 0, 1, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(20, 9, layers.collision), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(21, 9, layers.collision), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(23, 10, layers.top), [0, 0, 1, 1], child));
+        custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], child));
+        custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], child));
+        custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], child));
     }
 
     button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);

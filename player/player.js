@@ -12,6 +12,7 @@ class Player{
 
         this.sprint_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);           // Sprint key
         this.use_key = this.game.input.keyboard.addKey(Phaser.Keyboard.E);                  // Use key
+        this.use_key.onDown.add(this.interacted, this);
 
         // Sprite / Physics
         this.sprite = this.game.add.sprite(715, 610, "zelda");
@@ -34,7 +35,6 @@ class Player{
         this.sprintSpeedScale = 2;
         this.isSprinting = false;
         this.isTired = false;           // If we just used the full stamina, we can't sprint right after
-        this.interact = false;
         
         this.staminaBar = new StaminaBar(game, 1280/2, 710, 500, 3, 2, 0x0a63f2);
 
@@ -77,14 +77,6 @@ class Player{
         }                           
         if(this.curStamina <= 0){      // Avoid sprint spam
             this.isTired = true;
-        }
-
-        // Check if the player interact
-        if(this.use_key.isDown){
-            this.interact = true;
-        }
-        else{
-            this.interact = false;
         }
 
         // Moving system
@@ -173,8 +165,8 @@ class Player{
         }
     }
 
-    interacted(){       // If the player interacts, returns true. Else returns false.
-        if(this.interact && this.getObjectTile() != null){
+    interacted(){                               // If the player interacts, returns true. Else returns false.
+        if(this.getObjectTile() != null){
             return true;
         }
         return false;
@@ -191,11 +183,10 @@ class Player{
     getCurrentTile(){
         let x = this.layers.floor.getTileX(this.position.x);
         let y = this.layers.floor.getTileY(this.position.y);
-        let tile = this.map.getTile(x, y, this.layers.wall);
         return this.map.getTile(x, y, this.layers.floor);
     }
 
-    getObjectTile(){     // Returns the object tile (If no object in front of player, returns null).
+    getObjectTile(){                            // Returns the object tile (If no object in front of player, returns null).
         return this.checkForObject();
     }
 
