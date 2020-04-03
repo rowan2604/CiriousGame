@@ -34,6 +34,7 @@ class Player{
         this.sprintSpeedScale = 2;
         this.isSprinting = false;
         this.isTired = false;           // If we just used the full stamina, we can't sprint right after
+        this.interact = false;
         
         this.staminaBar = new StaminaBar(game, 1280/2, 710, 500, 3, 2, 0x0a63f2);
 
@@ -76,6 +77,14 @@ class Player{
         }                           
         if(this.curStamina <= 0){      // Avoid sprint spam
             this.isTired = true;
+        }
+
+        // Check if the player interact
+        if(this.use_key.isDown){
+            this.interact = true;
+        }
+        else{
+            this.interact = false;
         }
 
         // Moving system
@@ -165,7 +174,7 @@ class Player{
     }
 
     interacted(){       // If the player interacts, returns true. Else returns false.
-        if(this.use_key.isDown && this.getObjectTile() != null){
+        if(this.interact && this.getObjectTile() != null){
             return true;
         }
         return false;
