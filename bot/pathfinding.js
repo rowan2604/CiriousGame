@@ -72,7 +72,7 @@ function getPath(grid, start, end) {    //A* algorithm
     this.graphics.drawRect(end[0] * 32, end[1] * 32,32,32);
 
     this.graphics = game.add.graphics(0, 0);
-    this.graphics.beginFill(0xff00fb);*/
+    this.graphics.beginFill(0xff00fb);
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
             if (grid[i][j].index != -1) {
@@ -80,6 +80,7 @@ function getPath(grid, start, end) {    //A* algorithm
             }
         }        
     }
+    */
 
     //Adding obstacles because some collisions are custom-made
     map[19][10].obstacle = true;

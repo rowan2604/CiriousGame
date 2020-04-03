@@ -1,4 +1,4 @@
-var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update, /*render: render*/});
+var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render});
 //Please do not change screen size values / Nicolas
 
 function preload() {
@@ -201,6 +201,6 @@ function fullScreen() {
     }
 }
 
-/*function render(){              // To debug player hitbox / Antoine
+function render(){              // To debug player hitbox / Antoine
     child.render();
-}*/
+}
