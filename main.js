@@ -185,7 +185,6 @@ function update() {
     // Display text to notice the possibility to interact / Antoine
     if(player.checkForObject() != null){
         interactText.text = "Press 'E' to interact!";
-        player.interacted();
     }
     else{
         interactText.text = "";

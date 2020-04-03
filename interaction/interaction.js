@@ -3,8 +3,8 @@ class Interaction {
         console.log("create");
     }
 
-    interact(tiled){
-        console.log("ok");
+    interact(tiled, x, y){
+        console.log(tiled, x, y);
     }
 
     /* Dev bellow */
