@@ -1,14 +1,16 @@
-{"objects": {
-    "smallLight": {
+{"objects": [
+    {
+        "name": "smallLight",
         "type": "Electric",
         "consumption": 10,
-        "aTileset": 0,
-        "dTileset": 4497
+        "aTileset": 4497,
+        "dTileset": 0
     },
-    "bigLight": {
+    {
+        "name" : "bigLight",
         "type": "Electric",
-        "consumption": 10,
+        "consumption": 30,
         "aTileset": 0,
         "dTileset": 4521
     }
-}}    
+]}
