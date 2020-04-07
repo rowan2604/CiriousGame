@@ -15,6 +15,7 @@ function preload() {
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
     game.load.image('electricity', 'hud/assets/electricity.png'); //Load electricity drop image / P-T
     game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
+    game.load.json('objects', 'interaction/objects.json'); //Nicolas data
 
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
@@ -100,11 +101,12 @@ function create() {
 
     timer = new Timer(game, timerConfig);
 
-    waterBar.setValue(100);
-    electricityBar.setValue(40);
+    waterBar.setValue(0);
+    electricityBar.setValue(0);
     timer.start();
 
-    player = new Player(game, map, layers);         //Spawn player after the map / Antoine
+    interaction = new Interaction(game.cache.getJSON('objects'), waterBar, electricityBar);
+    player = new Player(game, map, layers, interaction);         //Spawn player after the map / Antoine
     playerMoney = new Money(game, waterBar, electricityBar);                  // Init player money in game / Antoine
     child = new Child(game, map, layers);                // Spawn the Child / Antoine
 
@@ -171,11 +173,13 @@ function update() {
     player.update();
     playerMoney.update();
     child.update();
-    timer.update();
     for(let i in custom_collisions){
         custom_collisions[i].update();
     }
+    timer.update();
+    waterBar.setValue(interaction.getValue("Water"));
     waterBar.update();
+    electricityBar.setValue(interaction.getValue("Electric"));
     electricityBar.update();
     game.physics.arcade.collide(player.sprite, child.sprite);
     shop.update();
