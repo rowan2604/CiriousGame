@@ -1,7 +1,37 @@
 body {
-    background-image: url("game.jpg");
     background-size: cover;
-    backdrop-filter: blur(0.8);
+   backdrop-filter: blur(1);
+   margin: 0px;
+}
+video{
+  position: fixed;
+}
+
+#img1{
+  width: 100%;
+  height: 100%;
+  opacity: .5;
+  position: fixed;
+}
+a{
+  display: inline-block;
+  width: 120px;
+  background-color: red;
+  color:red;
+  text-decoration: none;
+  text-align: center;
+  position: relative;
+  border: none;
+  border-radius: 8px;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+ 
 }
 
 button {
@@ -24,6 +54,7 @@ button {
     left: 37%;
     background-color: #4CAF50; 
     border: 2px solid #4CAF50;
+    font-family:monospace;
   }
   
   .buttonRed {
@@ -33,6 +64,7 @@ button {
     background-color: #f44336;
     color: white;
     border: 2px solid #f44336;
+    font-family: monospace ;
   }
 
   h1 {
@@ -40,8 +72,9 @@ button {
       top: 30%;
       width: 100%;
       text-align: center;
-      color: white;
+      color: black;
       font-size: 62px;
+      font-family: fantasy;
   }
-
+  
   a, a:hover, a:active, a:visited { color: white; text-decoration: none; }
