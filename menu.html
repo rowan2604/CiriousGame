@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Launcher - Game</title>
-        <link rel="stylesheet" type="text/css" href="menu/index.css">
-    </head>
-    <body>
-        <h1>House Party</h1>
-        <button class="buttonGreen"><a href="game.html">Play</a>                           </button>
-        <button class="buttonRed" onclick="javascript:window.close()">Exit</button>
-    </body>
+
+<head>
+    <title>Launcher - Game</title>
+    <link rel="stylesheet" type="text/css" href="menu/index.css">
+    <link rel="stylesheet" href="menu/css/bootstrap.min.css">
+</head>
+
+<body>
+    <video autoplay loop>
+        <source src="menu/jeu_sécance.mp4" type="video/mp4">
+    </video>
+    <img id="img1" src="menu/vert.jpg">
+    <img id="img2" src="menu/house-party.jpg">
+    <!-- <h1>House Party</h1> -->
+    <div id="footer" class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <button class="buttonGreen" onclick="javascript:window.open('game.html')" ;>Play
+
+            </div>
+            <div class="col-md-2">
+                <button class="buttonRed" onclick="javascript:window.close()" ;>Exit </div>
+            <div class="col-md-2">
+                <button class="buttonBlue" onclick="javascript:window.open('menu/classement.html')" ;>Classement
+
+                    <div class="col-md-2">
+                       <!--  <button class="buttonBlack" onclick="javascript:window.open('scenario.html')" ;>Scenario
+                    </div>
+                    <div class="col-md-2"></div> -->
+            </div>
+        </div>
+</body>
+
 </html>

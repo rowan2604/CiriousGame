@@ -1,0 +1,85 @@
+{"objects": [
+    {
+        "name" : "Hi-fiSystem",
+        "type": "Electric",
+        "consumption": 7,
+        "aTileset": 0,
+        "dTileset": 3545
+    },
+    {
+        "name" : "TV",
+        "type": "Electric",
+        "consumption": 46,
+        "aTileset": 0,
+        "dTileset": 3566
+    },
+    {
+        "name" : "singleFurnace",
+        "type": "Electric",
+        "consumption": 42,
+        "aTileset": 0,
+        "dTileset": 3589
+    },
+    {
+        "name" : "Sink",
+        "type": "Water",
+        "consumption": 11,
+        "aTileset": 0,
+        "dTileset": 3590
+    },
+    {
+        "name" : "duoFurnace1",
+        "type": "Electric",
+        "consumption": 30,
+        "aTileset": 0,
+        "dTileset": 3591
+    },
+    {
+        "name" : "duoFurnace2",
+        "type": "Electric",
+        "consumption": 30,
+        "aTileset": 0,
+        "dTileset": 3592
+    },    {
+        "name" : "computer",
+        "type": "Electric",
+        "consumption": 3,
+        "aTileset": 0,
+        "dTileset": 4478
+    },
+    {
+        "name" : "towerComputer",
+        "type": "Electric",
+        "consumption": 30,
+        "aTileset": 0,
+        "dTileset": 4492
+    },
+    {
+        "name": "smallLight",
+        "type": "Electric",
+        "consumption": 1,
+        "aTileset": 4497,
+        "dTileset": 0
+    },
+    {
+        "name" : "phone",
+        "type": "Electric",
+        "consumption": 30,
+        "aTileset": 0,
+        "dTileset": 4516
+    },
+    {
+        "name" : "bigLight",
+        "type": "Electric",
+        "consumption": 12,
+        "aTileset": 0,
+        "dTileset": 4521
+    },
+    {
+        "name" : "desktop",
+        "type": "Electric",
+        "consumption": 90,
+        "aTileset": 0,
+        "dTileset": 4612
+    }
+]}
