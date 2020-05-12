@@ -62,7 +62,7 @@ function getPath(grid, start, end) {    //A* algorithm
     let endSpot = map[end[0]][end[1]];
 
     //Debug 
-    /*
+   /* 
     this.graphics = game.add.graphics(0, 0);
     this.graphics.beginFill(0x32a852);
     this.graphics.drawRect(start[0] * 32,start[1] * 32,32,32);
@@ -70,7 +70,6 @@ function getPath(grid, start, end) {    //A* algorithm
     this.graphics = game.add.graphics(0, 0);
     this.graphics.beginFill(0x32a852);
     this.graphics.drawRect(end[0] * 32, end[1] * 32,32,32);
-
     this.graphics = game.add.graphics(0, 0);*/
     //this.graphics.beginFill(0xff00fb); //begin fill to show obstacles on the map
     

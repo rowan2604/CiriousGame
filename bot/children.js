@@ -5,7 +5,7 @@ class Child {
         this.layers = layers;
         this.map = map;
         this.gridCollision = layers.bot_collisions.layer.data;
-
+        this.gridUsables = layers.usables;
         // Sprite
         this.sprite = this.game.add.sprite(initialPosition.x, initialPosition.y, "children");
         this.sprite.scale.setTo(0.3, 0.3);
@@ -34,6 +34,7 @@ class Child {
 
 
         // Utilities
+        this.destination = position;
         this.currentDir = "down";
         this.isMoving = false;
         this.speed = 64;
@@ -126,7 +127,7 @@ class Child {
         let coordinates = [0,0];
         coordinates[0] = Math.floor(this.position.x / 32);
         coordinates[1] = Math.floor(this.position.y / 32);
-        return coordinates;z
+        return coordinates;
     }
     getNewPath(position) {
         this.path = getPath(this.gridCollision, this.getCoordinates(), position);
@@ -167,17 +168,61 @@ class Child {
             //this.game.physics.arcade.moveToXY(this.sprite, this.newPosition.x, this.newPosition.y, 1, 500);
             this.tween = this.game.add.tween(this.sprite).to({x: this.newPosition.x, y: this.newPosition.y}, 400);
             this.tween.start();
+            this.path.shift();
             this.game.time.events.add(400, function () {    //we need to stop the movement after the delay
                 this.isMoving = false;
                 this.sprite.body.velocity.setTo(0,0);
-             }, this);
-            this.path.shift();
+                if (this.path.length == 0) {
+                    this.currentDir = this.getDirectionToLookAt(this.destination);//We need the child to be in front of the object he's interacting with
+                    switch(this.currentDir){               
+                        case "up":
+                            this.sprite.loadTexture("zelda", 20);
+                            break;
+                        case "down":
+                            this.sprite.loadTexture("zelda", 0);
+                            break;
+                        case "right":
+                            this.sprite.loadTexture("zelda", 30);
+                            break;
+                        case "left":
+                            this.sprite.loadTexture("zelda", 10);
+                            break;
+                        default:
+                            this.sprite.loadTexture("zelda", 0);
+                    }
+                    //this.sprite.animations.stop();                      // Stop animation.
+                }
+            }, this);
+
             if (this.path.length == 0) {    //the child has arrived to the destination
                 this.game.time.events.add(5000, function () {
                     this.getNewPath(position);
+                    this.destination = position;
                  }, this);
             }
         }
+    }
+
+    getDirectionToLookAt(destination) {
+        let direction = "";
+        let possibleDirections = {
+            "up": [destination[0], destination[1] - 1],
+            "down": [destination[0], destination[1] + 1],
+            "left": [destination[0] - 1, destination[1]],
+            "right": [destination[0] + 1, destination[1]],
+            "up2": [destination[0], destination[1] - 2], //we need to check two tiles ahead in kitchen
+        };
+        for (let dir in possibleDirections) {
+            let position = {x: possibleDirections[dir][0], y: possibleDirections[dir][1]};
+            if (this.map.getTile(position.x, position.y, this.gridUsables)) {
+                direction = dir;
+                break;
+            }
+        }
+        if (direction == "up2") {
+            direction = "up";
+        }
+        return direction;
     }
 
     update(position){
