@@ -30,14 +30,14 @@
     {
         "name" : "duoFurnace1",
         "type": "Electric",
-        "consumption": 30,
+        "consumption": 35,
         "aTileset": 0,
         "dTileset": 3591
     },
     {
         "name" : "duoFurnace2",
         "type": "Electric",
-        "consumption": 30,
+        "consumption": 35,
         "aTileset": 0,
         "dTileset": 3592
     },    {
@@ -46,13 +46,6 @@
         "consumption": 3,
         "aTileset": 0,
         "dTileset": 4478
-    },
-    {
-        "name" : "towerComputer",
-        "type": "Electric",
-        "consumption": 30,
-        "aTileset": 0,
-        "dTileset": 4492
     },
     {
         "name": "smallLight",
@@ -64,7 +57,7 @@
     {
         "name" : "phone",
         "type": "Electric",
-        "consumption": 30,
+        "consumption": 1,
         "aTileset": 0,
         "dTileset": 4516
     },
