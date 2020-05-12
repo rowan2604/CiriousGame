@@ -5,6 +5,7 @@ function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
     game.load.image('tiles', 'map/tileset_Interior.png'); //Load tileset.png / Nicolas
     game.load.image('tilesG', 'map/tileset_Garden.png'); //Load tileset.png / Nicolas
+    game.load.image('tilesA', 'map/tileset_Active.png'); //Nicolas
     game.load.image('money', 'hud/assets/money.jpeg');   // Load money image / Antoine
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.spritesheet("children", "bot/assets/children.png", 120, 130, 80);
@@ -40,6 +41,7 @@ let child;
 let shop;
 let botPositions = [];
 let children = [];
+let activeLayers = [];
 
 
 function create() {
@@ -51,10 +53,12 @@ function create() {
     map = game.add.tilemap('map'); //Load map with different layer, don't touch / Nicolas
     map.addTilesetImage('tileset_Interior', 'tiles');
     map.addTilesetImage('tileset_Garden', 'tilesG');
+    map.addTilesetImage('tileset_Active', 'tilesA');
     
     depth = game.add.group(); // Will allow us to choose what we need to display first / Antoine
 
     layers = { //Map all layers for player positionning
+        tvA: map.createLayer('tvA'),
         garden: map.createLayer('garden'),
         floor: map.createLayer('floor'),
         stairs: map.createLayer('stairs'),
@@ -73,6 +77,9 @@ function create() {
         bot_positions: map.createLayer('bot_positions'),
         usables: map.createLayer('usables')
     }
+    activeLayers.push(layers.tvA);
+    activeLayers[0].visible = false; //Nicolas
+
     layers.collisions.visible = false;
     layers.bot_collisions.visible = false;
     layers.usables.visible = false;
@@ -113,7 +120,7 @@ function create() {
     electricityBar.setValue(0);
     timer.start();
 
-    interaction = new Interaction(game.cache.getJSON('objects'), waterBar, electricityBar);
+    interaction = new Interaction(game.cache.getJSON('objects'), waterBar, electricityBar, activeLayers);
     player = new Player(game, map, layers, interaction);         //Spawn player after the map / Antoine
     playerMoney = new Money(game, waterBar, electricityBar);                  // Init player money in game / Antoine
 
@@ -141,6 +148,7 @@ function create() {
         depth.add(layers.windows);
         depth.add(layers.carpet);
         depth.add(layers.collision);
+        depth.add(layers.tvA); //Automatiser
         depth.add(layers.object);
         depth.add(layers.collision2);
         depth.add(layers.object2);

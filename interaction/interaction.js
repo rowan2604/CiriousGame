@@ -1,9 +1,10 @@
 class Interaction {
-    constructor(data, waterBar, electricityBar){
+    constructor(data, waterBar, electricityBar, activeLayers){
         this.data = data;
         this.water = waterBar;
         this.electricity = electricityBar;
         this.number = this.data.objects.length;
+        this.activeLayers = activeLayers;
 
         this.coefElec = 1;
         this.coefWater = 1;
@@ -14,7 +15,15 @@ class Interaction {
     interact(tiled, x, y){
         console.log(tiled, x, y); //debug
         for(let i = 0; i < this.number; i++){
-            if(this.data.objects[i].aTileset == tiled){
+            for(let j = 0; j < this.data.objects[i].Tileset.length; j++){
+                if(this.data.objects[i].Tileset[j] == tiled){
+                    let tmp =  this.data.objects[i];
+                    tmp.active ? tmp.active = false : tmp.active = true;
+                    this.activeLayers[tmp.index].visible ? this.activeLayers[tmp.index].visible = false : this.activeLayers[tmp.index].visible = true;
+                }
+            }
+
+            /*if(this.data.objects[i].aTileset == tiled){
                 if(this.data.objects[i].type == "Electric"){
                     this.currentElec = this.currentElec - this.data.objects[i].consumption;
                     //change tileset
@@ -35,7 +44,7 @@ class Interaction {
                     //change tileset
                 }
                 break;
-            }
+            }*/
         }
     }
 
