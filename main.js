@@ -1,4 +1,4 @@
-var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render});
+var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update});
 //Please do not change screen size values / Nicolas
 
 function preload() {
@@ -33,6 +33,9 @@ let instructionText;
 let custom_collisions = [];
 let child;
 let shop;
+let botPositions = [];
+let children = [];
+
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
@@ -108,7 +111,19 @@ function create() {
     interaction = new Interaction(game.cache.getJSON('objects'), waterBar, electricityBar);
     player = new Player(game, map, layers, interaction);         //Spawn player after the map / Antoine
     playerMoney = new Money(game, waterBar, electricityBar);                  // Init player money in game / Antoine
-    child = new Child(game, map, layers);                // Spawn the Child / Antoine
+
+    for (let i = 0; i < layers.bot_positions.layer.data.length; i++) {    //We store the position of every usable object
+        for (let j = 0; j < layers.bot_positions.layer.data[0].length; j++) {
+            if (layers.bot_positions.layer.data[i][j].index != -1) {
+                botPositions.push([j, i]);
+            }
+        }
+    }
+    shuffle(botPositions);
+    children.push(new Child(game, map, layers, botPositions[0], {x: 22 * 32 - 3,y: 18 * 32 + 16}));
+    children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}));
+    children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}));
+    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 17 * 32 + 16}));  
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
     instructionText = game.add.text(playerMoney.icon.x, playerMoney.icon.y - 10, "'A' to open the shop", {font: "22px Arial", fill: "black", alpha: 0.1});
@@ -124,7 +139,9 @@ function create() {
         depth.add(layers.object);
         depth.add(layers.collision2);
         depth.add(layers.object2);
-        depth.add(child.sprite);
+        for (let i = 0; i < children.length; i++) {
+            depth.add(children[i].sprite);
+        }
         depth.add(player.sprite);
         depth.add(layers.top);
         depth.add(layers.top_object);
@@ -147,7 +164,7 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], player));
     }
 
-    {       // Generate all custom collisions for BOT / Antoine
+    /*{       // Generate all custom collisions for BOT / Antoine
         custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], child));
         custom_collisions.push(new Collision(game, map.getTile(26, 17, layers.wall), [0, 1, 0, 0], child));
         custom_collisions.push(new Collision(game, map.getTile(28, 17, layers.wall), [1, 0, 0, 0], child));
@@ -162,7 +179,7 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], child));
         custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], child));
         custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], child));
-    }
+    }*/
 
     button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);
 
@@ -170,9 +187,13 @@ function create() {
 }
 
 function update() {
+    shuffle(botPositions);
+    for (let i = 0; i < children.length; i++) { //Update each child
+        children[i].update(botPositions[i]);
+    }
+
     player.update();
     playerMoney.update();
-    child.update();
     for(let i in custom_collisions){
         custom_collisions[i].update();
     }
@@ -181,7 +202,10 @@ function update() {
     waterBar.update();
     electricityBar.setValue(interaction.getValue("Electric"));
     electricityBar.update();
-    game.physics.arcade.collide(player.sprite, child.sprite);
+    /*game.physics.arcade.collide(player.sprite, child1.sprite);    //Removed collision with bot to avoid blocking it 
+    game.physics.arcade.collide(player.sprite, child2.sprite);
+    game.physics.arcade.collide(player.sprite, child3.sprite);
+    */
     shop.update();
 
 
@@ -205,6 +229,26 @@ function fullScreen() {
     }
 }
 
-function render(){              // To debug player hitbox / Antoine
+function shuffle(array) {
+    let m = array.length;
+    let t;
+    let i;
+  
+    // While there remain elements to shuffle…
+    while (m) {
+  
+      // Pick one element
+      i = Math.floor(Math.random() * m--);
+  
+      // And swap it with the current element
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+  
+    return array;
+  }
+
+/*function render(){              // To debug player hitbox / Antoine
     child.render();
-}
+}*/

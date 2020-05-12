@@ -1,22 +1,13 @@
 class Child { 
 
-    constructor(game, map, layers){
+    constructor(game, map, layers, position, initialPosition){  //position is the future destination
         this.game = game;
         this.layers = layers;
         this.map = map;
-        this.gridCollision = layers.collisions.layer.data;
-        this.gridPositions = [];
-
-        for (let i = 0; i < layers.bot_positions.layer.data.length; i++) {    //We store the position of every usable object
-            for (let j = 0; j < layers.bot_positions.layer.data[0].length; j++) {
-                if (layers.bot_positions.layer.data[i][j].index != -1) {
-                    this.gridPositions.push([j, i]);
-                }
-            }
-        }
+        this.gridCollision = layers.bot_collisions.layer.data;
 
         // Sprite
-        this.sprite = this.game.add.sprite(22 * 32 - 2, 18 * 32 + 16, "children");
+        this.sprite = this.game.add.sprite(initialPosition.x, initialPosition.y, "children");
         this.sprite.scale.setTo(0.3, 0.3);
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.setSize(90, 15, (120 / 2) - (105 / 2) + 10, 130 - 23);     // Hitbox   
@@ -29,39 +20,42 @@ class Child {
         };
         
         this.newPosition = {
-            x: this.sprite.x,
+            x: this.sprite.x, 
             y: this.sprite.y
         }
+        this.botPositions = [];
+        for (let i = 0; i < layers.bot_positions.layer.data.length; i++) {    //We store the position of every usable object
+            for (let j = 0; j < layers.bot_positions.layer.data[0].length; j++) {
+                if (layers.bot_positions.layer.data[i][j].index != -1) {
+                    this.botPositions.push([j, i]);
+                }
+            }
+        }
 
-        console.log(this.sprite.width);
-        console.log(this.sprite.height);
 
         // Utilities
         this.currentDir = "down";
         this.isMoving = false;
         this.speed = 64;
 
+        this.isWaiting = false;
+
         this.initAnimations();
         this.path = [];
-        
-        while (this.path.length == 0) {
-            let index = Math.floor(Math.random() * this.gridPositions.length);
-            console.log(this.gridPositions[index]);
-            this.path = getPath(this.gridCollision, this.getCoordinates(), this.gridPositions[index]);
-        }
-        
-        //Debug to show path
+
+
+        this.game.time.events.add(800, function () {    //Child wait a little bit before moving
+            this.path = getPath(this.gridCollision, this.getCoordinates(), position);
+         }, this);
+
+        //Debug current path
         /*
         let x = this.sprite.x;
         let y = this.sprite.y + this.sprite.height - 23;
 
         this.graphics = game.add.graphics(0, 0);
-        this.graphics.beginFill(0x32a852);
-
-
-        //this.graphics.drawRect(this.gridUsables[20][1] * 32, this.gridUsables[20][0] * 32,32,32);
-        this.graphics = game.add.graphics(0, 0);
         this.graphics.beginFill(0xfc0303);
+        
         for (let i = 0; i < this.path.length - 1; i++) {
             if (this.path[i] == Directions.TOP) {
                 y = y - 32;
@@ -80,6 +74,12 @@ class Child {
                 this.graphics.drawRect(x,y,32,32);
             }
             
+        }*/
+        
+        /*while (this.path.length == 0) {
+            let index = Math.floor(Math.random() * this.gridPositions.length);
+            //console.log(this.gridPositions[index]);
+            this.path = getPath(this.gridCollision, this.getCoordinates(), this.gridPositions[index]);
         }*/
     }
 
@@ -128,68 +128,64 @@ class Child {
         coordinates[1] = Math.floor(this.position.y / 32);
         return coordinates;z
     }
-
-    getNewPath() {
+    getNewPath(position) {
+        this.path = getPath(this.gridCollision, this.getCoordinates(), position);
         while (this.path.length == 0) {
-            let index = Math.floor(Math.random() * this.gridPositions.length);
-            this.path = getPath(this.gridCollision, this.getCoordinates(), this.gridPositions[index]);
+            let index = Math.floor(Math.random() * this.botPositions.length);
+            this.path = getPath(this.gridCollision, this.getCoordinates(), this.botPositions[index]);
         }
     }
 
-    followPath() {
+
+    followPath(position) {
         if (this.path.length > 0 && !this.isMoving) {
-            console.log(this.path);
             switch(this.path[0]) {
                 case Directions.TOP:
                     this.move(0, -1);
                     this.newPosition.y = this.sprite.y - 32; 
                     this.newPosition.x = this.sprite.x;
-                    console.log("top")
                     break;
                 case Directions.BOTTOM:
                     this.move(0, 1);
                     this.newPosition.y = this.sprite.y + 32; 
                     this.newPosition.x = this.sprite.x;
-                    console.log("bottom")
                     break;
                 case Directions.LEFT:
                     this.move(-1, 0);
                     this.newPosition.x = this.sprite.x - 32; 
                     this.newPosition.y = this.sprite.y;
-                    console.log("left")
                     break;
                 case Directions.RIGHT:
                     this.move(1, 0);
                     this.newPosition.x = this.sprite.x + 32; 
                     this.newPosition.y = this.sprite.y;
-                    console.log("right")
                     break;
                 default:
                     console.log("Error while finding a path for child");
             }
             this.isMoving = true;
-            this.game.physics.arcade.moveToXY(this.sprite, this.newPosition.x, this.newPosition.y, 1, 500);
-            this.game.time.events.add(500, function () {    //we need to stop the movement after the delay
+            //this.game.physics.arcade.moveToXY(this.sprite, this.newPosition.x, this.newPosition.y, 1, 500);
+            this.tween = this.game.add.tween(this.sprite).to({x: this.newPosition.x, y: this.newPosition.y}, 400);
+            this.tween.start();
+            this.game.time.events.add(400, function () {    //we need to stop the movement after the delay
                 this.isMoving = false;
                 this.sprite.body.velocity.setTo(0,0);
              }, this);
-            /*this.game.time.events.add(525, function () {
-                this.isMoving = false;
-             }, this);*/
             this.path.shift();
             if (this.path.length == 0) {    //the child has arrived to the destination
                 this.game.time.events.add(5000, function () {
-                    this.getNewPath();
+                    this.getNewPath(position);
                  }, this);
             }
         }
     }
 
-    update(){
+    update(position){
         this.position.x = this.sprite.x + this.sprite.width / 2;
         this.position.y =  this.sprite.y + this.sprite.height - 15;
         this.game.physics.arcade.collide(this.sprite, this.layers.bot_collisions);
-        this.followPath();       
+        this.followPath(position); 
+    
 
         // If bot doesn't move, set him to an idle position
         if(!this.isMoving){

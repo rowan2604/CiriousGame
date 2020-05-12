@@ -2,8 +2,8 @@ function getPath(grid, start, end) {    //A* algorithm
     let rows = grid[0].length;
     let cols = grid.length;
     let map = new Array(rows);
-    console.log(start);
-    console.log(end)
+    //console.log(start);
+    //console.log("pathFinding: ", end)
 
     let path = [];
 
@@ -71,23 +71,25 @@ function getPath(grid, start, end) {    //A* algorithm
     this.graphics.beginFill(0x32a852);
     this.graphics.drawRect(end[0] * 32, end[1] * 32,32,32);
 
-    this.graphics = game.add.graphics(0, 0);
-    this.graphics.beginFill(0xff00fb);
+    this.graphics = game.add.graphics(0, 0);*/
+    //this.graphics.beginFill(0xff00fb); //begin fill to show obstacles on the map
+    
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[0].length; j++) {
             if (grid[i][j].index != -1) {
                 map[j][i].obstacle = true;
+                //this.graphics.drawRect(j * 32,i * 32, 32,32); //Debug obstacles
             }
         }        
     }
-    */
+    
 
     //Adding obstacles because some collisions are custom-made
-    map[19][10].obstacle = true;
+    /*map[19][10].obstacle = true;
     map[19][9].obstacle = true;
     map[19][12].obstacle = true;
     map[19][13].obstacle = true;
-    map[19][14].obstacle = true;
+    map[19][14].obstacle = true;*/
 
     openList.push(startSpot);
 
