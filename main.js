@@ -18,8 +18,7 @@ function preload() {
     game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
     game.load.json('objects', 'interaction/objects.json'); //Nicolas data
     game.load.audio('interupteur', 'extras/music/songs/interupteur_on.mp3');//load music /Juan
-    game.load.audio('refrigrateur', 'extras/music/songs/refrigrateur.mp3');//load music /Juan
-    game.load.audio('robinet', 'extras/music/songs/robinet qui coule.mp3');//load music /Juan
+    game.load.audio('robinet', 'extras/music/songs/robinet qui coule.wav');//load music /Juan
     game.load.audio('tele', 'extras/music/songs/télé.mp3');//load music /Juan
     
 
