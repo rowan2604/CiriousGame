@@ -18,33 +18,27 @@ class Interaction {
             for(let j = 0; j < this.data.objects[i].Tileset.length; j++){
                 if(this.data.objects[i].Tileset[j] == tiled){
                     let tmp =  this.data.objects[i];
-                    tmp.active ? tmp.active = false : tmp.active = true;
+                    if(tmp.active){
+                        tmp.active = false;
+                        if(this.data.objects[i].type == "Electric"){
+                            this.currentElec = this.currentElec - this.data.objects[i].consumption;
+                        }
+                        else if(this.data.objects[i].type == "Water"){
+                            this.currentWater = this.currentWater - this.data.objects[i].consumption;
+                        }
+                    }
+                    else{
+                        tmp.active = true
+                        if(this.data.objects[i].type == "Electric"){
+                            this.currentElec += this.data.objects[i].consumption;
+                        }
+                        else if(this.data.objects[i].type == "Water"){
+                            this.currentWater += this.data.objects[i].consumption;
+                        }
+                    }
                     this.activeLayers[tmp.index].visible ? this.activeLayers[tmp.index].visible = false : this.activeLayers[tmp.index].visible = true;
                 }
             }
-
-            /*if(this.data.objects[i].aTileset == tiled){
-                if(this.data.objects[i].type == "Electric"){
-                    this.currentElec = this.currentElec - this.data.objects[i].consumption;
-                    //change tileset
-                }
-                else if(this.data.objects[i].type == "Water"){
-                    this.currentWater = this.currentWater - this.data.objects[i].consumption;
-                    //change tileset
-                }
-                break;
-            }
-            else if(this.data.objects[i].dTileset == tiled){
-                if(this.data.objects[i].type == "Electric"){
-                    this.currentElec += this.data.objects[i].consumption;
-                    //change tileset
-                }
-                else if(this.data.objects[i].type == "Water"){
-                    this.currentWater += this.data.objects[i].consumption;
-                    //change tileset
-                }
-                break;
-            }*/
         }
     }
 
