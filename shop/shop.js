@@ -153,6 +153,10 @@ class Shop{
         this.isOpen = false;
     }
 
+    scaleEnergyValues(item){
+
+    }
+
     update(){
         this.checkForActions();
     }
