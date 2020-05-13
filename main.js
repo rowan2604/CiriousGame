@@ -11,6 +11,11 @@ function preload() {
     game.load.spritesheet("children", "bot/assets/children.png", 120, 130, 80);
     game.load.image('shop', 'shop/assets/shop.png');            // Shop interface loading / Antoine
     game.load.image('arrow', 'shop/assets/arrow.png');          // Scroll arrow loading / Antoine
+    game.load.image('buy_button', 'shop/assets/buy.png');          // Buy Button loading / Antoine
+    game.load.image('solar_panel', 'shop/assets/solar_panel2.png')   // Solar Panel image / Antoine
+    game.load.image('leds', 'shop/assets/leds.png')   // Solar Panel image / Antoine
+    game.load.image('leds', 'shop/assets/leds.png')   // LEDS image / Antoine
+    game.load.image('isolation', 'shop/assets/isolation.png')   // Solar Panel image / Antoine
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
