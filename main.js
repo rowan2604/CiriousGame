@@ -15,7 +15,8 @@ function preload() {
     game.load.image('solar_panel', 'shop/assets/solar_panel2.png')   // Solar Panel image / Antoine
     game.load.image('leds', 'shop/assets/leds.png')   // Solar Panel image / Antoine
     game.load.image('leds', 'shop/assets/leds.png')   // LEDS image / Antoine
-    game.load.image('isolation', 'shop/assets/isolation.png')   // Solar Panel image / Antoine
+    game.load.image('isolation', 'shop/assets/isolation.png')   // Isolation image / Antoine
+    game.load.json('shop_datas', 'shop/shop_datas.json'); // Load the shop datas
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
@@ -46,6 +47,7 @@ let shop;
 let botPositions = [];
 let children = [];
 let activeLayers = [];
+let interaction;
 
 
 function create() {
@@ -205,7 +207,7 @@ function create() {
 
     button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);
 
-    shop = new Shop(game);
+    shop = new Shop(game, game.cache.getJSON('shop_datas'), playerMoney);
 }
 
 function update() {

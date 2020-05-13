@@ -32,6 +32,15 @@ class Money{
         this.text.text = this.amount + " €";
     }
 
+    add(amount){
+        this.amount += amount;
+        this.text.text = this.amount;
+    }
+
+    getAmount(){
+        return this.amount;
+    }
+
     update(){
         this.addAmount = 100 - this.water.getValue() + 100 - this.electricity.getValue();
     }

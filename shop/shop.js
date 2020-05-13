@@ -1,6 +1,8 @@
 class Shop{
-    constructor(game){
+    constructor(game, datas, money){
         this.game = game;
+        this.datas = datas;
+        this.money = money;
         // Keys
         this.open_key = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         
@@ -44,7 +46,7 @@ class Shop{
         this.ui.push(this.title);
 
         this.pages = game.add.text(0, 0, "1/", {font: "bold 25px Arial", fill: "black", alpha: 0.1});
-        this.pages.text += shop_datas.length;
+        this.pages.text += this.datas.items.length;
         this.pages.anchor.setTo(0.5, 0.5);
         this.pages.x = this.interface.x;
         this.pages.y = this.interface.y + (this.interface.height / 3);
@@ -86,18 +88,18 @@ class Shop{
         if(index != this.currentPage){
             this.currentPage = index;
 
-            this.item_name.text = shop_datas[index].name;
-            this.item_price.text = shop_datas[index].price;
-            this.item_image.loadTexture(shop_datas[index].image);
+            this.item_name.text = this.datas.items[index].name;
+            this.item_price.text = this.datas.items[index].price + " €";
+            this.item_image.loadTexture(this.datas.items[index].image);
             this.item_image.scale.setTo(1, 1);
             this.item_image.scale.setTo(250 / this.item_image.width, 250 / this.item_image.height);
-            this.pages.text = (this.currentPage + 1) + "/" + (shop_datas.length - this.boughtItems);
+            this.pages.text = (this.currentPage + 1) + "/" + (this.datas.items.length - this.boughtItems);
 
         }
     }
 
     onClickRight(){
-        if(this.currentPage < shop_datas.length - 1){
+        if(this.currentPage < this.datas.items.length - 1){
             this.selectPage(this.currentPage + 1);
         }
     }
@@ -109,10 +111,15 @@ class Shop{
     }
 
     buy(){
-        let filteredItems = shop_datas.slice(0, this.currentPage).concat(shop_datas.slice(this.currentPage + 1, shop_datas.length))
-        shop_datas = filteredItems;
-        this.close();
-        this.currentPage = -1;
+        if(this.money.getAmount() - this.datas.items[this.currentPage].price > 0){
+            this.money.add(-(this.datas.items[this.currentPage].price));
+
+            let filteredItems = this.datas.items.slice(0, this.currentPage).concat(this.datas.items.slice(this.currentPage + 1, this.datas.items.length))
+            this.datas.items = filteredItems;
+
+            this.close();
+            this.updateEnergyValues("solar_panel");
+        }
     }
 
     checkForActions(){
@@ -153,8 +160,16 @@ class Shop{
         this.isOpen = false;
     }
 
-    scaleEnergyValues(item){
-
+    updateEnergyValues(item){
+        if(item == "solar_panel"){
+            for(let i in interaction.data.objects){
+                if(interaction.data.objects[i].type == "Electric" && interaction.data.objects[i].active){
+                    interaction.currentElec -= (Math.floor(this.datas.items[this.currentPage].reduceScale * interaction.data.objects[i].consumption));
+                }
+                interaction.data.objects[i].consumption = interaction.data.objects[i].consumption - (Math.floor(this.datas.items[this.currentPage].reduceScale * interaction.data.objects[i].consumption));
+            }
+        }
+        this.currentPage = -1;
     }
 
     update(){
