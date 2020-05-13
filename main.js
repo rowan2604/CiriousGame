@@ -78,7 +78,9 @@ function create() {
         usables: map.createLayer('usables')
     }
     activeLayers.push(layers.tvA);
-    activeLayers[0].visible = false; //Nicolas
+    for(let i = 0; i < activeLayers.length; i++){
+        activeLayers[i].visible = false;
+    }
 
     layers.collisions.visible = false;
     layers.bot_collisions.visible = false;
@@ -148,7 +150,9 @@ function create() {
         depth.add(layers.windows);
         depth.add(layers.carpet);
         depth.add(layers.collision);
-        depth.add(layers.tvA); //Automatiser
+        for(let i = 0; i < activeLayers.length; i++){
+            depth.add(activeLayers[i]);
+        }
         depth.add(layers.object);
         depth.add(layers.collision2);
         depth.add(layers.object2);
