@@ -140,7 +140,6 @@ class EnergyBar {
     stopTimer() {
         this.timer.stop();
         this.isTimerRunning = false;
-        console.log("Game Over");
     }
 
     getCurrentTime() {
@@ -181,6 +180,14 @@ class Timer {
 
     stop() {
         this.timer.stop();
+    }
+
+    resume(){
+        this.timer.resume();
+    }
+
+    pause(){
+        this.timer.pause();
     }
 
     getCurrentTime() {

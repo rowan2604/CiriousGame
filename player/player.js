@@ -170,7 +170,6 @@ class Player{
     interacted(){                               // If the player interacts, returns true. Else returns false.
         var object = this.getObjectTile();
         if(object != null){
-            console.log(object)
             this.interaction.interact(object.index);
         }
     }

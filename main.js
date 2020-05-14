@@ -56,8 +56,9 @@ let isFinished;
 let Elec; //consommation totale dans interaction.js
 let Water;
 let endGame;
-let consoElec = Elec+"kWh";  //mettre en string la valeur avec l'unité
-let consoEau = Water +"L"; //idem
+let doItOnce = true;
+let consoElec = "0 Mw/h";  //mettre en string la valeur avec l'unité
+let consoEau = "0"; //idem
 
 
 function create() {
@@ -73,6 +74,17 @@ function create() {
     
     depth = game.add.group(); // Will allow us to choose what we need to display first / Antoine
     layers = { //Map all layers for player positionning
+        Sink2: map.createLayer('Sink2'),
+        Sink1: map.createLayer('Sink1'),
+        bigLight2: map.createLayer('bigLight2'),
+        bigLight1: map.createLayer('bigLight1'),
+        smallLight2: map.createLayer('smallLight2'),
+        smallLight1: map.createLayer('smallLight1'),
+        furnace2: map.createLayer('furnace2'),
+        furnace1: map.createLayer('furnace1'),
+        phone: map.createLayer('phone'),
+        duoFurnace: map.createLayer('duoFurnace'),
+        pc3A: map.createLayer('pc3A'),
         pc2A: map.createLayer('pc2A'),
         pc1A: map.createLayer('pc1A'),
         hifiA: map.createLayer('hifiA'),
@@ -96,7 +108,7 @@ function create() {
         bot_positions: map.createLayer('bot_positions'),
         usables: map.createLayer('usables')
     }
-    activeLayers.push(layers.tvA); activeLayers.push(layers.hifiA); activeLayers.push(layers.pc1A); activeLayers.push(layers.pc2A);
+    activeLayers.push(layers.tvA); activeLayers.push(layers.hifiA); activeLayers.push(layers.pc1A); activeLayers.push(layers.pc2A); activeLayers.push(layers.pc3A); activeLayers.push(layers.duoFurnace); activeLayers.push(layers.phone); activeLayers.push(layers.furnace1); activeLayers.push(layers.furnace2); activeLayers.push(layers.smallLight1); activeLayers.push(layers.smallLight2); activeLayers.push(layers.bigLight1); activeLayers.push(layers.bigLight2); activeLayers.push(layers.Sink1); activeLayers.push(layers.Sink2);
     for(let i = 0; i < activeLayers.length; i++){
         activeLayers[i].visible = false;
     }
@@ -129,7 +141,7 @@ function create() {
     let timerConfig = {
         x: 1280 / 2 - 35, y: 10,
         scale: 40,
-        duration:  2 //seconds
+        duration: 2 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
@@ -176,7 +188,9 @@ function create() {
         depth.add(layers.collision2);
         depth.add(layers.object2);
         for(let i = 0; i < activeLayers.length; i++){
-            depth.add(activeLayers[i]);
+            if(i != 4 && i != 10 && i != 12){
+                depth.add(activeLayers[i]);
+            }
         }
         for (let i = 0; i < children.length; i++) {
             depth.add(children[i].sprite);
@@ -184,7 +198,10 @@ function create() {
         depth.add(player.sprite);
         depth.add(layers.top_sofas);
         depth.add(layers.top);
+        depth.add(layers.pc3A);
         depth.add(layers.top_object);
+        depth.add(layers.smallLight2);
+        depth.add(layers.bigLight2);
     }   
     
     {       // Generate all custom collisions for Player / Antoine
@@ -203,23 +220,6 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], player));
         custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], player));
     }
-
-    /*{       // Generate all custom collisions for BOT / Antoine
-        custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(26, 17, layers.wall), [0, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(28, 17, layers.wall), [1, 0, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(24, 17, layers.wall), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(19, 13, layers.wall), [1, 0, 1, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(19, 14, layers.wall), [1, 0, 1, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(19, 10, layers.collision), [1, 0, 1, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(19, 9, layers.collision), [1, 0, 1, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(20, 9, layers.collision), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(21, 9, layers.collision), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(23, 10, layers.top), [0, 0, 1, 1], child));
-        custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], child));
-        custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], child));
-    }*/
 
     button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);
 
@@ -243,10 +243,6 @@ function update() {
         waterBar.update();
         electricityBar.setValue(interaction.getValue("Electric"));
         electricityBar.update();
-        /*game.physics.arcade.collide(player.sprite, child1.sprite);    //Removed collision with bot to avoid blocking it 
-        game.physics.arcade.collide(player.sprite, child2.sprite);
-        game.physics.arcade.collide(player.sprite, child3.sprite);
-        */
         shop.update();
 
         // DEPTH ORGANISATION DEPENDING ON THE PLAYER POSITION (for the sofas). ROW BUT IT WORKS :( / Antoine
@@ -296,6 +292,18 @@ function update() {
         else{
             interactText.text = "";
         }
+    }
+    else if(doItOnce){
+        for(let i in interaction.data.objects){
+            interaction.data.objects[i].active = false;
+        }
+        consoElec = interaction.calculateAverageConsumption().consoElec + " Mw/h";
+        consoEau = interaction.calculateAverageConsumption().consoEau +  " l/h";
+
+        endGame = new endGameUI(game, consoElec, consoEau);
+        endGame.show();
+        shop.close();
+        doItOnce = false;
     }
 }
 
