@@ -129,7 +129,7 @@ function create() {
     let timerConfig = {
         x: 1280 / 2 - 35, y: 10,
         scale: 40,
-        duration:  30 //seconds
+        duration:  2 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
@@ -297,12 +297,6 @@ function update() {
             interactText.text = "";
         }
     }
-    else {
-        endGame = new endGameUI(game, consoElec, consoEau);
-        endGame.show();
-        shop.close();
-    }
-    
 }
 
 function fullScreen() {

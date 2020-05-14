@@ -213,7 +213,7 @@ class Child {
                         /*if (!this.interaction.active(object)) {
                             this.interaction.interact(object.index, object.x, object.y);
                         }*/
-                        this.timeToWalk -= 20;
+                        this.timeToWalk -= 5;
                     }
 
                 }
@@ -223,12 +223,12 @@ class Child {
                 this.game.time.events.add(this.timeWaiting, function () {
                     this.getNewPath(position);
                     this.destination = position;
-                    this.timeWaiting -= 80;
+                    this.timeWaiting -= 30;
                  }, this);
             }
         }
         else {  //ending game
-            
+
         }
     }
 
