@@ -129,15 +129,19 @@ function create() {
     for (let i = 0; i < layers.bot_positions.layer.data.length; i++) {    //We store the position of every usable object
         for (let j = 0; j < layers.bot_positions.layer.data[0].length; j++) {
             if (layers.bot_positions.layer.data[i][j].index != -1) {
-                botPositions.push([j, i]);
+                if (j != 27 && i != 12) {   //temporary
+                    botPositions.push([j, i]);
+                }
             }
         }
     }
     shuffle(botPositions);
-    children.push(new Child(game, map, layers, botPositions[0], {x: 22 * 32 - 3,y: 18 * 32 + 16}));
-    children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}));
-    children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}));
-    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 17 * 32 + 16}));  
+    console.log(interaction);
+    children.push(new Child(game, map, layers, botPositions[0], {x: 22 * 32 - 3,y: 18 * 32 + 16}, interaction));
+    children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}, interaction));
+    children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}, interaction));
+    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 17 * 32 + 16}, interaction));
+    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 16 * 32 + 16}, interaction));
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
     instructionText = game.add.text(playerMoney.icon.x, playerMoney.icon.y - 10, "'A' to open the shop", {font: "22px Arial", fill: "black", alpha: 0.1});

@@ -1,11 +1,12 @@
 class Child { 
 
-    constructor(game, map, layers, position, initialPosition){  //position is the future destination
+    constructor(game, map, layers, position, initialPosition, interaction){  //position is the future destination
         this.game = game;
         this.layers = layers;
         this.map = map;
         this.gridCollision = layers.bot_collisions.layer.data;
         this.gridUsables = layers.usables;
+        this.interaction = interaction;
         // Sprite
         this.sprite = this.game.add.sprite(initialPosition.x, initialPosition.y, "children");
         this.sprite.scale.setTo(0.3, 0.3);
@@ -38,6 +39,8 @@ class Child {
         this.currentDir = "down";
         this.isMoving = false;
         this.speed = 64;
+        this.timeToWalk = 500;
+        this.timeWaiting = 5000;
 
         this.isWaiting = false;
 
@@ -136,7 +139,35 @@ class Child {
             this.path = getPath(this.gridCollision, this.getCoordinates(), this.botPositions[index]);
         }
     }
-
+    
+    checkForObject(){
+        let x = this.layers.object2.getTileX(this.position.x);
+        let y = this.layers.object2.getTileY(this.position.y);
+        this.currentDir = this.getDirectionToLookAt(this.destination);//We need the child to be in front of the object he's interacting with
+        console.log(this.currentDir);
+        if(this.map.getTile(x, y, this.layers.usables) == null){
+            switch(this.currentDir){
+                case "up":
+                    if (this.destination[0] < 19 && this.destination[1] < 18) {
+                        return this.map.getTile(x, y - 2, this.layers.usables);
+                    }
+                    else {
+                        return this.map.getTile(x, y - 1, this.layers.usables);
+                    }
+                case "down":
+                    return this.map.getTile(x, y + 1, this.layers.usables);
+                case "left":
+                    return this.map.getTile(x - 1, y, this.layers.usables);
+                case "right":
+                    return this.map.getTile(x + 1, y, this.layers.usables);
+                default:                                                    // Error
+                    console.log("unidentified direction (checkForObject)");
+            }
+        }
+        else{
+            return this.map.getTile(x, y, this.layers.usables);
+        }
+    }
 
     followPath(position) {
         if (this.path.length > 0 && !this.isMoving) {
@@ -166,38 +197,30 @@ class Child {
             }
             this.isMoving = true;
             //this.game.physics.arcade.moveToXY(this.sprite, this.newPosition.x, this.newPosition.y, 1, 500);
-            this.tween = this.game.add.tween(this.sprite).to({x: this.newPosition.x, y: this.newPosition.y}, 400);
+            this.tween = this.game.add.tween(this.sprite).to({x: this.newPosition.x, y: this.newPosition.y}, this.timeToWalk);
             this.tween.start();
             this.path.shift();
-            this.game.time.events.add(400, function () {    //we need to stop the movement after the delay
+            this.game.time.events.add(this.timeToWalk, function () {    //we need to stop the movement after the delay
                 this.isMoving = false;
                 this.sprite.body.velocity.setTo(0,0);
                 if (this.path.length == 0) {
-                    this.currentDir = this.getDirectionToLookAt(this.destination);//We need the child to be in front of the object he's interacting with
-                    switch(this.currentDir){               
-                        case "up":
-                            this.sprite.loadTexture("zelda", 20);
-                            break;
-                        case "down":
-                            this.sprite.loadTexture("zelda", 0);
-                            break;
-                        case "right":
-                            this.sprite.loadTexture("zelda", 30);
-                            break;
-                        case "left":
-                            this.sprite.loadTexture("zelda", 10);
-                            break;
-                        default:
-                            this.sprite.loadTexture("zelda", 0);
+                    let object = this.checkForObject();
+                    console.log(object)
+                    if (object) {
+                        console.log("objectX: ", object.x);
+                        console.log("objectY: ", object.y);
+                        //this.interaction.interact(object.index, object.x, object.y);
+                        this.timeToWalk -= 20;
                     }
-                    //this.sprite.animations.stop();                      // Stop animation.
+
                 }
             }, this);
 
             if (this.path.length == 0) {    //the child has arrived to the destination
-                this.game.time.events.add(5000, function () {
+                this.game.time.events.add(this.timeWaiting, function () {
                     this.getNewPath(position);
                     this.destination = position;
+                    this.timeWaiting -= 80;
                  }, this);
             }
         }
@@ -214,7 +237,7 @@ class Child {
         };
         for (let dir in possibleDirections) {
             let position = {x: possibleDirections[dir][0], y: possibleDirections[dir][1]};
-            if (this.map.getTile(position.x, position.y, this.gridUsables)) {
+            if (this.map.getTile(position.x, position.y, this.gridUsables)) {   //if we found the object to use
                 direction = dir;
                 break;
             }
