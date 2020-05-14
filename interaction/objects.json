@@ -1,5 +1,13 @@
 {"objects": [
     {
+        "name" : "TV",
+        "type": "Electric",
+        "consumption": 46,
+        "index": 0,
+        "active": false,
+        "Tileset": [3564,3565,3566]
+    },
+    {
         "name" : "Hi-fiSystem",
         "type": "Electric",
         "consumption": 7,
@@ -8,12 +16,20 @@
         "Tileset": [3545,3546,3547]
     },
     {
-        "name" : "TV",
+        "name" : "computer1",
         "type": "Electric",
-        "consumption": 46,
-        "index": 0,
+        "consumption": 3,
+        "index": 2,
         "active": false,
-        "Tileset": [3564,3565,3566]
+        "Tileset": [4490,4491]
+    },
+    {
+        "name" : "computer2",
+        "type": "Electric",
+        "consumption": 3,
+        "index": 3,
+        "active": false,
+        "Tileset": [4492,4612]
     },
     {
         "name" : "singleFurnace",
@@ -42,12 +58,6 @@
         "consumption": 35,
         "active": false,
         "Tileset": [3592]
-    },    {
-        "name" : "computer",
-        "type": "Electric",
-        "consumption": 3,
-        "active": false,
-        "Tileset": [4478]
     },
     {
         "name": "smallLight",
@@ -69,12 +79,5 @@
         "consumption": 12,
         "active": false,
         "Tileset": [4521]
-    },
-    {
-        "name" : "desktop",
-        "type": "Electric",
-        "consumption": 90,
-        "active": false,
-        "Tileset": [4612]
     }
 ]}

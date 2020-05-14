@@ -12,8 +12,8 @@ class Interaction {
         this.currentWater = 0;
     }
 
-    interact(tiled, x, y){
-        console.log(tiled, x, y); //debug
+    interact(tiled){
+        console.log(tiled); //debug
         for(let i = 0; i < this.number; i++){
             for(let j = 0; j < this.data.objects[i].Tileset.length; j++){
                 if(this.data.objects[i].Tileset[j] == tiled){
@@ -47,6 +47,20 @@ class Interaction {
         else if(type == "Water") {this.coefWater = value}
     }
 
+    active(tiled){
+        for(let i = 0; i < this.number; i++){
+            for(let j = 0; j < this.data.objects[i].Tileset.length; j++){
+                if(this.data.objects[i].Tileset[j] == tiled){
+                    if(this.data.objects[i].active){
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
     
     getValue(type){
         if(type == "Electric") {return this.coefElec * this.currentElec}
