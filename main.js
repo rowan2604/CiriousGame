@@ -71,6 +71,17 @@ function create() {
     
     depth = game.add.group(); // Will allow us to choose what we need to display first / Antoine
     layers = { //Map all layers for player positionning
+        Sink2: map.createLayer('Sink2'),
+        Sink1: map.createLayer('Sink1'),
+        bigLight2: map.createLayer('bigLight2'),
+        bigLight1: map.createLayer('bigLight1'),
+        smallLight2: map.createLayer('smallLight2'),
+        smallLight1: map.createLayer('smallLight1'),
+        furnace2: map.createLayer('furnace2'),
+        furnace1: map.createLayer('furnace1'),
+        phone: map.createLayer('phone'),
+        duoFurnace: map.createLayer('duoFurnace'),
+        pc3A: map.createLayer('pc3A'),
         pc2A: map.createLayer('pc2A'),
         pc1A: map.createLayer('pc1A'),
         hifiA: map.createLayer('hifiA'),
@@ -94,7 +105,7 @@ function create() {
         bot_positions: map.createLayer('bot_positions'),
         usables: map.createLayer('usables')
     }
-    activeLayers.push(layers.tvA); activeLayers.push(layers.hifiA); activeLayers.push(layers.pc1A); activeLayers.push(layers.pc2A);
+    activeLayers.push(layers.tvA); activeLayers.push(layers.hifiA); activeLayers.push(layers.pc1A); activeLayers.push(layers.pc2A); activeLayers.push(layers.pc3A); activeLayers.push(layers.duoFurnace); activeLayers.push(layers.phone); activeLayers.push(layers.furnace1); activeLayers.push(layers.furnace2); activeLayers.push(layers.smallLight1); activeLayers.push(layers.smallLight2); activeLayers.push(layers.bigLight1); activeLayers.push(layers.bigLight2); activeLayers.push(layers.Sink1); activeLayers.push(layers.Sink2);
     for(let i = 0; i < activeLayers.length; i++){
         activeLayers[i].visible = false;
     }
@@ -174,7 +185,9 @@ function create() {
         depth.add(layers.collision2);
         depth.add(layers.object2);
         for(let i = 0; i < activeLayers.length; i++){
-            depth.add(activeLayers[i]);
+            if(i != 4 && i != 10 && i != 12){
+                depth.add(activeLayers[i]);
+            }
         }
         for (let i = 0; i < children.length; i++) {
             depth.add(children[i].sprite);
@@ -182,7 +195,10 @@ function create() {
         depth.add(player.sprite);
         depth.add(layers.top_sofas);
         depth.add(layers.top);
+        depth.add(layers.pc3A);
         depth.add(layers.top_object);
+        depth.add(layers.smallLight2);
+        depth.add(layers.bigLight2);
     }   
     
     {       // Generate all custom collisions for Player / Antoine

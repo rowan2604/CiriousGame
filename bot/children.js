@@ -210,9 +210,9 @@ class Child {
                     if (object) {
                         //console.log("objectX: ", object.x);
                         //console.log("objectY: ", object.y);
-                        /*if (!this.interaction.active(object)) {
-                            this.interaction.interact(object.index, object.x, object.y);
-                        }*/
+                        if (!this.interaction.active(object)) {
+                            this.interaction.interact(object.index);
+                        }
                         this.timeToWalk -= 20;
                     }
 

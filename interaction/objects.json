@@ -32,52 +32,91 @@
         "Tileset": [4492,4612]
     },
     {
-        "name" : "singleFurnace",
+        "name" : "computer3",
+        "type": "Electric",
+        "consumption": 8,
+        "index": 4,
+        "active": false,
+        "Tileset": [4477,4478,4485]
+    },
+    {
+        "name" : "duoFurnace",
         "type": "Electric",
         "consumption": 42,
+        "index": 5,
         "active": false,
-        "Tileset": [3589]
-    },
-    {
-        "name" : "Sink",
-        "type": "Water",
-        "consumption": 11,
-        "active": false,
-        "Tileset": [3590]
-    },
-    {
-        "name" : "duoFurnace1",
-        "type": "Electric",
-        "consumption": 35,
-        "active": false,
-        "Tileset": [3591]
-    },
-    {
-        "name" : "duoFurnace2",
-        "type": "Electric",
-        "consumption": 35,
-        "active": false,
-        "Tileset": [3592]
-    },
-    {
-        "name": "smallLight",
-        "type": "Electric",
-        "consumption": 1,
-        "active": false,
-        "Tileset": [4497]
+        "Tileset": [3591,3592]
     },
     {
         "name" : "phone",
         "type": "Electric",
         "consumption": 1,
+        "index": 6,
         "active": false,
         "Tileset": [4516]
     },
     {
-        "name" : "bigLight",
+        "name" : "furnace1",
+        "type": "Electric",
+        "consumption": 35,
+        "index": 7,
+        "active": false,
+        "Tileset": [3588]
+    },
+    {
+        "name" : "furnace2",
+        "type": "Electric",
+        "consumption": 35,
+        "index": 8,
+        "active": false,
+        "Tileset": [3589]
+    },
+    {
+        "name": "smallLight1",
+        "type": "Electric",
+        "consumption": 1,
+        "index": 9,
+        "active": false,
+        "Tileset": [13894]
+    },
+    {
+        "name": "smallLight2",
+        "type": "Electric",
+        "consumption": 1,
+        "index": 10,
+        "active": false,
+        "Tileset": [4497]
+    },
+    {
+        "name" : "bigLight1",
         "type": "Electric",
         "consumption": 12,
+        "index": 11,
+        "active": false,
+        "Tileset": [14499]
+    },
+    {
+        "name" : "bigLight2",
+        "type": "Electric",
+        "consumption": 12,
+        "index": 12,
         "active": false,
         "Tileset": [4521]
+    },
+    {
+        "name" : "Sink1",
+        "type": "Water",
+        "consumption": 11,
+        "index": 13,
+        "active": false,
+        "Tileset": [3590]
+    },
+    {
+        "name" : "Sink2",
+        "type": "Water",
+        "consumption": 11,
+        "index": 14,
+        "active": false,
+        "Tileset": [14498]
     }
 ]}
