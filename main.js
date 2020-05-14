@@ -53,6 +53,8 @@ let children = [];
 let activeLayers = [];
 let interaction;
 let isFinished;
+let Elec; //consommation totale dans interaction.js
+let Water;
 let endGame;
 let doItOnce = true;
 let consoElec = "0 Mw/h";  //mettre en string la valeur avec l'unité

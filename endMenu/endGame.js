@@ -3,9 +3,14 @@ class endGameUI {
         this.game = game;
         this.consoElec = consoElec;
         this.consoEau = consoEau;
-
+        
         // Display 
-
+        this.advice=["Profitez  de la lumière naturelle en journée -> économiser jusqu’à 60% d’électricité ",
+                    "Surveillez vos enfants !",
+                    "Eteignez vos appareils si vous ne les utilisez pas ",
+                     "Investissez dans des infrastructures permettant d'économiser",
+                    "N'oubliez pas de sprinter afin de gagner du temps et d'économiser !"];  
+        
         this.ui = [];
         this.visibleItems = [];
 
@@ -60,10 +65,10 @@ class endGameUI {
 
         this.consommationElec2Value = this.game.add.text(this.game.width / 2 + this.interface.width / 4, this.interface.y - this.interface.height / 8, this.time);
         this.consommationElec2Value.anchor.setTo(0.5, 0.5);
-        this.consommationElec2Value.text = "Mettre valeur ligne 65 endGame.js";
+        this.consommationElec2Value.text = "280 kWh";
         this.consommationElec2Value.fontSize = 26;
         this.ui.push(this.consommationElec2Value);
-
+       
         this.consommationEau1 = this.game.add.text(this.game.width / 2 - this.interface.width / 4, this.interface.y + this.interface.height / 8, this.time);
         this.consommationEau1.anchor.setTo(0.5, 0.5);
         this.consommationEau1.text = "Your energy consumption";
@@ -86,7 +91,7 @@ class endGameUI {
 
         this.consommationEau2Value = this.game.add.text(this.game.width / 2 + this.interface.width / 4, this.interface.y + this.interface.height / 4, this.time);
         this.consommationEau2Value.anchor.setTo(0.5, 0.5);
-        this.consommationEau2Value.text = "Mettre valeur ligne 89 endGame.js";
+        this.consommationEau2Value.text = "100L";
         this.consommationEau2Value.fontSize = 26;
         this.ui.push(this.consommationEau2Value);
 
