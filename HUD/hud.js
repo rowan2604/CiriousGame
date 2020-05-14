@@ -202,20 +202,24 @@ class Timer {
             //console.log(text);
         }
         else {
-            text = "00:00";
+            text = "0:00";
         }
         return text;
     }
 
     update() {
+        let isFinished = false;
         if (this.timer.running) {
             this.time = this.getCurrentTime()
             //console.log(this.time);
             this.timerDisplay.text = this.time;
         } 
         else {
-            this.timerDisplay.text = "Time out!"; //si le chrono est terminé
+            this.timerDisplay.visible = false; //si le chrono est terminé
+            isFinished = true;
+
         }
+        return isFinished;
     }
 }
 

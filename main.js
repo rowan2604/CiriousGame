@@ -26,11 +26,9 @@ function preload() {
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
     game.load.image('electricity', 'hud/assets/electricity.png'); //Load electricity drop image / P-T
+    game.load.image('homeButton', 'endMenu/assets/HomeButton.png');
     game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
     game.load.json('objects', 'interaction/objects.json'); //Nicolas data
-    game.load.audio('interupteur', 'extras/music/songs/interupteur_on.mp3');//load music /Juan
-    game.load.audio('robinet', 'extras/music/songs/robinet qui coule.wav');//load music /Juan
-    game.load.audio('tele', 'extras/music/songs/télé.mp3');//load music /Juan
     
 
     game.scale.pageAlignHorizontally = true;
@@ -54,6 +52,10 @@ let botPositions = [];
 let children = [];
 let activeLayers = [];
 let interaction;
+let isFinished;
+let endGame;
+let consoElec = "0 Mw/h";  //mettre en string la valeur avec l'unité
+let consoEau = "0"; //idem
 
 
 function create() {
@@ -125,7 +127,7 @@ function create() {
     let timerConfig = {
         x: 1280 / 2 - 35, y: 10,
         scale: 40,
-        duration:  105 //seconds
+        duration:  300 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
@@ -144,15 +146,18 @@ function create() {
     for (let i = 0; i < layers.bot_positions.layer.data.length; i++) {    //We store the position of every usable object
         for (let j = 0; j < layers.bot_positions.layer.data[0].length; j++) {
             if (layers.bot_positions.layer.data[i][j].index != -1) {
-                botPositions.push([j, i]);
+                if (j != 27 && i != 12) {   //temporary
+                    botPositions.push([j, i]);
+                }
             }
         }
     }
     shuffle(botPositions);
-    children.push(new Child(game, map, layers, botPositions[0], {x: 22 * 32 - 3,y: 18 * 32 + 16}, "child1"));
-    children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}, "child2"));
-    children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}, "child3"));
-    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 17 * 32 + 16}, "child4"));  
+    children.push(new Child(game, map, layers, botPositions[0], {x: 22 * 32 - 3,y: 18 * 32 + 16}, "child1", interaction));
+    children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}, "child2", interaction));
+    children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}, "child3", interaction));
+    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 17 * 32 + 16}, "child4", interaction));
+    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 16 * 32 + 16}, "child1", interaction));
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
     instructionText = game.add.text(playerMoney.icon.x, playerMoney.icon.y - 10, "'A' to open the shop", {font: "22px Arial", fill: "black", alpha: 0.1});
@@ -220,74 +225,82 @@ function create() {
 }
 
 function update() {
-    shuffle(botPositions);
-    for (let i = 0; i < children.length; i++) { //Update each child
-        children[i].update(botPositions[i]);
-    }
+    isFinished = timer.update();
+    if (!isFinished) {
+        shuffle(botPositions);
+        for (let i = 0; i < children.length; i++) { //Update each child
+            children[i].update(botPositions[i]);
+        }
 
-    player.update();
-    playerMoney.update();
-    for(let i in custom_collisions){
-        custom_collisions[i].update();
-    }
-    timer.update();
-    waterBar.setValue(interaction.getValue("Water"));
-    waterBar.update();
-    electricityBar.setValue(interaction.getValue("Electric"));
-    electricityBar.update();
-    /*game.physics.arcade.collide(player.sprite, child1.sprite);    //Removed collision with bot to avoid blocking it 
-    game.physics.arcade.collide(player.sprite, child2.sprite);
-    game.physics.arcade.collide(player.sprite, child3.sprite);
-    */
-    shop.update();
+        player.update();
+        playerMoney.update();
+        for(let i in custom_collisions){
+            custom_collisions[i].update();
+        }
+        waterBar.setValue(interaction.getValue("Water"));
+        waterBar.update();
+        electricityBar.setValue(interaction.getValue("Electric"));
+        electricityBar.update();
+        /*game.physics.arcade.collide(player.sprite, child1.sprite);    //Removed collision with bot to avoid blocking it 
+        game.physics.arcade.collide(player.sprite, child2.sprite);
+        game.physics.arcade.collide(player.sprite, child3.sprite);
+        */
+        shop.update();
 
-    // DEPTH ORGANISATION DEPENDING ON THE PLAYER POSITION (for the sofas). ROW BUT IT WORKS :( / Antoine
-    // For the player
-    if(Math.floor(player.sprite.body.y/32) < 19 + 2 && Math.floor(player.sprite.body.y/32) > 19 - 2){
-        if(player.sprite.body.y < 19 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
-            depth.swap(player.sprite, layers.top_sofas);
-        }
-        else if(player.sprite.body.y > 19 * 32 + 20 && depth.getChildIndex(player.sprite) < depth.getChildIndex(layers.top_sofas)){
-            depth.swap(player.sprite, layers.top_sofas);
-        }
-    }
-
-    if(Math.floor(player.sprite.body.y/32) < 12 + 2 && Math.floor(player.sprite.body.y/32) > 12 - 2){
-        if(player.sprite.body.y < 12 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
-            depth.swap(player.sprite, layers.top_sofas);
-        }
-        else if(player.sprite.body.y > 12 * 32 + 20 && depth.getChildIndex(player.sprite) < depth.getChildIndex(layers.top_sofas)){
-            depth.swap(player.sprite, layers.top_sofas);
-        }
-    }
-    // For the children
-    for(let i in children){
-        if(Math.floor(children[i].sprite.body.y/32) < 19 + 2 && Math.floor(children[i].sprite.body.y/32) > 19 - 2){
-            if(children[i].sprite.body.y < 19 * 32 + 16 && depth.getChildIndex(children[i].sprite) > depth.getChildIndex(layers.top_sofas)){
-                depth.swap(children[i].sprite, layers.top_sofas)
+        // DEPTH ORGANISATION DEPENDING ON THE PLAYER POSITION (for the sofas). ROW BUT IT WORKS :( / Antoine
+        // For the player
+        if(Math.floor(player.sprite.body.y/32) < 19 + 2 && Math.floor(player.sprite.body.y/32) > 19 - 2){
+            if(player.sprite.body.y < 19 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
+                depth.swap(player.sprite, layers.top_sofas);
             }
-            else if(children[i].sprite.body.y > 19 * 32 + 16 && depth.getChildIndex(children[i].sprite) < depth.getChildIndex(layers.top_sofas)){
-                depth.swap(children[i].sprite, layers.top_sofas)
+            else if(player.sprite.body.y > 19 * 32 + 20 && depth.getChildIndex(player.sprite) < depth.getChildIndex(layers.top_sofas)){
+                depth.swap(player.sprite, layers.top_sofas);
             }
         }
-        if(Math.floor(children[i].sprite.body.y/32) < 12 + 2 && Math.floor(children[i].sprite.body.y/32) > 12 - 2){
-            if(children[i].sprite.body.y < 12 * 32 + 16 && depth.getChildIndex(children[i].sprite) > depth.getChildIndex(layers.top_sofas)){
-                depth.swap(children[i].sprite, layers.top_sofas);
+
+        if(Math.floor(player.sprite.body.y/32) < 12 + 2 && Math.floor(player.sprite.body.y/32) > 12 - 2){
+            if(player.sprite.body.y < 12 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
+                depth.swap(player.sprite, layers.top_sofas);
             }
-            else if(children[i].sprite.body.y > 12 * 32 + 16 && depth.getChildIndex(children[i].sprite) < depth.getChildIndex(layers.top_sofas)){
-                depth.swap(children[i].sprite, layers.top_sofas);
+            else if(player.sprite.body.y > 12 * 32 + 20 && depth.getChildIndex(player.sprite) < depth.getChildIndex(layers.top_sofas)){
+                depth.swap(player.sprite, layers.top_sofas);
             }
         }
-    }
+        // For the children
+        for(let i in children){
+            if(Math.floor(children[i].sprite.body.y/32) < 19 + 2 && Math.floor(children[i].sprite.body.y/32) > 19 - 2){
+                if(children[i].sprite.body.y < 19 * 32 + 16 && depth.getChildIndex(children[i].sprite) > depth.getChildIndex(layers.top_sofas)){
+                    depth.swap(children[i].sprite, layers.top_sofas)
+                }
+                else if(children[i].sprite.body.y > 19 * 32 + 16 && depth.getChildIndex(children[i].sprite) < depth.getChildIndex(layers.top_sofas)){
+                    depth.swap(children[i].sprite, layers.top_sofas)
+                }
+            }
+            if(Math.floor(children[i].sprite.body.y/32) < 12 + 2 && Math.floor(children[i].sprite.body.y/32) > 12 - 2){
+                if(children[i].sprite.body.y < 12 * 32 + 16 && depth.getChildIndex(children[i].sprite) > depth.getChildIndex(layers.top_sofas)){
+                    depth.swap(children[i].sprite, layers.top_sofas);
+                }
+                else if(children[i].sprite.body.y > 12 * 32 + 16 && depth.getChildIndex(children[i].sprite) < depth.getChildIndex(layers.top_sofas)){
+                    depth.swap(children[i].sprite, layers.top_sofas);
+                }
+            }
+        }
 
 
-    // Display text to notice the possibility to interact / Antoine
-    if(player.checkForObject() != null){
-        interactText.text = "Press 'E' to interact!";
+        // Display text to notice the possibility to interact / Antoine
+        if(player.checkForObject() != null){
+            interactText.text = "Press 'E' to interact!";
+        }
+        else{
+            interactText.text = "";
+        }
     }
-    else{
-        interactText.text = "";
+    else {
+        endGame = new endGameUI(game, consoElec, consoEau);
+        endGame.show();
+        shop.close();
     }
+    
 }
 
 function fullScreen() {
