@@ -43,10 +43,6 @@ class Player{
         this.currentDir = "down";
         this.initAnimations();
 
-        //Music players
-        this.music=this.game.add.audio('interupteur');
-        this.music1=this.game.add.audio('robinet');
-        this.music3=this.game.add.audio('tele');
     }
 
     initAnimations(){

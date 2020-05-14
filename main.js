@@ -23,9 +23,6 @@ function preload() {
     game.load.image('electricity', 'hud/assets/electricity.png'); //Load electricity drop image / P-T
     game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
     game.load.json('objects', 'interaction/objects.json'); //Nicolas data
-    game.load.audio('interupteur', 'extras/music/songs/interupteur_on.mp3');//load music /Juan
-    game.load.audio('robinet', 'extras/music/songs/robinet qui coule.wav');//load music /Juan
-    game.load.audio('tele', 'extras/music/songs/télé.mp3');//load music /Juan
     
 
     game.scale.pageAlignHorizontally = true;
@@ -121,7 +118,7 @@ function create() {
     let timerConfig = {
         x: 1280 / 2 - 35, y: 10,
         scale: 40,
-        duration:  105 //seconds
+        duration:  300 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
