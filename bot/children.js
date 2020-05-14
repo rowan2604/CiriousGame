@@ -227,6 +227,9 @@ class Child {
                  }, this);
             }
         }
+        else {  //ending game
+            
+        }
     }
 
     getDirectionToLookAt(destination) {
