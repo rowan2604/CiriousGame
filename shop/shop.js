@@ -15,6 +15,7 @@ class Shop{
         // Display 
 
         this.ui = [];
+        this.visibleItems = [];
 
         this.interface = this.game.add.image(0, 0, 'shop');
         this.interface.scale.setTo(1.2, 1.2);
@@ -113,12 +114,12 @@ class Shop{
     buy(){
         if(this.money.getAmount() - this.datas.items[this.currentPage].price > 0){
             this.money.add(-(this.datas.items[this.currentPage].price));
+            this.updateEnergyValues("solar_panel");
 
             let filteredItems = this.datas.items.slice(0, this.currentPage).concat(this.datas.items.slice(this.currentPage + 1, this.datas.items.length))
             this.datas.items = filteredItems;
 
             this.close();
-            this.updateEnergyValues("solar_panel");
         }
     }
 
@@ -167,6 +168,14 @@ class Shop{
                     interaction.currentElec -= (Math.floor(this.datas.items[this.currentPage].reduceScale * interaction.data.objects[i].consumption));
                 }
                 interaction.data.objects[i].consumption = interaction.data.objects[i].consumption - (Math.floor(this.datas.items[this.currentPage].reduceScale * interaction.data.objects[i].consumption));
+            }
+        }
+        if(this.datas.items[this.currentPage].hasSprite){
+            if(this.datas.items[this.currentPage].sprite == 'solar_panel_sprite'){
+                let tmpSprite;
+                tmpSprite = this.game.add.sprite(21*32, 4*32, 'solar_panel_sprite');
+                tmpSprite.scale.setTo(0.4, 0.4);
+                this.visibleItems.push(tmpSprite);
             }
         }
         this.currentPage = -1;

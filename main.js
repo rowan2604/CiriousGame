@@ -17,7 +17,7 @@ function preload() {
     game.load.image('arrow', 'shop/assets/arrow.png');          // Scroll arrow loading / Antoine
     game.load.image('buy_button', 'shop/assets/buy.png');          // Buy Button loading / Antoine
     game.load.image('solar_panel', 'shop/assets/solar_panel2.png')   // Solar Panel image / Antoine
-    game.load.image('leds', 'shop/assets/leds.png')   // Solar Panel image / Antoine
+    game.load.image('solar_panel_sprite', 'shop/assets/solar_panel.png'); // Solar Panel Sprite / Antoine
     game.load.image('leds', 'shop/assets/leds.png')   // LEDS image / Antoine
     game.load.image('isolation', 'shop/assets/isolation.png')   // Isolation image / Antoine
     game.load.json('shop_datas', 'shop/shop_datas.json'); // Load the shop datas
