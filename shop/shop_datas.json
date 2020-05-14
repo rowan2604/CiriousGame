@@ -1,0 +1,20 @@
+{"items": [
+  {
+      "name" : "Panneau Solaire",
+      "price": 200,
+      "image": "solar_panel",
+      "reduceScale": 0.3 
+  },
+  {
+    "name" : "LEDS",
+    "price": 150,
+    "image": "leds",
+    "reduceScale": 0.2 
+  },
+  {
+    "name" : "Isolation Améliorée",
+    "price": 1000,
+    "image": "isolation",
+    "reduceScale": 0.4
+  }
+]}

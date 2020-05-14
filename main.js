@@ -11,6 +11,12 @@ function preload() {
     game.load.spritesheet("children", "bot/assets/children.png", 120, 130, 80);
     game.load.image('shop', 'shop/assets/shop.png');            // Shop interface loading / Antoine
     game.load.image('arrow', 'shop/assets/arrow.png');          // Scroll arrow loading / Antoine
+    game.load.image('buy_button', 'shop/assets/buy.png');          // Buy Button loading / Antoine
+    game.load.image('solar_panel', 'shop/assets/solar_panel2.png')   // Solar Panel image / Antoine
+    game.load.image('leds', 'shop/assets/leds.png')   // Solar Panel image / Antoine
+    game.load.image('leds', 'shop/assets/leds.png')   // LEDS image / Antoine
+    game.load.image('isolation', 'shop/assets/isolation.png')   // Isolation image / Antoine
+    game.load.json('shop_datas', 'shop/shop_datas.json'); // Load the shop datas
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
@@ -41,6 +47,7 @@ let shop;
 let botPositions = [];
 let children = [];
 let activeLayers = [];
+let interaction;
 
 
 function create() {
@@ -57,6 +64,8 @@ function create() {
     depth = game.add.group(); // Will allow us to choose what we need to display first / Antoine
 
     layers = { //Map all layers for player positionning
+        pc2A: map.createLayer('pc2A'),
+        pc1A: map.createLayer('pc1A'),
         hifiA: map.createLayer('hifiA'),
         tvA: map.createLayer('tvA'),
         garden: map.createLayer('garden'),
@@ -77,7 +86,7 @@ function create() {
         bot_positions: map.createLayer('bot_positions'),
         usables: map.createLayer('usables')
     }
-    activeLayers.push(layers.tvA); activeLayers.push(layers.hifiA);
+    activeLayers.push(layers.tvA); activeLayers.push(layers.hifiA); activeLayers.push(layers.pc1A); activeLayers.push(layers.pc2A);
     for(let i = 0; i < activeLayers.length; i++){
         activeLayers[i].visible = false;
     }
@@ -154,12 +163,12 @@ function create() {
         depth.add(layers.windows);
         depth.add(layers.carpet);
         depth.add(layers.collision);
-        for(let i = 0; i < activeLayers.length; i++){
-            depth.add(activeLayers[i]);
-        }
         depth.add(layers.object);
         depth.add(layers.collision2);
         depth.add(layers.object2);
+        for(let i = 0; i < activeLayers.length; i++){
+            depth.add(activeLayers[i]);
+        }
         for (let i = 0; i < children.length; i++) {
             depth.add(children[i].sprite);
         }
@@ -204,7 +213,7 @@ function create() {
 
     button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);
 
-    shop = new Shop(game);
+    shop = new Shop(game, game.cache.getJSON('shop_datas'), playerMoney);
 }
 
 function update() {
