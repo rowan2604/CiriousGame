@@ -1,4 +1,4 @@
-var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update});
+var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update/*, render: render*/});
 //Please do not change screen size values / Nicolas
 
 function preload() {
@@ -9,11 +9,15 @@ function preload() {
     game.load.image('money', 'hud/assets/money.jpeg');   // Load money image / Antoine
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.spritesheet("children", "bot/assets/children.png", 120, 130, 80);
+    game.load.spritesheet("child1", "bot/assets/child1.png", 48, 48, 16);
+    game.load.spritesheet("child2", "bot/assets/child2.png", 48, 48, 16);
+    game.load.spritesheet("child3", "bot/assets/child3.png", 48, 48, 16);
+    game.load.spritesheet("child4", "bot/assets/child4.png", 48, 48, 16);
     game.load.image('shop', 'shop/assets/shop.png');            // Shop interface loading / Antoine
     game.load.image('arrow', 'shop/assets/arrow.png');          // Scroll arrow loading / Antoine
     game.load.image('buy_button', 'shop/assets/buy.png');          // Buy Button loading / Antoine
     game.load.image('solar_panel', 'shop/assets/solar_panel2.png')   // Solar Panel image / Antoine
-    game.load.image('leds', 'shop/assets/leds.png')   // Solar Panel image / Antoine
+    game.load.image('solar_panel_sprite', 'shop/assets/solar_panel.png'); // Solar Panel Sprite / Antoine
     game.load.image('leds', 'shop/assets/leds.png')   // LEDS image / Antoine
     game.load.image('isolation', 'shop/assets/isolation.png')   // Isolation image / Antoine
     game.load.json('shop_datas', 'shop/shop_datas.json'); // Load the shop datas
@@ -142,10 +146,10 @@ function create() {
         }
     }
     shuffle(botPositions);
-    children.push(new Child(game, map, layers, botPositions[0], {x: 22 * 32 - 3,y: 18 * 32 + 16}));
-    children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}));
-    children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}));
-    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 17 * 32 + 16}));  
+    children.push(new Child(game, map, layers, botPositions[0], {x: 22 * 32 - 3,y: 18 * 32 + 16}, "child1"));
+    children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}, "child2"));
+    children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}, "child3"));
+    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 17 * 32 + 16}, "child4"));  
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
     instructionText = game.add.text(playerMoney.icon.x, playerMoney.icon.y - 10, "'A' to open the shop", {font: "22px Arial", fill: "black", alpha: 0.1});
@@ -235,7 +239,7 @@ function update() {
     shop.update();
 
     // DEPTH ORGANISATION DEPENDING ON THE PLAYER POSITION (for the sofas). ROW BUT IT WORKS :( / Antoine
-    console.log(Math.floor(player.sprite.body.y / 32));
+    // For the player
     if(Math.floor(player.sprite.body.y/32) < 19 + 2 && Math.floor(player.sprite.body.y/32) > 19 - 2){
         if(player.sprite.body.y < 19 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
             depth.swap(player.sprite, layers.top_sofas);
@@ -244,12 +248,32 @@ function update() {
             depth.swap(player.sprite, layers.top_sofas);
         }
     }
+
     if(Math.floor(player.sprite.body.y/32) < 12 + 2 && Math.floor(player.sprite.body.y/32) > 12 - 2){
         if(player.sprite.body.y < 12 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
             depth.swap(player.sprite, layers.top_sofas);
         }
         else if(player.sprite.body.y > 12 * 32 + 20 && depth.getChildIndex(player.sprite) < depth.getChildIndex(layers.top_sofas)){
             depth.swap(player.sprite, layers.top_sofas);
+        }
+    }
+    // For the children
+    for(let i in children){
+        if(Math.floor(children[i].sprite.body.y/32) < 19 + 2 && Math.floor(children[i].sprite.body.y/32) > 19 - 2){
+            if(children[i].sprite.body.y < 19 * 32 + 16 && depth.getChildIndex(children[i].sprite) > depth.getChildIndex(layers.top_sofas)){
+                depth.swap(children[i].sprite, layers.top_sofas)
+            }
+            else if(children[i].sprite.body.y > 19 * 32 + 16 && depth.getChildIndex(children[i].sprite) < depth.getChildIndex(layers.top_sofas)){
+                depth.swap(children[i].sprite, layers.top_sofas)
+            }
+        }
+        if(Math.floor(children[i].sprite.body.y/32) < 12 + 2 && Math.floor(children[i].sprite.body.y/32) > 12 - 2){
+            if(children[i].sprite.body.y < 12 * 32 + 16 && depth.getChildIndex(children[i].sprite) > depth.getChildIndex(layers.top_sofas)){
+                depth.swap(children[i].sprite, layers.top_sofas);
+            }
+            else if(children[i].sprite.body.y > 12 * 32 + 16 && depth.getChildIndex(children[i].sprite) < depth.getChildIndex(layers.top_sofas)){
+                depth.swap(children[i].sprite, layers.top_sofas);
+            }
         }
     }
 
@@ -294,6 +318,8 @@ function shuffle(array) {
     return array;
   }
 
-/*function render(){              // To debug player hitbox / Antoine
-    child.render();
-}*/
+// function render(){              // To debug player hitbox / Antoine
+//     for(let i in children){
+//         children[i].render();
+//     }
+// }

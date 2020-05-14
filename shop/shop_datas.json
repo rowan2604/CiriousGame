@@ -3,18 +3,22 @@
       "name" : "Panneau Solaire",
       "price": 200,
       "image": "solar_panel",
-      "reduceScale": 0.3 
+      "reduceScale": 0.3, 
+      "hasSprite": true,
+      "sprite": "solar_panel_sprite"
   },
   {
     "name" : "LEDS",
     "price": 150,
     "image": "leds",
-    "reduceScale": 0.2 
+    "reduceScale": 0.2,
+    "hasSprite": false
   },
   {
     "name" : "Isolation Améliorée",
     "price": 1000,
     "image": "isolation",
-    "reduceScale": 0.4
+    "reduceScale": 0.4,
+    "hasSprite": false
   }
 ]}

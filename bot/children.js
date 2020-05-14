@@ -1,16 +1,18 @@
 class Child { 
 
-    constructor(game, map, layers, position, initialPosition){  //position is the future destination
+    constructor(game, map, layers, position, initialPosition, spritesheet){  //position is the future destination
         this.game = game;
         this.layers = layers;
         this.map = map;
         this.gridCollision = layers.bot_collisions.layer.data;
         this.gridUsables = layers.usables;
+        this.texture = spritesheet;
+
         // Sprite
-        this.sprite = this.game.add.sprite(initialPosition.x, initialPosition.y, "children");
-        this.sprite.scale.setTo(0.3, 0.3);
+        this.sprite = this.game.add.sprite(initialPosition.x, initialPosition.y, spritesheet);
+        this.sprite.scale.setTo(0.9, 0.9);
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-        this.sprite.body.setSize(90, 15, (120 / 2) - (105 / 2) + 10, 130 - 23);     // Hitbox   
+        this.sprite.body.setSize(30, 10, 10, 48*0.9-10);     // Hitbox   
         this.sprite.body.immovable = true;                                      // Can't be pushed
         this.sprite.body.checkCollision.none = true;
 
@@ -85,10 +87,10 @@ class Child {
     }
 
     initAnimations(){
-        this.sprite.animations.add("down", [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]);
-        this.sprite.animations.add("left", [50, 51, 52, 53, 54, 55, 56, 57, 58, 59]);
-        this.sprite.animations.add("up", [60, 61, 62, 63, 64, 65, 66, 67, 68, 69]);
-        this.sprite.animations.add("right", [70, 71, 72, 73, 74, 75, 76, 77, 78, 79]);
+        this.sprite.animations.add("down", [0, 4, 8, 12]);
+        this.sprite.animations.add("left", [1, 5, 9, 13]);
+        this.sprite.animations.add("up", [2, 6, 10, 14]);
+        this.sprite.animations.add("right", [3, 7, 11, 15]);
     }
 
     move(x, y){             // x for horizontal (-1 for left and 1 for right) / y for vertical (-1 for up, 1 for down) 0, 0 to idle
@@ -236,19 +238,19 @@ class Child {
         if(!this.isMoving){
             switch(this.currentDir){               // The sprite display depends on the last player's direction
             case "up":
-                this.sprite.loadTexture("children", 20);
+                this.sprite.loadTexture(this.texture, 2);
                 break;
             case "down":
-                this.sprite.loadTexture("children", 0);
+                this.sprite.loadTexture(this.texture, 0);
                 break;
             case "right":
-                this.sprite.loadTexture("children", 30);
+                this.sprite.loadTexture(this.texture, 3);
                 break;
             case "left":
-                this.sprite.loadTexture("children", 10);
+                this.sprite.loadTexture(this.texture, 1);
                 break;
             default:
-                this.sprite.loadTexture("children", 0);
+                this.sprite.loadTexture(this.texture, 0);
             }
         }
     }
