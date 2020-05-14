@@ -221,23 +221,6 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], player));
     }
 
-    /*{       // Generate all custom collisions for BOT / Antoine
-        custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(26, 17, layers.wall), [0, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(28, 17, layers.wall), [1, 0, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(24, 17, layers.wall), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(19, 13, layers.wall), [1, 0, 1, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(19, 14, layers.wall), [1, 0, 1, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(19, 10, layers.collision), [1, 0, 1, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(19, 9, layers.collision), [1, 0, 1, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(20, 9, layers.collision), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(21, 9, layers.collision), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(23, 10, layers.top), [0, 0, 1, 1], child));
-        custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], child));
-        custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], child));
-        custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], child));
-    }*/
-
     button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);
 
     shop = new Shop(game, game.cache.getJSON('shop_datas'), playerMoney);
@@ -260,10 +243,6 @@ function update() {
         waterBar.update();
         electricityBar.setValue(interaction.getValue("Electric"));
         electricityBar.update();
-        /*game.physics.arcade.collide(player.sprite, child1.sprite);    //Removed collision with bot to avoid blocking it 
-        game.physics.arcade.collide(player.sprite, child2.sprite);
-        game.physics.arcade.collide(player.sprite, child3.sprite);
-        */
         shop.update();
 
         // DEPTH ORGANISATION DEPENDING ON THE PLAYER POSITION (for the sofas). ROW BUT IT WORKS :( / Antoine
