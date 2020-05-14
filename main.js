@@ -54,6 +54,7 @@ let activeLayers = [];
 let interaction;
 let isFinished;
 let endGame;
+let doItOnce = true;
 let consoElec = "0 Mw/h";  //mettre en string la valeur avec l'unité
 let consoEau = "0"; //idem
 
@@ -127,7 +128,7 @@ function create() {
     let timerConfig = {
         x: 1280 / 2 - 35, y: 10,
         scale: 40,
-        duration:  300 //seconds
+        duration: 180 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
@@ -295,12 +296,18 @@ function update() {
             interactText.text = "";
         }
     }
-    else {
+    else if(doItOnce){
+        for(let i in interaction.data.objects){
+            interaction.data.objects[i].active = false;
+        }
+        consoElec = interaction.calculateAverageConsumption().consoElec + " Mw/h";
+        consoEau = interaction.calculateAverageConsumption().consoEau +  " l/h";
+
         endGame = new endGameUI(game, consoElec, consoEau);
         endGame.show();
         shop.close();
+        doItOnce = false;
     }
-    
 }
 
 function fullScreen() {

@@ -10,10 +10,60 @@ class Interaction {
         this.coefWater = 1;
         this.currentElec = 0;
         this.currentWater = 0;
+
+        // Utilities
+        this.timers = []
+        this.hour = Math.floor(timer.duration / 24) + 1;
+        
+        let timerConfig = {
+            x: 0, y: 0,
+            scale: 1,
+            duration: timer.duration //seconds
+        }
+
+        //Set the timers
+        for(let i in this.data.objects){
+            let timer_ = new Timer(game, timerConfig);
+            this.timers.push(timer_);
+        }
+        for(let i in this.timers){
+            this.timers[i].start();
+        }
+    }
+
+    updateTimers(){
+        for(let i in this.data.objects){
+            if(this.data.objects[i].active){
+                this.timers[i].pause();
+            }
+            else if(!this.timers[i].paused){
+                this.timers[i].resume();
+            }
+        }
+    }
+
+    calculateAverageConsumption(){
+        let total = {
+            consoElec: 0,
+            consoEau: 0
+        };
+        for(let i in this.timers){
+            if(this.timers[i].getTimeSeconds() != -1 && this.timers[i].getTimeSeconds() != 10){
+                if(this.data.objects[i].type == "Electric"){
+                    let objectConsumption = this.timers[i].getTimeSeconds() * this.data.objects[i].consumption / this.hour;
+                    total.consoElec += objectConsumption;
+                }
+                else{
+                    let objectConsumption = this.timers[i].getTimeSeconds() * this.data.objects[i].consumption / this.hour;
+                    total.consoEau += objectConsumption;
+                }
+            }
+        }
+        return total
     }
 
     interact(tiled){
-        console.log(tiled); //debug
+        //console.log(tiled); //debug
         for(let i = 0; i < this.number; i++){
             for(let j = 0; j < this.data.objects[i].Tileset.length; j++){
                 if(this.data.objects[i].Tileset[j] == tiled){
@@ -40,6 +90,7 @@ class Interaction {
                 }
             }
         }
+        this.updateTimers();
     }
 
     setCoef(type, value){

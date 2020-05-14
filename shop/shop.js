@@ -167,22 +167,24 @@ class Shop{
             let tmpObj = interaction.data.objects.find(object => object.name === this.datas.items[this.currentPage].assigned_objects[i]);
             if(tmpObj.active){
                 interaction.currentElec = interaction.currentElec - (Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
-                console.log(this.datas.items[this.currentPage].reduceScale);
-                console.log(interaction.data.objects[i].consumption);
-                console.log(Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
             }
             tmpObj.consumption = tmpObj.consumption - (Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
         }
         // Display the vsible bought objects
         if(this.datas.items[this.currentPage].hasSprite){
-            if(this.datas.items[this.currentPage].sprite == 'solar_panel_sprite'){;
+            if(this.datas.items[this.currentPage].sprite == 'solar_panel_sprite'){          // Add two solar panels displayed in the game
                 this.visibleItems.push(this.game.add.sprite(21*32, 4*32, 'solar_panel_sprite'));
                 this.visibleItems[this.visibleItems.length - 1].scale.setTo(0.4, 0.4);
                 this.depth.add(this.visibleItems[this.visibleItems.length - 1]);
                 for(let i = 0; i < this.depth.length; i++){
                     this.depth.swap(this.depth.getChildAt(i), this.depth.getChildAt(this.depth.length-1));
                 }
-
+                this.visibleItems.push(this.game.add.sprite(18*32, 4*32, 'solar_panel_sprite'));
+                this.visibleItems[this.visibleItems.length - 1].scale.setTo(0.4, 0.4);
+                this.depth.add(this.visibleItems[this.visibleItems.length - 1]);
+                for(let i = 0; i < this.depth.length; i++){
+                    this.depth.swap(this.depth.getChildAt(i), this.depth.getChildAt(this.depth.length-1));
+                }
             }
         }
     }

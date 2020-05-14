@@ -183,6 +183,14 @@ class Timer {
         this.timer.stop();
     }
 
+    resume(){
+        this.timer.resume();
+    }
+
+    pause(){
+        this.timer.pause();
+    }
+
     getCurrentTime() {
         let time = Math.floor((this.timerEvent.delay - this.timer.ms) / 1000);
         return this.formatTime(time);
