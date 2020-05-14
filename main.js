@@ -1,27 +1,43 @@
-var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update, /*render: render*/});
+var game = new Phaser.Game(1280, 736, Phaser.AUTO, '', { preload: preload, create: create, update: update/*, render: render*/});
 //Please do not change screen size values / Nicolas
 
 function preload() {
     game.load.tilemap('map', 'map/map.json', null, Phaser.Tilemap.TILED_JSON); //Load map.json / Nicolas
     game.load.image('tiles', 'map/tileset_Interior.png'); //Load tileset.png / Nicolas
     game.load.image('tilesG', 'map/tileset_Garden.png'); //Load tileset.png / Nicolas
+    game.load.image('tilesA', 'map/tileset_Active.png'); //Nicolas
     game.load.image('money', 'hud/assets/money.jpeg');   // Load money image / Antoine
     game.load.spritesheet("zelda", "player/assets/zelda.png", 120, 130, 80) //Load character spritesheet / Antoine
     game.load.spritesheet("children", "bot/assets/children.png", 120, 130, 80);
+    game.load.spritesheet("child1", "bot/assets/child1.png", 48, 48, 16);
+    game.load.spritesheet("child2", "bot/assets/child2.png", 48, 48, 16);
+    game.load.spritesheet("child3", "bot/assets/child3.png", 48, 48, 16);
+    game.load.spritesheet("child4", "bot/assets/child4.png", 48, 48, 16);
     game.load.image('shop', 'shop/assets/shop.png');            // Shop interface loading / Antoine
     game.load.image('arrow', 'shop/assets/arrow.png');          // Scroll arrow loading / Antoine
+    game.load.image('buy_button', 'shop/assets/buy.png');          // Buy Button loading / Antoine
+    game.load.image('solar_panel', 'shop/assets/solar_panel2.png')   // Solar Panel image / Antoine
+    game.load.image('solar_panel_sprite', 'shop/assets/solar_panel.png'); // Solar Panel Sprite / Antoine
+    game.load.image('leds', 'shop/assets/leds.png')   // LEDS image / Antoine
+    game.load.image('isolation', 'shop/assets/isolation.png')   // Isolation image / Antoine
+    game.load.json('shop_datas', 'shop/shop_datas.json'); // Load the shop datas
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
     game.load.image('collision_tile', 'map/collision_tile.png'); // Load a collision tile (in 16x16) for custom collisions
     game.load.image('electricity', 'hud/assets/electricity.png'); //Load electricity drop image / P-T
     game.load.atlas('fullImage', 'extras/images/screen.png', 'extras/images/atlas.json');//Button image fullscreen, json atlas / Nicolas
     game.load.json('objects', 'interaction/objects.json'); //Nicolas data
+    game.load.audio('interupteur', 'extras/music/songs/interupteur_on.mp3');//load music /Juan
+    game.load.audio('robinet', 'extras/music/songs/robinet qui coule.wav');//load music /Juan
+    game.load.audio('tele', 'extras/music/songs/télé.mp3');//load music /Juan
+    
 
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
 }
 
 let map;
+let depth;
 let layers;
 let player;
 let waterBar;
@@ -33,6 +49,11 @@ let instructionText;
 let custom_collisions = [];
 let child;
 let shop;
+let botPositions = [];
+let children = [];
+let activeLayers = [];
+let interaction;
+
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE); //Init game physics for player movement / Antoine
@@ -43,10 +64,15 @@ function create() {
     map = game.add.tilemap('map'); //Load map with different layer, don't touch / Nicolas
     map.addTilesetImage('tileset_Interior', 'tiles');
     map.addTilesetImage('tileset_Garden', 'tilesG');
+    map.addTilesetImage('tileset_Active', 'tilesA');
     
     depth = game.add.group(); // Will allow us to choose what we need to display first / Antoine
-
+    cross_over_depth = game.add.group();
     layers = { //Map all layers for player positionning
+        pc2A: map.createLayer('pc2A'),
+        pc1A: map.createLayer('pc1A'),
+        hifiA: map.createLayer('hifiA'),
+        tvA: map.createLayer('tvA'),
         garden: map.createLayer('garden'),
         floor: map.createLayer('floor'),
         stairs: map.createLayer('stairs'),
@@ -60,11 +86,17 @@ function create() {
         garden2: map.createLayer('garden2'),
         top: map.createLayer('top'),            //The sprite should be behind this layers.
         top_object: map.createLayer('top_object'),
+        top_sofas: map.createLayer('top_sofas'),
         collisions: map.createLayer('collisions'),
         bot_collisions: map.createLayer('bot_collisions'),
         bot_positions: map.createLayer('bot_positions'),
         usables: map.createLayer('usables')
     }
+    activeLayers.push(layers.tvA); activeLayers.push(layers.hifiA); activeLayers.push(layers.pc1A); activeLayers.push(layers.pc2A);
+    for(let i = 0; i < activeLayers.length; i++){
+        activeLayers[i].visible = false;
+    }
+
     layers.collisions.visible = false;
     layers.bot_collisions.visible = false;
     layers.usables.visible = false;
@@ -105,14 +137,26 @@ function create() {
     electricityBar.setValue(0);
     timer.start();
 
-    interaction = new Interaction(game.cache.getJSON('objects'), waterBar, electricityBar);
+    interaction = new Interaction(game.cache.getJSON('objects'), waterBar, electricityBar, activeLayers);
     player = new Player(game, map, layers, interaction);         //Spawn player after the map / Antoine
     playerMoney = new Money(game, waterBar, electricityBar);                  // Init player money in game / Antoine
-    child = new Child(game, map, layers);                // Spawn the Child / Antoine
+
+    for (let i = 0; i < layers.bot_positions.layer.data.length; i++) {    //We store the position of every usable object
+        for (let j = 0; j < layers.bot_positions.layer.data[0].length; j++) {
+            if (layers.bot_positions.layer.data[i][j].index != -1) {
+                botPositions.push([j, i]);
+            }
+        }
+    }
+    shuffle(botPositions);
+    children.push(new Child(game, map, layers, botPositions[0], {x: 22 * 32 - 3,y: 18 * 32 + 16}, "child1"));
+    children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}, "child2"));
+    children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}, "child3"));
+    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 17 * 32 + 16}, "child4"));  
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
     instructionText = game.add.text(playerMoney.icon.x, playerMoney.icon.y - 10, "'A' to open the shop", {font: "22px Arial", fill: "black", alpha: 0.1});
-    
+
     { // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
         depth.add(layers.garden);
         depth.add(layers.floor);
@@ -124,11 +168,17 @@ function create() {
         depth.add(layers.object);
         depth.add(layers.collision2);
         depth.add(layers.object2);
-        depth.add(child.sprite);
+        for(let i = 0; i < activeLayers.length; i++){
+            depth.add(activeLayers[i]);
+        }
+        for (let i = 0; i < children.length; i++) {
+            depth.add(children[i].sprite);
+        }
         depth.add(player.sprite);
+        depth.add(layers.top_sofas);
         depth.add(layers.top);
         depth.add(layers.top_object);
-    }    
+    }   
     
     {       // Generate all custom collisions for Player / Antoine
         custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], player));
@@ -147,7 +197,7 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], player));
     }
 
-    {       // Generate all custom collisions for BOT / Antoine
+    /*{       // Generate all custom collisions for BOT / Antoine
         custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], child));
         custom_collisions.push(new Collision(game, map.getTile(26, 17, layers.wall), [0, 1, 0, 0], child));
         custom_collisions.push(new Collision(game, map.getTile(28, 17, layers.wall), [1, 0, 0, 0], child));
@@ -162,17 +212,21 @@ function create() {
         custom_collisions.push(new Collision(game, map.getTile(24, 10, layers.top), [0, 0, 1, 1], child));
         custom_collisions.push(new Collision(game, map.getTile(15, 18, layers.collision), [1, 1, 0, 0], child));
         custom_collisions.push(new Collision(game, map.getTile(16, 18, layers.collision), [1, 1, 0, 0], child));
-    }
+    }*/
 
     button = game.add.button(game.world.width - 50, 22, 'fullImage', fullScreen);
 
-    shop = new Shop(game);
+    shop = new Shop(game, game.cache.getJSON('shop_datas'), playerMoney);
 }
 
 function update() {
+    shuffle(botPositions);
+    for (let i = 0; i < children.length; i++) { //Update each child
+        children[i].update(botPositions[i]);
+    }
+
     player.update();
     playerMoney.update();
-    child.update();
     for(let i in custom_collisions){
         custom_collisions[i].update();
     }
@@ -181,8 +235,50 @@ function update() {
     waterBar.update();
     electricityBar.setValue(interaction.getValue("Electric"));
     electricityBar.update();
-    game.physics.arcade.collide(player.sprite, child.sprite);
+    /*game.physics.arcade.collide(player.sprite, child1.sprite);    //Removed collision with bot to avoid blocking it 
+    game.physics.arcade.collide(player.sprite, child2.sprite);
+    game.physics.arcade.collide(player.sprite, child3.sprite);
+    */
     shop.update();
+
+    // DEPTH ORGANISATION DEPENDING ON THE PLAYER POSITION (for the sofas). ROW BUT IT WORKS :( / Antoine
+    // For the player
+    if(Math.floor(player.sprite.body.y/32) < 19 + 2 && Math.floor(player.sprite.body.y/32) > 19 - 2){
+        if(player.sprite.body.y < 19 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
+            depth.swap(player.sprite, layers.top_sofas);
+        }
+        else if(player.sprite.body.y > 19 * 32 + 20 && depth.getChildIndex(player.sprite) < depth.getChildIndex(layers.top_sofas)){
+            depth.swap(player.sprite, layers.top_sofas);
+        }
+    }
+
+    if(Math.floor(player.sprite.body.y/32) < 12 + 2 && Math.floor(player.sprite.body.y/32) > 12 - 2){
+        if(player.sprite.body.y < 12 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
+            depth.swap(player.sprite, layers.top_sofas);
+        }
+        else if(player.sprite.body.y > 12 * 32 + 20 && depth.getChildIndex(player.sprite) < depth.getChildIndex(layers.top_sofas)){
+            depth.swap(player.sprite, layers.top_sofas);
+        }
+    }
+    // For the children
+    for(let i in children){
+        if(Math.floor(children[i].sprite.body.y/32) < 19 + 2 && Math.floor(children[i].sprite.body.y/32) > 19 - 2){
+            if(children[i].sprite.body.y < 19 * 32 + 16 && depth.getChildIndex(children[i].sprite) > depth.getChildIndex(layers.top_sofas)){
+                depth.swap(children[i].sprite, layers.top_sofas)
+            }
+            else if(children[i].sprite.body.y > 19 * 32 + 16 && depth.getChildIndex(children[i].sprite) < depth.getChildIndex(layers.top_sofas)){
+                depth.swap(children[i].sprite, layers.top_sofas)
+            }
+        }
+        if(Math.floor(children[i].sprite.body.y/32) < 12 + 2 && Math.floor(children[i].sprite.body.y/32) > 12 - 2){
+            if(children[i].sprite.body.y < 12 * 32 + 16 && depth.getChildIndex(children[i].sprite) > depth.getChildIndex(layers.top_sofas)){
+                depth.swap(children[i].sprite, layers.top_sofas);
+            }
+            else if(children[i].sprite.body.y > 12 * 32 + 16 && depth.getChildIndex(children[i].sprite) < depth.getChildIndex(layers.top_sofas)){
+                depth.swap(children[i].sprite, layers.top_sofas);
+            }
+        }
+    }
 
 
     // Display text to notice the possibility to interact / Antoine
@@ -205,6 +301,28 @@ function fullScreen() {
     }
 }
 
-/*function render(){              // To debug player hitbox / Antoine
-    child.render();
-}*/
+function shuffle(array) {
+    let m = array.length;
+    let t;
+    let i;
+  
+    // While there remain elements to shuffle…
+    while (m) {
+  
+      // Pick one element
+      i = Math.floor(Math.random() * m--);
+  
+      // And swap it with the current element
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+  
+    return array;
+  }
+
+// function render(){              // To debug player hitbox / Antoine
+//     for(let i in children){
+//         children[i].render();
+//     }
+// }

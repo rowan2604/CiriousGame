@@ -35,6 +35,19 @@ background-size: cover;
   top: 200px;
 
 }
+#img3 {
+  width: 24%;
+  position: absolute;
+  left: 9px;
+  top: 585px;
+}
+#img4{
+  width: 10.5%;
+  position: absolute; 
+  left: 1210px;
+  top: 520px;
+
+}
 table.greenTable {
   top:50%;
   font-family: Georgia, serif;

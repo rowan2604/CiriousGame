@@ -42,6 +42,11 @@ class Player{
         // Animations
         this.currentDir = "down";
         this.initAnimations();
+
+        //Music players
+        this.music=this.game.add.audio('interupteur');
+        this.music1=this.game.add.audio('robinet');
+        this.music3=this.game.add.audio('tele');
     }
 
     initAnimations(){
@@ -170,7 +175,7 @@ class Player{
         var object = this.getObjectTile();
         if(object != null){
             console.log(object)
-            this.interaction.interact(object.index, object.x, object.y);
+            this.interaction.interact(object.index);
         }
     }
 

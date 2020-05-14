@@ -1,24 +1,18 @@
 class Child { 
 
-    constructor(game, map, layers){
+    constructor(game, map, layers, position, initialPosition, spritesheet){  //position is the future destination
         this.game = game;
         this.layers = layers;
         this.map = map;
-        this.gridCollision = layers.collisions.layer.data;
-        this.gridUsables = [];
-        for (let i = 0; i < layers.usables.layer.data.length; i++) {    //We store the position of every usable object
-            for (let j = 0; j < layers.usables.layer.data[0].length; j++) {
-                if (layers.usables.layer.data[i][j].index != -1) {
-                    this.gridUsables.push([j, i]);
-                }
-            }
-        }
+        this.gridCollision = layers.bot_collisions.layer.data;
+        this.gridUsables = layers.usables;
+        this.texture = spritesheet;
 
         // Sprite
-        this.sprite = this.game.add.sprite(22 * 32 - 2, 18 * 32 + 16, "children");
-        this.sprite.scale.setTo(0.3, 0.3);
+        this.sprite = this.game.add.sprite(initialPosition.x, initialPosition.y, spritesheet);
+        this.sprite.scale.setTo(0.9, 0.9);
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-        this.sprite.body.setSize(105, 23, (120 / 2) - (105 / 2), 130 - 23);     // Hitbox   
+        this.sprite.body.setSize(30, 10, 10, 48*0.9-10);     // Hitbox   
         this.sprite.body.immovable = true;                                      // Can't be pushed
         this.sprite.body.checkCollision.none = true;
 
@@ -28,40 +22,43 @@ class Child {
         };
         
         this.newPosition = {
-            x: this.position.x,
-            y: this.position.y
+            x: this.sprite.x, 
+            y: this.sprite.y
+        }
+        this.botPositions = [];
+        for (let i = 0; i < layers.bot_positions.layer.data.length; i++) {    //We store the position of every usable object
+            for (let j = 0; j < layers.bot_positions.layer.data[0].length; j++) {
+                if (layers.bot_positions.layer.data[i][j].index != -1) {
+                    this.botPositions.push([j, i]);
+                }
+            }
         }
 
+
         // Utilities
+        this.destination = position;
         this.currentDir = "down";
         this.isMoving = false;
         this.speed = 64;
 
+        this.isWaiting = false;
+
         this.initAnimations();
         this.path = [];
-        
-        while (this.path.length == 0) {
-            let index = Math.floor(Math.random() * this.gridUsables.length);
-            console.log(this.gridUsables[index]);
-            this.path = getPath(this.gridCollision, this.getCoordinates(), this.gridUsables[index]);
-        }
 
-        console.log(this.gridUsables[1])
-        console.log(this.path);
-        console.log(this.getCoordinates())
-        
-        //Debug to show path
+
+        this.game.time.events.add(800, function () {    //Child wait a little bit before moving
+            this.path = getPath(this.gridCollision, this.getCoordinates(), position);
+         }, this);
+
+        //Debug current path
         /*
         let x = this.sprite.x;
         let y = this.sprite.y + this.sprite.height - 23;
 
         this.graphics = game.add.graphics(0, 0);
-        this.graphics.beginFill(0x32a852);
-
-
-        //this.graphics.drawRect(this.gridUsables[20][1] * 32, this.gridUsables[20][0] * 32,32,32);
-        this.graphics = game.add.graphics(0, 0);
         this.graphics.beginFill(0xfc0303);
+        
         for (let i = 0; i < this.path.length - 1; i++) {
             if (this.path[i] == Directions.TOP) {
                 y = y - 32;
@@ -81,13 +78,19 @@ class Child {
             }
             
         }*/
+        
+        /*while (this.path.length == 0) {
+            let index = Math.floor(Math.random() * this.gridPositions.length);
+            //console.log(this.gridPositions[index]);
+            this.path = getPath(this.gridCollision, this.getCoordinates(), this.gridPositions[index]);
+        }*/
     }
 
     initAnimations(){
-        this.sprite.animations.add("down", [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]);
-        this.sprite.animations.add("left", [50, 51, 52, 53, 54, 55, 56, 57, 58, 59]);
-        this.sprite.animations.add("up", [60, 61, 62, 63, 64, 65, 66, 67, 68, 69]);
-        this.sprite.animations.add("right", [70, 71, 72, 73, 74, 75, 76, 77, 78, 79]);
+        this.sprite.animations.add("down", [0, 4, 8, 12]);
+        this.sprite.animations.add("left", [1, 5, 9, 13]);
+        this.sprite.animations.add("up", [2, 6, 10, 14]);
+        this.sprite.animations.add("right", [3, 7, 11, 15]);
     }
 
     move(x, y){             // x for horizontal (-1 for left and 1 for right) / y for vertical (-1 for up, 1 for down) 0, 0 to idle
@@ -116,7 +119,7 @@ class Child {
             this.isMoving = false;
         }
         else{
-            this.sprite.body.velocity.setTo(x * this.speed, y * this.speed);
+            //this.sprite.body.velocity.setTo(x * this.speed, y * this.speed);
             this.sprite.animations.play(this.currentDir, 12);                   // 12 the number of frames for 1 loop
             this.isMoving = true;
         }
@@ -128,86 +131,131 @@ class Child {
         coordinates[1] = Math.floor(this.position.y / 32);
         return coordinates;
     }
-
-    getNewPath() {
+    getNewPath(position) {
+        this.path = getPath(this.gridCollision, this.getCoordinates(), position);
         while (this.path.length == 0) {
-            let index = Math.floor(Math.random() * this.gridUsables.length);
-            this.path = getPath(this.gridCollision, this.getCoordinates(), this.gridUsables[index]);
+            let index = Math.floor(Math.random() * this.botPositions.length);
+            this.path = getPath(this.gridCollision, this.getCoordinates(), this.botPositions[index]);
         }
     }
 
-    followPath() {
+
+    followPath(position) {
         if (this.path.length > 0 && !this.isMoving) {
-            console.log(this.path);
             switch(this.path[0]) {
                 case Directions.TOP:
                     this.move(0, -1);
-                    this.newPosition.y = this.position.y - 32; 
-                    this.newPosition.x = this.position.x;
-                    console.log("top")
+                    this.newPosition.y = this.sprite.y - 32; 
+                    this.newPosition.x = this.sprite.x;
                     break;
                 case Directions.BOTTOM:
                     this.move(0, 1);
-                    this.newPosition.y = this.position.y + 32; 
-                    this.newPosition.x = this.position.x;
-                    console.log("bottom")
+                    this.newPosition.y = this.sprite.y + 32; 
+                    this.newPosition.x = this.sprite.x;
                     break;
                 case Directions.LEFT:
                     this.move(-1, 0);
-                    this.newPosition.x = this.position.x - 32; 
-                    this.newPosition.y = this.position.y;
-                    console.log("left")
+                    this.newPosition.x = this.sprite.x - 32; 
+                    this.newPosition.y = this.sprite.y;
                     break;
                 case Directions.RIGHT:
                     this.move(1, 0);
-                    this.newPosition.x = this.position.x + 32; 
-                    this.newPosition.y = this.position.y;
-                    console.log("right")
+                    this.newPosition.x = this.sprite.x + 32; 
+                    this.newPosition.y = this.sprite.y;
                     break;
                 default:
                     console.log("Error while finding a path for child");
             }
             this.isMoving = true;
-            this.game.time.events.add(525, function () {
-                this.isMoving = false;
-             }, this);
+            //this.game.physics.arcade.moveToXY(this.sprite, this.newPosition.x, this.newPosition.y, 1, 500);
+            this.tween = this.game.add.tween(this.sprite).to({x: this.newPosition.x, y: this.newPosition.y}, 400);
+            this.tween.start();
             this.path.shift();
+            this.game.time.events.add(400, function () {    //we need to stop the movement after the delay
+                this.isMoving = false;
+                this.sprite.body.velocity.setTo(0,0);
+                if (this.path.length == 0) {
+                    this.currentDir = this.getDirectionToLookAt(this.destination);//We need the child to be in front of the object he's interacting with
+                    switch(this.currentDir){               
+                        case "up":
+                            this.sprite.loadTexture("zelda", 20);
+                            break;
+                        case "down":
+                            this.sprite.loadTexture("zelda", 0);
+                            break;
+                        case "right":
+                            this.sprite.loadTexture("zelda", 30);
+                            break;
+                        case "left":
+                            this.sprite.loadTexture("zelda", 10);
+                            break;
+                        default:
+                            this.sprite.loadTexture("zelda", 0);
+                    }
+                    //this.sprite.animations.stop();                      // Stop animation.
+                }
+            }, this);
+
             if (this.path.length == 0) {    //the child has arrived to the destination
                 this.game.time.events.add(5000, function () {
-                    this.getNewPath();
+                    this.getNewPath(position);
+                    this.destination = position;
                  }, this);
             }
         }
     }
 
-    update(){
+    getDirectionToLookAt(destination) {
+        let direction = "";
+        let possibleDirections = {
+            "up": [destination[0], destination[1] - 1],
+            "down": [destination[0], destination[1] + 1],
+            "left": [destination[0] - 1, destination[1]],
+            "right": [destination[0] + 1, destination[1]],
+            "up2": [destination[0], destination[1] - 2], //we need to check two tiles ahead in kitchen
+        };
+        for (let dir in possibleDirections) {
+            let position = {x: possibleDirections[dir][0], y: possibleDirections[dir][1]};
+            if (this.map.getTile(position.x, position.y, this.gridUsables)) {
+                direction = dir;
+                break;
+            }
+        }
+        if (direction == "up2") {
+            direction = "up";
+        }
+        return direction;
+    }
+
+    update(position){
         this.position.x = this.sprite.x + this.sprite.width / 2;
         this.position.y =  this.sprite.y + this.sprite.height - 15;
-        this.game.physics.arcade.collide(this.sprite, this.layers.collisions);
-        this.followPath();       
+        this.game.physics.arcade.collide(this.sprite, this.layers.bot_collisions);
+        this.followPath(position); 
+    
 
         // If bot doesn't move, set him to an idle position
         if(!this.isMoving){
             switch(this.currentDir){               // The sprite display depends on the last player's direction
             case "up":
-                this.sprite.loadTexture("children", 20);
+                this.sprite.loadTexture(this.texture, 2);
                 break;
             case "down":
-                this.sprite.loadTexture("children", 0);
+                this.sprite.loadTexture(this.texture, 0);
                 break;
             case "right":
-                this.sprite.loadTexture("children", 30);
+                this.sprite.loadTexture(this.texture, 3);
                 break;
             case "left":
-                this.sprite.loadTexture("children", 10);
+                this.sprite.loadTexture(this.texture, 1);
                 break;
             default:
-                this.sprite.loadTexture("children", 0);
+                this.sprite.loadTexture(this.texture, 0);
             }
         }
     }
 
-    /*render(){
+    render(){
         this.game.debug.body(this.sprite);
-    }*/
+    }
 }
