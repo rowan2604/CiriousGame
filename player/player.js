@@ -175,7 +175,7 @@ class Player{
         var object = this.getObjectTile();
         if(object != null){
             console.log(object)
-            this.interaction.interact(object.index, object.x, object.y);
+            this.interaction.interact(object.index);
         }
     }
 

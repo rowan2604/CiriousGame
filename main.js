@@ -64,6 +64,8 @@ function create() {
     depth = game.add.group(); // Will allow us to choose what we need to display first / Antoine
 
     layers = { //Map all layers for player positionning
+        pc2A: map.createLayer('pc2A'),
+        pc1A: map.createLayer('pc1A'),
         hifiA: map.createLayer('hifiA'),
         tvA: map.createLayer('tvA'),
         garden: map.createLayer('garden'),
@@ -84,7 +86,7 @@ function create() {
         bot_positions: map.createLayer('bot_positions'),
         usables: map.createLayer('usables')
     }
-    activeLayers.push(layers.tvA); activeLayers.push(layers.hifiA);
+    activeLayers.push(layers.tvA); activeLayers.push(layers.hifiA); activeLayers.push(layers.pc1A); activeLayers.push(layers.pc2A);
     for(let i = 0; i < activeLayers.length; i++){
         activeLayers[i].visible = false;
     }
@@ -157,12 +159,12 @@ function create() {
         depth.add(layers.windows);
         depth.add(layers.carpet);
         depth.add(layers.collision);
-        for(let i = 0; i < activeLayers.length; i++){
-            depth.add(activeLayers[i]);
-        }
         depth.add(layers.object);
         depth.add(layers.collision2);
         depth.add(layers.object2);
+        for(let i = 0; i < activeLayers.length; i++){
+            depth.add(activeLayers[i]);
+        }
         for (let i = 0; i < children.length; i++) {
             depth.add(children[i].sprite);
         }
