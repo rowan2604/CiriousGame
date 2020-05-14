@@ -1,24 +1,35 @@
 {"items": [
   {
-      "name" : "Panneau Solaire",
-      "price": 200,
+      "name" : "Solar Panel",
+      "price": 400,
       "image": "solar_panel",
-      "reduceScale": 0.3, 
+      "reduceScale": 0.2, 
       "hasSprite": true,
-      "sprite": "solar_panel_sprite"
+      "sprite": "solar_panel_sprite",
+      "assigned_objects": ["TV", "Hi-fiSystem", "computer1", "computer2", "singleFurnace", "duoFurnace1", "duoFurnace2", "smallLight", "phone", "bigLight"]
   },
   {
     "name" : "LEDS",
     "price": 150,
     "image": "leds",
-    "reduceScale": 0.2,
-    "hasSprite": false
+    "reduceScale": 0.1,
+    "hasSprite": false,
+    "assigned_objects": ["smallLight", "bigLight"]
   },
   {
-    "name" : "Isolation Améliorée",
+    "name" : "Upgraded Isolation",
     "price": 1000,
     "image": "isolation",
     "reduceScale": 0.4,
-    "hasSprite": false
+    "hasSprite": false,
+    "assigned_objects": ["duoFurnace1", "duoFurnace2", "smallLight", "bigLight"]
+  },
+  {
+    "name" : "Water Receiver",
+    "price": 500,
+    "image": "water_receiver",
+    "reduceScale": 0.3,
+    "hasSprite": false,
+    "assigned_objects": ["Sink"]
   }
 ]}
