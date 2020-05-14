@@ -145,7 +145,6 @@ function create() {
         }
     }
     shuffle(botPositions);
-    console.log(interaction);
     children.push(new Child(game, map, layers, botPositions[0], {x: 22 * 32 - 3,y: 18 * 32 + 16}, interaction));
     children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}, interaction));
     children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}, interaction));

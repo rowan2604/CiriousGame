@@ -144,7 +144,6 @@ class Child {
         let x = this.layers.object2.getTileX(this.position.x);
         let y = this.layers.object2.getTileY(this.position.y);
         this.currentDir = this.getDirectionToLookAt(this.destination);//We need the child to be in front of the object he's interacting with
-        console.log(this.currentDir);
         if(this.map.getTile(x, y, this.layers.usables) == null){
             switch(this.currentDir){
                 case "up":
@@ -205,11 +204,13 @@ class Child {
                 this.sprite.body.velocity.setTo(0,0);
                 if (this.path.length == 0) {
                     let object = this.checkForObject();
-                    console.log(object)
+                    //console.log(object)
                     if (object) {
-                        console.log("objectX: ", object.x);
-                        console.log("objectY: ", object.y);
-                        //this.interaction.interact(object.index, object.x, object.y);
+                        //console.log("objectX: ", object.x);
+                        //console.log("objectY: ", object.y);
+                        /*if (!this.interaction.active(object)) {
+                            this.interaction.interact(object.index, object.x, object.y);
+                        }*/
                         this.timeToWalk -= 20;
                     }
 
