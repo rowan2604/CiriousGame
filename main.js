@@ -33,6 +33,7 @@ function preload() {
 }
 
 let map;
+let depth;
 let layers;
 let player;
 let waterBar;
@@ -62,7 +63,7 @@ function create() {
     map.addTilesetImage('tileset_Active', 'tilesA');
     
     depth = game.add.group(); // Will allow us to choose what we need to display first / Antoine
-
+    cross_over_depth = game.add.group();
     layers = { //Map all layers for player positionning
         pc2A: map.createLayer('pc2A'),
         pc1A: map.createLayer('pc1A'),
@@ -81,6 +82,7 @@ function create() {
         garden2: map.createLayer('garden2'),
         top: map.createLayer('top'),            //The sprite should be behind this layers.
         top_object: map.createLayer('top_object'),
+        top_sofas: map.createLayer('top_sofas'),
         collisions: map.createLayer('collisions'),
         bot_collisions: map.createLayer('bot_collisions'),
         bot_positions: map.createLayer('bot_positions'),
@@ -153,7 +155,7 @@ function create() {
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
     instructionText = game.add.text(playerMoney.icon.x, playerMoney.icon.y - 10, "'A' to open the shop", {font: "22px Arial", fill: "black", alpha: 0.1});
-    
+
     { // Order to display content on the screen (1st id is the farthest and last the nearest) / Antoine
         depth.add(layers.garden);
         depth.add(layers.floor);
@@ -172,9 +174,10 @@ function create() {
             depth.add(children[i].sprite);
         }
         depth.add(player.sprite);
+        depth.add(layers.top_sofas);
         depth.add(layers.top);
         depth.add(layers.top_object);
-    }    
+    }   
     
     {       // Generate all custom collisions for Player / Antoine
         custom_collisions.push(new Collision(game, map.getTile(27, 17, layers.wall), [1, 1, 0, 0], player));
@@ -236,6 +239,25 @@ function update() {
     game.physics.arcade.collide(player.sprite, child3.sprite);
     */
     shop.update();
+
+    // DEPTH ORGANISATION DEPENDING ON THE PLAYER POSITION (for the sofas). ROW BUT IT WORKS :( / Antoine
+    console.log(Math.floor(player.sprite.body.y / 32));
+    if(Math.floor(player.sprite.body.y/32) < 19 + 2 && Math.floor(player.sprite.body.y/32) > 19 - 2){
+        if(player.sprite.body.y < 19 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
+            depth.swap(player.sprite, layers.top_sofas);
+        }
+        else if(player.sprite.body.y > 19 * 32 + 20 && depth.getChildIndex(player.sprite) < depth.getChildIndex(layers.top_sofas)){
+            depth.swap(player.sprite, layers.top_sofas);
+        }
+    }
+    if(Math.floor(player.sprite.body.y/32) < 12 + 2 && Math.floor(player.sprite.body.y/32) > 12 - 2){
+        if(player.sprite.body.y < 12 * 32 + 20 && depth.getChildIndex(player.sprite) > depth.getChildIndex(layers.top_sofas)){
+            depth.swap(player.sprite, layers.top_sofas);
+        }
+        else if(player.sprite.body.y > 12 * 32 + 20 && depth.getChildIndex(player.sprite) < depth.getChildIndex(layers.top_sofas)){
+            depth.swap(player.sprite, layers.top_sofas);
+        }
+    }
 
 
     // Display text to notice the possibility to interact / Antoine
