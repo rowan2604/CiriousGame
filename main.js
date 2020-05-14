@@ -52,9 +52,11 @@ let children = [];
 let activeLayers = [];
 let interaction;
 let isFinished;
+let Elec; //consommation totale dans interaction.js
+let Water;
 let endGame;
-let consoElec = "0 Mw/h";  //mettre en string la valeur avec l'unité
-let consoEau = "0"; //idem
+let consoElec = Elec+"kWh";  //mettre en string la valeur avec l'unité
+let consoEau = Water +"L"; //idem
 
 
 function create() {
@@ -127,7 +129,7 @@ function create() {
     let timerConfig = {
         x: 1280 / 2 - 35, y: 10,
         scale: 40,
-        duration:  300 //seconds
+        duration:  30 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
