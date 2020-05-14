@@ -20,6 +20,7 @@ function preload() {
     game.load.image('solar_panel_sprite', 'shop/assets/solar_panel.png'); // Solar Panel Sprite / Antoine
     game.load.image('leds', 'shop/assets/leds.png')   // LEDS image / Antoine
     game.load.image('isolation', 'shop/assets/isolation.png')   // Isolation image / Antoine
+    game.load.image('water_receiver', 'shop/assets/water_receiver.png') // Water Receiver / Antoine
     game.load.json('shop_datas', 'shop/shop_datas.json'); // Load the shop datas
     game.load.image('statusBar', 'hud/assets/StatusBar.png'); //Load statusBar image / P-T
     game.load.image('dropOfWater', 'hud/assets/water.png'); //Load water drop image / P-T
@@ -67,7 +68,6 @@ function create() {
     map.addTilesetImage('tileset_Active', 'tilesA');
     
     depth = game.add.group(); // Will allow us to choose what we need to display first / Antoine
-    cross_over_depth = game.add.group();
     layers = { //Map all layers for player positionning
         pc2A: map.createLayer('pc2A'),
         pc1A: map.createLayer('pc1A'),
