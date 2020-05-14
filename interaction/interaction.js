@@ -63,7 +63,10 @@ class Interaction {
     }
 
     interact(tiled){
+<<<<<<< HEAD
         //console.log(tiled); //debug
+=======
+>>>>>>> ae8d0223cc1950d60e27c38669c42c505a08edd9
         for(let i = 0; i < this.number; i++){
             for(let j = 0; j < this.data.objects[i].Tileset.length; j++){
                 if(this.data.objects[i].Tileset[j] == tiled){
@@ -115,6 +118,6 @@ class Interaction {
     
     getValue(type){
         if(type == "Electric") {return this.coefElec * this.currentElec}
-        else if(type == "Water") {return this.coefWater * this.coefWater}
+        else if(type == "Water") {return this.coefWater * this.currentWater}
     }
 }
