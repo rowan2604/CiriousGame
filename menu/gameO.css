@@ -1,0 +1,188 @@
+body {
+    background-image: url("black.jpg");
+   background-size:cover ;
+   background-repeat: no-repeat;
+   backdrop-filter: blur(0.8);
+  backdrop-filter: blur(1);
+  margin: 0px;
+  height: 100%; 
+ } 
+ video{
+ position: fixed; right: 0; bottom: 0;
+ min-width: 100%;min-height: 100%;
+ width: auto; height: auto; z-index: -100 ;
+ background-size: cover;
+ }
+ 
+ #footer {
+   position: fixed;
+  top:80%;
+  width: 100%;
+  text-align: center;
+  left:15%
+ }
+ 
+ #img1{
+   width: 100%;
+   height: 100%;
+   opacity: .5;
+   position: fixed;
+ }
+ #img2{
+   width: 20%;
+   position: absolute;
+   left: 550px;
+   top: 200px;
+ 
+ }
+ table.greenTable {
+   top:50%;
+   font-family: Georgia, serif;
+   border: 6px solid #24943A;
+   background-color: #D4EED1;
+   width: 100%;
+   text-align: center;
+ }
+ table.greenTable td, table.greenTable th {
+   border: 1px solid #24943A;
+   padding: 3px 2px;
+ }
+ table.greenTable tbody td {
+   font-size: 13px;
+ }
+ table.greenTable thead {
+   background: #24943A;
+   background: -moz-linear-gradient(top, #5baf6b 0%, #3a9e4d 66%, #24943A 100%);
+   background: -webkit-linear-gradient(top, #5baf6b 0%, #3a9e4d 66%, #24943A 100%);
+   background: linear-gradient(to bottom, #5baf6b 0%, #3a9e4d 66%, #24943A 100%);
+   border-bottom: 0px solid #444444;
+ }
+ table.greenTable thead th {
+   font-size: 19px;
+   font-weight: bold;
+   color: #F0F0F0;
+   text-align: left;
+   border-left: 2px solid #24943A;
+ }
+ table.greenTable thead th:first-child {
+   border-left: none;
+ }
+ 
+ table.greenTable tfoot {
+   font-size: 13px;
+   font-weight: bold;
+   color: #F0F0F0;
+   background: #24943A;
+   background: -moz-linear-gradient(top, #5baf6b 0%, #3a9e4d 66%, #24943A 100%);
+   background: -webkit-linear-gradient(top, #5baf6b 0%, #3a9e4d 66%, #24943A 100%);
+   background: linear-gradient(to bottom, #5baf6b 0%, #3a9e4d 66%, #24943A 100%);
+   border-top: 1px solid #24943A;
+ }
+ table.greenTable tfoot td {
+   font-size: 13px;
+ }
+ table.greenTable tfoot .links {
+   text-align: right;
+ }
+ table.greenTable tfoot .links a{
+   display: inline-block;
+   background: #FFFFFF;
+   color: #24943A;
+   padding: 2px 8px;
+   border-radius: 5px;
+ }
+ .buttonGreen {
+     background-color:#44c767;
+     border-radius:28px;
+     border:1px solid #18ab29;
+     display:inline-block;
+     cursor:pointer;
+     color:#ffffff;
+     font-family:Arial;
+     font-size:17px;
+     padding:16px 31px;
+     text-decoration:none;
+     text-shadow:0px 1px 0px #2f6627;
+ }
+ .buttonGreen:hover {
+     background-color:#5cbf2a;
+ }
+ .buttonGreen:active {
+     position:relative;
+     top:1px;
+ }
+ .buttonRed {
+     background-color:#d0451b;
+     border-radius:28px;
+     border:1px solid #942911;
+     display:inline-block;
+     cursor:pointer;
+     color:#ffffff;
+     font-family:Arial;
+     font-size:17px;
+     padding:16px 31px;
+     text-decoration:none;
+     text-shadow:0px 1px 0px #854629;
+ }
+ .buttonRed:hover {
+     background-color:#bc3315;
+ }
+ .buttonRed:active {
+     position:relative;
+     top:1px;
+ }
+ .buttonBlue {
+     background-color:#2e466e;
+     border-radius:28px;
+     border:1px solid #1f2f47;
+     display:inline-block;
+     cursor:pointer;
+     color:#ffffff;
+     font-family:Arial;
+     font-size:17px;
+     padding:16px 31px;
+     text-decoration:none;
+     text-shadow:0px 1px 0px #263666;
+ }
+ .buttonBlue:hover {
+     background-color:#415989;
+ }
+ .buttonBlue:active {
+     position:relative;
+     top:1px;
+ }
+ 
+         
+ .buttonBlack {
+     background-color:#44c767;
+     border-radius:28px;
+     border:1px solid #18ab29;
+     display:inline-block;
+     cursor:pointer;
+     color:#ffffff;
+     font-family:Arial;
+     font-size:17px;
+     padding:16px 31px;
+     text-decoration:none;
+     text-shadow:0px 1px 0px #2f6627;
+ }
+ .buttonBlack:hover {
+     background-color:#5cbf2a;
+ }
+ .buttonBlack:active {
+     position:relative;
+     top:1px;
+ }
+   
+   h1 {
+       position: fixed;
+       top: 30%;
+       width: 100%;
+       text-align: center;
+       color: black;
+       font-size: 62px;
+       font-family: fantasy; 
+   }
+  
+   
+   a, a:hover, a:active, a:visited { color: white; text-decoration: none; }
