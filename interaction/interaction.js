@@ -13,7 +13,7 @@ class Interaction {
 
         // Utilities
         this.timers = []
-        this.hour = Math.floor(timer.duration / 24) + 1;
+        this.hour = Math.floor(timer.duration / 24);
         
         let timerConfig = {
             x: 0, y: 0,
@@ -50,11 +50,11 @@ class Interaction {
         for(let i in this.timers){
             if(this.timers[i].getTimeSeconds() != -1 && this.timers[i].getTimeSeconds() != 10){
                 if(this.data.objects[i].type == "Electric"){
-                    let objectConsumption = this.timers[i].getTimeSeconds() * this.data.objects[i].consumption / this.hour;
+                    let objectConsumption = this.timers[i].getTimeSeconds() * this.data.objects[i].trueValue / this.hour;
                     total.consoElec += objectConsumption;
                 }
                 else{
-                    let objectConsumption = this.timers[i].getTimeSeconds() * this.data.objects[i].consumption / this.hour;
+                    let objectConsumption = this.timers[i].getTimeSeconds() * this.data.objects[i].trueValue / this.hour;
                     total.consoEau += objectConsumption;
                 }
             }

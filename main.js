@@ -141,7 +141,7 @@ function create() {
     let timerConfig = {
         x: 1280 / 2 - 35, y: 10,
         scale: 40,
-        duration: 180 //seconds
+        duration: 150 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
@@ -171,7 +171,6 @@ function create() {
     children.push(new Child(game, map, layers, botPositions[1], {x: 23 * 32 - 3,y: 18 * 32 + 16}, "child2", interaction));
     children.push(new Child(game, map, layers, botPositions[2], {x: 22 * 32 - 3,y: 17 * 32 + 16}, "child3", interaction));
     children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 17 * 32 + 16}, "child4", interaction));
-    children.push(new Child(game, map, layers, botPositions[3], {x: 23 * 32 - 3,y: 16 * 32 + 16}, "child1", interaction));
 
     interactText = game.add.text(game.world.centerX - 70, 736 - 65, "", {font: "20px Arial", fill: "black", alpha: 0.1});
     instructionText = game.add.text(playerMoney.icon.x, playerMoney.icon.y - 10, "'A' to open the shop", {font: "22px Arial", fill: "black", alpha: 0.1});
@@ -297,8 +296,8 @@ function update() {
         for(let i in interaction.data.objects){
             interaction.data.objects[i].active = false;
         }
-        consoElec = interaction.calculateAverageConsumption().consoElec + " Mw/h";
-        consoEau = interaction.calculateAverageConsumption().consoEau +  " l/h";
+        consoElec = interaction.calculateAverageConsumption().consoElec + " kWh/j";
+        consoEau = interaction.calculateAverageConsumption().consoEau +  " L/j";
 
         endGame = new endGameUI(game, consoElec, consoEau);
         endGame.show();

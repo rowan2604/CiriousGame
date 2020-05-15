@@ -6,7 +6,7 @@
       "reduceScale": 0.2, 
       "hasSprite": true,
       "sprite": "solar_panel_sprite",
-      "assigned_objects": ["TV", "Hi-fiSystem", "computer1", "computer2", "singleFurnace", "duoFurnace1", "duoFurnace2", "smallLight", "phone", "bigLight"]
+      "assigned_objects": ["TV", "Hi-fiSystem", "computer1", "computer2", "computer3", "furnace1", "furnace2", "duoFurnace", "smallLight1", "smallLight2", "phone", "bigLight1", "bigLight2"]
   },
   {
     "name" : "LEDS",
@@ -14,13 +14,13 @@
     "image": "leds",
     "reduceScale": 0.1,
     "hasSprite": false,
-    "assigned_objects": ["smallLight", "bigLight"]
+    "assigned_objects": ["smallLight1", "smallLight2", "bigLight1", "bigLight2"]
   },
   {
     "name" : "Upgraded Isolation",
     "price": 1000,
     "image": "isolation",
-    "reduceScale": 0.4,
+    "reduceScale": 0.3,
     "hasSprite": false,
     "assigned_objects": ["duoFurnace1", "duoFurnace2", "smallLight", "bigLight"]
   },
@@ -30,6 +30,6 @@
     "image": "water_receiver",
     "reduceScale": 0.3,
     "hasSprite": false,
-    "assigned_objects": ["Sink"]
+    "assigned_objects": ["Sink1", "Sink2"]
   }
 ]}

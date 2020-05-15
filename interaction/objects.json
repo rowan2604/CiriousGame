@@ -2,10 +2,11 @@
     {
         "name" : "TV",
         "type": "Electric",
-        "consumption": 46,
+        "consumption": 15,
         "index": 0,
         "active": false,
-        "Tileset": [3564,3565,3566]
+        "Tileset": [3564,3565,3566],
+        "trueValue": 0.04
     },
     {
         "name" : "Hi-fiSystem",
@@ -13,31 +14,35 @@
         "consumption": 7,
         "index": 1,
         "active": false,
-        "Tileset": [3545,3546,3547]
+        "Tileset": [3545,3546,3547],
+        "trueValue": 0.02
     },
     {
         "name" : "computer1",
         "type": "Electric",
-        "consumption": 3,
+        "consumption": 20,
         "index": 2,
         "active": false,
-        "Tileset": [4490,4491]
+        "Tileset": [4490,4491],
+        "trueValue": 0.06
     },
     {
         "name" : "computer2",
         "type": "Electric",
-        "consumption": 3,
+        "consumption": 20,
         "index": 3,
         "active": false,
-        "Tileset": [4492,4612]
+        "Tileset": [4492,4612],
+        "trueValue": 0.06
     },
     {
         "name" : "computer3",
         "type": "Electric",
-        "consumption": 8,
+        "consumption": 20,
         "index": 4,
         "active": false,
-        "Tileset": [4477,4478,4485]
+        "Tileset": [4477,4478,4485],
+        "trueValue": 0.06
     },
     {
         "name" : "duoFurnace",
@@ -45,78 +50,88 @@
         "consumption": 42,
         "index": 5,
         "active": false,
-        "Tileset": [3591,3592]
+        "Tileset": [3591,3592],
+        "trueValue": 2
     },
     {
         "name" : "phone",
         "type": "Electric",
-        "consumption": 1,
+        "consumption": 2,
         "index": 6,
         "active": false,
-        "Tileset": [4516]
+        "Tileset": [4516],
+        "trueValue": 0.002
     },
     {
         "name" : "furnace1",
         "type": "Electric",
-        "consumption": 35,
+        "consumption": 28,
         "index": 7,
         "active": false,
-        "Tileset": [3588]
+        "Tileset": [3588],
+        "trueValue": 0.7
     },
     {
         "name" : "furnace2",
         "type": "Electric",
-        "consumption": 35,
+        "consumption": 28,
         "index": 8,
         "active": false,
-        "Tileset": [3589]
+        "Tileset": [3589],
+        "trueValue": 0.7
     },
     {
         "name": "smallLight1",
         "type": "Electric",
-        "consumption": 1,
+        "consumption": 5,
         "index": 9,
         "active": false,
-        "Tileset": [13894]
+        "Tileset": [13894],
+        "trueValue": 0.1
     },
     {
         "name": "smallLight2",
         "type": "Electric",
-        "consumption": 1,
+        "consumption": 5,
         "index": 10,
         "active": false,
-        "Tileset": [4497]
+        "Tileset": [4497],
+        "trueValue": 0.1
     },
     {
         "name" : "bigLight1",
         "type": "Electric",
-        "consumption": 12,
+        "consumption": 7,
         "index": 11,
         "active": false,
-        "Tileset": [14499]
+        "Tileset": [14499],
+        "trueValue": 0.15
     },
     {
         "name" : "bigLight2",
         "type": "Electric",
-        "consumption": 12,
+        "consumption": 7,
         "index": 12,
         "active": false,
-        "Tileset": [4521]
+        "Tileset": [4521],
+        "trueValue": 0.15
     },
     {
         "name" : "Sink1",
         "type": "Water",
-        "consumption": 11,
+        "consumption": 50,
         "index": 13,
         "active": false,
-        "Tileset": [3590]
+        "Tileset": [3590],
+        "trueValue": 390
     },
     {
         "name" : "Sink2",
         "type": "Water",
-        "consumption": 11,
+        "consumption": 50,
         "index": 14,
         "active": false,
-        "Tileset": [14498]
+        "Tileset": [14498],
+        "trueValue": 390
     }
 ]}

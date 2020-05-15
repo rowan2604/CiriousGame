@@ -114,9 +114,9 @@ class Shop{
 
     buy(){
         if(this.money.getAmount() - this.datas.items[this.currentPage].price > 0){
+
             this.money.add(-(this.datas.items[this.currentPage].price));
             this.updateEnergyValues();
-
             let filteredItems = this.datas.items.slice(0, this.currentPage).concat(this.datas.items.slice(this.currentPage + 1, this.datas.items.length))
             this.datas.items = filteredItems;
             this.currentPage = -1;
@@ -164,6 +164,7 @@ class Shop{
 
     updateEnergyValues(){
         for(let i in this.datas.items[this.currentPage].assigned_objects){
+            console.log(this.datas.items[this.currentPage].assigned_objects[i]);
             let tmpObj = interaction.data.objects.find(object => object.name === this.datas.items[this.currentPage].assigned_objects[i]);
             if(tmpObj.active){
                 interaction.currentElec = interaction.currentElec - (Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
