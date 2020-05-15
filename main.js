@@ -141,7 +141,7 @@ function create() {
     let timerConfig = {
         x: 1280 / 2 - 35, y: 10,
         scale: 40,
-        duration: 2 //seconds
+        duration: 150 //seconds
     }
 
     waterBar = new EnergyBar(game, 'statusBar', 'dropOfWater', waterConfig);
