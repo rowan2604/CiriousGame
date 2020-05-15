@@ -297,7 +297,7 @@ function update() {
             interaction.data.objects[i].active = false;
         }
         consoElec = interaction.calculateAverageConsumption().consoElec.toFixed(2) + " kWh";
-        consoEau = interaction.calculateAverageConsumption().consoEau +  " L";
+        consoEau = interaction.calculateAverageConsumption().consoEau.toFixed(2) +  " L";
 
         endGame = new endGameUI(game, consoElec, consoEau);
         endGame.show();

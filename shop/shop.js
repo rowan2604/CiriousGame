@@ -164,10 +164,18 @@ class Shop{
 
     updateEnergyValues(){
         for(let i in this.datas.items[this.currentPage].assigned_objects){
-            console.log(this.datas.items[this.currentPage].assigned_objects[i]);
             let tmpObj = interaction.data.objects.find(object => object.name === this.datas.items[this.currentPage].assigned_objects[i]);
             if(tmpObj.active){
-                interaction.currentElec = interaction.currentElec - (Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
+                if(tmpObj.type == "Electric"){
+                    console.log(interaction.currentElec);
+                    interaction.currentElec = interaction.currentElec - (Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
+                    console.log(Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
+                }
+                else{
+                    console.log(interaction.currentWater);
+                    interaction.currentWater = interaction.currentWater - (Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
+                    console.log(Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
+                }
             }
             tmpObj.consumption = tmpObj.consumption - (Math.floor(this.datas.items[this.currentPage].reduceScale * tmpObj.consumption));
         }

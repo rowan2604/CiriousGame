@@ -3,7 +3,7 @@
       "name" : "Solar Panel",
       "price": 400,
       "image": "solar_panel",
-      "reduceScale": 0.2, 
+      "reduceScale": 0.3, 
       "hasSprite": true,
       "sprite": "solar_panel_sprite",
       "assigned_objects": ["TV", "Hi-fiSystem", "computer1", "computer2", "computer3", "furnace1", "furnace2", "duoFurnace", "smallLight1", "smallLight2", "phone", "bigLight1", "bigLight2"]
@@ -12,7 +12,7 @@
     "name" : "LEDS",
     "price": 150,
     "image": "leds",
-    "reduceScale": 0.1,
+    "reduceScale": 0.2,
     "hasSprite": false,
     "assigned_objects": ["smallLight1", "smallLight2", "bigLight1", "bigLight2"]
   },
@@ -20,7 +20,7 @@
     "name" : "Upgraded Isolation",
     "price": 1000,
     "image": "isolation",
-    "reduceScale": 0.3,
+    "reduceScale": 0.4,
     "hasSprite": false,
     "assigned_objects": ["duoFurnace1", "duoFurnace2", "smallLight", "bigLight"]
   },
@@ -28,7 +28,7 @@
     "name" : "Water Receiver",
     "price": 500,
     "image": "water_receiver",
-    "reduceScale": 0.3,
+    "reduceScale": 0.4,
     "hasSprite": false,
     "assigned_objects": ["Sink1", "Sink2"]
   }
