@@ -296,7 +296,7 @@ function update() {
         for(let i in interaction.data.objects){
             interaction.data.objects[i].active = false;
         }
-        consoElec = interaction.calculateAverageConsumption().consoElec + " kWh";
+        consoElec = interaction.calculateAverageConsumption().consoElec.toFixed(2) + " kWh";
         consoEau = interaction.calculateAverageConsumption().consoEau +  " L";
 
         endGame = new endGameUI(game, consoElec, consoEau);

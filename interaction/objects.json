@@ -123,7 +123,7 @@
         "index": 13,
         "active": false,
         "Tileset": [3590],
-        "trueValue": 390
+        "trueValue": 70
     },
     {
         "name" : "Sink2",
@@ -132,6 +132,6 @@
         "index": 14,
         "active": false,
         "Tileset": [14498],
-        "trueValue": 390
+        "trueValue": 70
     }
 ]}

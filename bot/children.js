@@ -213,7 +213,7 @@ class Child {
                         if (!this.interaction.active(object.index)) {
                             this.interaction.interact(object.index);
                         }
-                        this.timeToWalk -= 13;
+                        this.timeToWalk -= 16;
                     }
 
                 }

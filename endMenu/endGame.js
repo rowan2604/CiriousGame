@@ -65,7 +65,7 @@ class endGameUI {
 
         this.consommationElec2Value = this.game.add.text(this.game.width / 2 + this.interface.width / 4, this.interface.y - this.interface.height / 8 - 25, this.time);
         this.consommationElec2Value.anchor.setTo(0.5, 0.5);
-        this.consommationElec2Value.text = "13.5 kWh/j";
+        this.consommationElec2Value.text = "13.5 kWh";
         this.consommationElec2Value.fontSize = 26;
         this.ui.push(this.consommationElec2Value);
        
@@ -91,7 +91,7 @@ class endGameUI {
 
         this.consommationEau2Value = this.game.add.text(this.game.width / 2 + this.interface.width / 4, this.interface.y + this.interface.height / 8 - 25, this.time);
         this.consommationEau2Value.anchor.setTo(0.5, 0.5);
-        this.consommationEau2Value.text = "148L/j";
+        this.consommationEau2Value.text = "148L";
         this.consommationEau2Value.fontSize = 26;
         this.ui.push(this.consommationEau2Value);
 
