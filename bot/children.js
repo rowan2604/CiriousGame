@@ -210,7 +210,7 @@ class Child {
                     if (object) {
                         //console.log("objectX: ", object.x);
                         //console.log("objectY: ", object.y);
-                        if (!this.interaction.active(object)) {
+                        if (!this.interaction.active(object.index)) {
                             this.interaction.interact(object.index);
                         }
                         this.timeToWalk -= 13;
@@ -223,12 +223,12 @@ class Child {
                 this.game.time.events.add(this.timeWaiting, function () {
                     this.getNewPath(position);
                     this.destination = position;
-                    this.timeWaiting -= 80;
+                    this.timeWaiting -= 30;
                  }, this);
             }
         }
         else {  //ending game
-            
+
         }
     }
 
